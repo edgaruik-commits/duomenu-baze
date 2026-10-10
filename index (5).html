@@ -91,22 +91,35 @@ button.b{font:700 16px system-ui,sans-serif;cursor:pointer}
 .stage.night .readout strong{color:#fff;text-shadow:0 1px 8px rgba(0,0,0,.45)}
 
 .topbar{max-width:1100px;margin:0 auto;padding:14px 20px 0;display:flex;gap:10px;flex-wrap:wrap}
-#newCfg,#clList{margin:0;cursor:pointer;font:inherit;font-weight:700;color:#10282f;border-color:#10282f}
-#newCfg:hover,#clList:hover{background:#10282f;color:#fff}
+#newCfg,#clList,#tdBtn{margin:0;cursor:pointer;font:inherit;font-weight:700;color:#10282f;border-color:#10282f}
+#newCfg:hover,#clList:hover,#tdBtn:hover{background:#10282f;color:#fff}
 #prBtn{margin:0;cursor:pointer;font:inherit;font-weight:700}
 #prDlg{position:fixed;inset:0;margin:auto;border:0;border-radius:14px;padding:22px 26px;max-width:640px;width:calc(100% - 28px);max-height:86vh;overflow:auto;color:#10282f;box-shadow:0 20px 60px rgba(0,0,0,.35)}
+#tdDlg{position:fixed;inset:0;margin:auto;border:0;border-radius:14px;padding:22px 26px;max-width:640px;width:calc(100% - 28px);max-height:86vh;overflow:auto;color:#10282f;box-shadow:0 20px 60px rgba(0,0,0,.35)}
 #prDlg::backdrop{background:rgba(16,40,47,.65)}
+#tdDlg::backdrop{background:rgba(16,40,47,.65)}
 #prDlg h3{font:700 24px Georgia,serif;margin:0 0 10px}
+#tdDlg h3{font:700 24px Georgia,serif;margin:0 0 10px}
 #prDlg h4{font-size:.78rem;letter-spacing:.05em;text-transform:uppercase;color:#4d6169;margin:16px 0 4px}
+#tdDlg h4{font-size:.78rem;letter-spacing:.05em;text-transform:uppercase;color:#4d6169;margin:16px 0 4px}
 #prDlg .pr{display:flex;justify-content:space-between;gap:16px;padding:6px 0;border-bottom:1px solid #e3e8e6;font-size:.92rem}
+#tdDlg .pr{display:flex;justify-content:space-between;gap:16px;padding:6px 0;border-bottom:1px solid #e3e8e6;font-size:.92rem}
 #prDlg .pr b{white-space:nowrap}
+#tdDlg .pr b{white-space:nowrap}
 #prDlg .x{float:right;background:none;border:0;font-size:1.6rem;cursor:pointer;line-height:1;color:#10282f}
+#tdDlg .x{float:right;background:none;border:0;font-size:1.6rem;cursor:pointer;line-height:1;color:#10282f}
 #prDlg .pr{align-items:center}
+#tdDlg .pr{align-items:center}
 #prDlg .pr>span:first-child{flex:1}
+#tdDlg .pr>span:first-child{flex:1}
 #prDlg .pr input{width:96px;flex:none;font:inherit;padding:5px 8px;border:1px solid #b9c6c2;border-radius:6px;text-align:right}
+#tdDlg .pr input{width:96px;flex:none;font:inherit;padding:5px 8px;border:1px solid #b9c6c2;border-radius:6px;text-align:right}
 #prDlg .ni{width:96px;flex:none}
+#tdDlg .ni{width:96px;flex:none}
 #prDlg .pf{position:sticky;bottom:-22px;background:#fff;padding:14px 0 4px;margin-top:12px;display:flex;gap:10px;border-top:1px solid #e3e8e6}
+#tdDlg .pf{position:sticky;bottom:-22px;background:#fff;padding:14px 0 4px;margin-top:12px;display:flex;gap:10px;border-top:1px solid #e3e8e6}
 #prDlg .pf .b{margin:0;padding:9px 18px;cursor:pointer;font:inherit;font-weight:700}
+#tdDlg .pf .b{margin:0;padding:9px 18px;cursor:pointer;font:inherit;font-weight:700}
 #cuDlg{position:fixed;inset:0;margin:auto;border:0;border-radius:14px;padding:22px 26px;max-width:560px;width:calc(100% - 28px);max-height:90vh;overflow:auto;color:#10282f;box-shadow:0 20px 60px rgba(0,0,0,.35)}
 #cuDlg::backdrop{background:rgba(16,40,47,.65)}
 #cuDlg h3{font:700 24px Georgia,serif;margin:0 0 12px}
@@ -116,11 +129,16 @@ button.b{font:700 16px system-ui,sans-serif;cursor:pointer}
 #cuDlg input,#cuDlg textarea{font:inherit;color:#10282f;padding:8px 10px;border:1px solid #b9c6c2;border-radius:6px}
 #cuDlg .pf{display:flex;gap:10px;margin-top:14px}
 #cuDlg .pf .b{margin:0;padding:9px 18px;cursor:pointer;font:inherit;font-weight:700}
+
+#tdDlg .pr input{width:210px;text-align:left}
+#tdDlg .ni{width:210px}
+#tdDlg .pr b{white-space:normal;text-align:right;max-width:46%}
 </style>
 </head>
 <body>
-<div class="topbar"><button class="b" id="prBtn" type="button">Prices</button><button class="b o" id="newCfg" type="button">New order</button><button class="b o" id="clList" type="button">Customer list</button></div>
+<div class="topbar"><button class="b" id="prBtn" type="button">Prices</button><button class="b o" id="tdBtn" type="button">Technical data</button><button class="b o" id="newCfg" type="button">New order</button><button class="b o" id="clList" type="button">Customer list</button></div>
 <dialog id="prDlg" aria-labelledby="prT"><button class="x" id="prX" type="button" aria-label="Close">&times;</button><h3 id="prT">Prices</h3><div id="prBody"></div><div class="pf"><button class="b" id="prSave" type="button">Save</button><button class="b o" id="prReset" type="button">Reset prices</button></div></dialog>
+<dialog id="tdDlg" aria-labelledby="tdT"><button class="x" id="tdX" type="button" aria-label="Close">&times;</button><h3 id="tdT">Technical data</h3><div id="tdBody"></div><div class="pf"><button class="b" id="tdSave" type="button">Save</button><button class="b o" id="tdReset" type="button">Clear data</button></div></dialog>
 <dialog id="cuDlg" aria-labelledby="cuT"><button class="x" id="cuX" type="button" aria-label="Close">&times;</button><h3 id="cuT">Customer details</h3>
 <div class="fg"><label>Full name *<input id="cuName" autocomplete="off"></label><label>Phone<input id="cuPhone" type="tel" autocomplete="off"></label><label>Email<input id="cuMail" type="email" autocomplete="off"></label><label>Country<input id="cuCountry" list="cuCountries" autocomplete="off"></label><datalist id="cuCountries"><option value="Lithuania"><option value="Germany"><option value="Austria"><option value="Switzerland"><option value="France"><option value="Latvia"><option value="Estonia"><option value="Poland"></datalist><label>Postal code<input id="cuZip" autocomplete="off"></label><label>Delivery address<input id="cuAddr" autocomplete="off"></label><label>Notes<textarea id="cuNote" rows="3"></textarea></label></div>
 <div class="pf"><button class="b" id="cuSave" type="button" hidden>Save</button><button class="b o" id="cuCancel" type="button">Cancel</button></div></dialog>
@@ -825,6 +843,16 @@ window.makePdf=()=>{
     if(tot){doc.setDrawColor(150);doc.line(M,y-4.5,W-M,y-4.5);doc.setFont('helvetica','bold');y+=1;}else doc.setFont('helvetica','normal');
     doc.text(doc.splitTextToSize(a,iw-40),M,y);doc.text(b,W-M,y,{align:'right'});y+=7;
   });
+  { let add={}; try{add=JSON.parse(localStorage.getItem('tech_add_v1')||'{}');}catch(e){}   /* Technical tub information: model data + the "Additional data" notes */
+    const m=S.models[st.m], FT=[['size','Size (inner / outer)'],['people','Seats'],['liters','Water volume'],['heat','Heat-up time']];
+    y+=4; if(y>255){doc.addPage();y=20;}
+    doc.setFont('helvetica','normal');doc.setFontSize(8);doc.setTextColor(110);doc.text('TECHNICAL TUB INFORMATION',M,y);doc.setTextColor(0);y+=6;doc.setFontSize(11);
+    FT.forEach(([f,l])=>{ if(y>275){doc.addPage();y=20;}
+      doc.setFont('helvetica','normal');doc.setFontSize(11);doc.setTextColor(0);
+      doc.text(clean(l),M,y); doc.text(clean(m[f]),W-M,y,{align:'right'}); y+=6;
+      const t=add[m.id+':'+f];
+      if(t){ doc.setFontSize(9);doc.setTextColor(90); doc.splitTextToSize(clean(t),iw-8).forEach(ln=>{ if(y>282){doc.addPage();y=20;} doc.text(ln,M+4,y); y+=4.6; }); doc.setTextColor(0);doc.setFontSize(11); y+=1.5; }
+      y+=1; }); }
   if(window.syncCust)window.syncCust();
   const fn=no+(window.CUST?'-'+clean(window.CUST.name).replace(/[^A-Za-z0-9]+/g,'-').replace(/^-|-$/g,''):'');
   doc.save(fn+'.pdf');
@@ -1008,6 +1036,33 @@ render();
   }
   $('cuSave').onclick=commit;
   $('pdfBtn').onclick=()=>window.makePdf();
+})();
+</script>
+<script>
+/* Technical data: specifications per model, each with a free-text "Additional data" field (saved in this browser) */
+(function(){
+  const KEY='tech_add_v1', dlg=document.getElementById('tdDlg'), body=document.getElementById('tdBody');
+  const F=[['size','Size (inner / outer)'],['people','Seats'],['liters','Water volume'],['heat','Heat-up time']];
+  const esc=t=>String(t==null?'':t).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+  const load=()=>{try{return JSON.parse(localStorage.getItem(KEY)||'{}')}catch(e){return {}}};
+  function render(){
+    const add=load();
+    body.innerHTML=S.models.map(m=>'<h4>'+esc(m.name)+'</h4>'+F.map(([f,l])=>'<div class="pr"><span>'+l+'</span><b>'+esc(m[f])+'</b><input type="text" placeholder="Additional data" value="'+esc(add[m.id+':'+f]||'')+'" data-k="'+m.id+':'+f+'" aria-label="Additional data: '+esc(m.name)+' - '+l+'"></div>').join('')).join('');
+  }
+  document.getElementById('tdBtn').onclick=()=>{render();if(!dlg.open)dlg.showModal();};
+  document.getElementById('tdX').onclick=()=>dlg.close();
+  dlg.addEventListener('click',ev=>{if(ev.target===dlg)dlg.close();});
+  document.getElementById('tdSave').onclick=()=>{
+    const ov={};
+    body.querySelectorAll('input[data-k]').forEach(i=>{ const v=i.value.trim(); if(v!=='') ov[i.dataset.k]=v; });
+    try{localStorage.setItem(KEY,JSON.stringify(ov));}catch(x){alert('Could not save data in this browser.');return;}
+    dlg.close();
+  };
+  document.getElementById('tdReset').onclick=()=>{
+    if(!confirm('Clear all additional data?'))return;
+    try{localStorage.removeItem(KEY);}catch(x){}
+    render();
+  };
 })();
 </script>
 </body>
