@@ -47,8 +47,8 @@ h2{font:700 30px Georgia,serif;margin:56px 0 24px;color:#1f3a34}
 @media(max-width:900px){.stage{min-height:640px}.panel{top:auto;bottom:34px;left:14px;right:14px;width:auto;max-height:52%;overflow:auto}.pane{flex-direction:row;flex-wrap:wrap;gap:8px 18px}.acc{flex-direction:row;flex-wrap:wrap}.readout{max-width:90%}}
 button.b{font:700 16px system-ui,sans-serif;cursor:pointer}
 .sw{flex-wrap:wrap}
-.panel #std,.panel #pdf{margin:4px 0 0;width:100%;text-align:center;padding:10px 14px;border-color:#10282f;color:#10282f}
-.panel #std:hover,.panel #pdf:hover{background:#10282f;color:#fff}
+.panel #custBtn,.panel #pdfBtn{margin:4px 0 0;width:100%;text-align:center;padding:10px 14px;border-color:#10282f;color:#10282f}
+.panel #custBtn:hover,.panel #pdfBtn:hover{background:#10282f;color:#fff}
 .readout #rList{margin-top:10px;font-size:.85rem;line-height:1.55;color:#10282f}
 .readout #rList span{display:inline-block;min-width:58px;color:#4d6169}
 .readout #rList{width:min(330px,100%);background:rgba(244,247,246,.85);border-radius:12px;padding:8px 12px}
@@ -69,7 +69,7 @@ button.b{font:700 16px system-ui,sans-serif;cursor:pointer}
 .acc .sub.sw2 button[aria-pressed=true]{border-color:#10282f;outline:2px solid #fff;outline-offset:-5px}
 /* panel: buttons always visible below, only the options scroll */
 .panel{max-height:calc(100% - 28px);overflow:hidden;box-sizing:border-box}
-.panel .tabs,.panel #std,.panel #pdf{flex:none}
+.panel .tabs,.panel #custBtn,.panel #pdfBtn{flex:none}
 .panel .pane{min-height:0;flex:0 1 auto;overflow-y:auto;overscroll-behavior:contain;scrollbar-width:thin;padding-right:2px}
 @media(max-width:900px){.panel{max-height:52%;overflow:hidden}}
 .stage::before{content:"";position:absolute;inset:0;pointer-events:none;opacity:0;transition:opacity .9s;
@@ -90,7 +90,9 @@ button.b{font:700 16px system-ui,sans-serif;cursor:pointer}
 .readout strong{transition:color .6s}
 .stage.night .readout strong{color:#fff;text-shadow:0 1px 8px rgba(0,0,0,.45)}
 
-.topbar{max-width:1100px;margin:0 auto;padding:14px 20px 0;display:flex}
+.topbar{max-width:1100px;margin:0 auto;padding:14px 20px 0;display:flex;gap:10px;flex-wrap:wrap}
+#newCfg,#clList{margin:0;cursor:pointer;font:inherit;font-weight:700;color:#10282f;border-color:#10282f}
+#newCfg:hover,#clList:hover{background:#10282f;color:#fff}
 #prBtn{margin:0;cursor:pointer;font:inherit;font-weight:700}
 #prDlg{position:fixed;inset:0;margin:auto;border:0;border-radius:14px;padding:22px 26px;max-width:640px;width:calc(100% - 28px);max-height:86vh;overflow:auto;color:#10282f;box-shadow:0 20px 60px rgba(0,0,0,.35)}
 #prDlg::backdrop{background:rgba(16,40,47,.65)}
@@ -105,11 +107,23 @@ button.b{font:700 16px system-ui,sans-serif;cursor:pointer}
 #prDlg .ni{width:96px;flex:none}
 #prDlg .pf{position:sticky;bottom:-22px;background:#fff;padding:14px 0 4px;margin-top:12px;display:flex;gap:10px;border-top:1px solid #e3e8e6}
 #prDlg .pf .b{margin:0;padding:9px 18px;cursor:pointer;font:inherit;font-weight:700}
+#cuDlg{position:fixed;inset:0;margin:auto;border:0;border-radius:14px;padding:22px 26px;max-width:560px;width:calc(100% - 28px);max-height:90vh;overflow:auto;color:#10282f;box-shadow:0 20px 60px rgba(0,0,0,.35)}
+#cuDlg::backdrop{background:rgba(16,40,47,.65)}
+#cuDlg h3{font:700 24px Georgia,serif;margin:0 0 12px}
+#cuDlg .x{float:right;background:none;border:0;font-size:1.6rem;cursor:pointer;line-height:1;color:#10282f}
+#cuDlg .fg{display:grid;gap:10px}
+#cuDlg label{display:grid;gap:4px;font-size:.85rem;color:#4d6169}
+#cuDlg input,#cuDlg textarea{font:inherit;color:#10282f;padding:8px 10px;border:1px solid #b9c6c2;border-radius:6px}
+#cuDlg .pf{display:flex;gap:10px;margin-top:14px}
+#cuDlg .pf .b{margin:0;padding:9px 18px;cursor:pointer;font:inherit;font-weight:700}
 </style>
 </head>
 <body>
-<div class="topbar"><button class="b" id="prBtn" type="button">Kainos</button></div>
-<dialog id="prDlg" aria-labelledby="prT"><button class="x" id="prX" type="button" aria-label="Close">&times;</button><h3 id="prT">Kainos</h3><div id="prBody"></div><div class="pf"><button class="b" id="prSave" type="button">Save</button><button class="b o" id="prReset" type="button">Reset prices</button></div></dialog>
+<div class="topbar"><button class="b" id="prBtn" type="button">Prices</button><button class="b o" id="newCfg" type="button">New order</button><button class="b o" id="clList" type="button">Customer list</button></div>
+<dialog id="prDlg" aria-labelledby="prT"><button class="x" id="prX" type="button" aria-label="Close">&times;</button><h3 id="prT">Prices</h3><div id="prBody"></div><div class="pf"><button class="b" id="prSave" type="button">Save</button><button class="b o" id="prReset" type="button">Reset prices</button></div></dialog>
+<dialog id="cuDlg" aria-labelledby="cuT"><button class="x" id="cuX" type="button" aria-label="Close">&times;</button><h3 id="cuT">Customer details</h3>
+<div class="fg"><label>Full name *<input id="cuName" autocomplete="off"></label><label>Phone<input id="cuPhone" type="tel" autocomplete="off"></label><label>Email<input id="cuMail" type="email" autocomplete="off"></label><label>Country<input id="cuCountry" list="cuCountries" autocomplete="off"></label><datalist id="cuCountries"><option value="Lithuania"><option value="Germany"><option value="Austria"><option value="Switzerland"><option value="France"><option value="Latvia"><option value="Estonia"><option value="Poland"></datalist><label>Postal code<input id="cuZip" autocomplete="off"></label><label>Delivery address<input id="cuAddr" autocomplete="off"></label><label>Notes<textarea id="cuNote" rows="3"></textarea></label></div>
+<div class="pf"><button class="b" id="cuSave" type="button" hidden>Save</button><button class="b o" id="cuCancel" type="button">Cancel</button></div></dialog>
 <main class="w"><div class="stage" style="margin-bottom:8px">
         <canvas id="c" aria-label="3D view of the hot tub. Drag to rotate." role="img"></canvas>
         <div class="readout"><strong id="rName"></strong><div id="rList"></div></div>
@@ -130,8 +144,8 @@ button.b{font:700 16px system-ui,sans-serif;cursor:pointer}
           <div class="pane" id="pane2" hidden>
             <div class="acc" id="chips"></div>
           </div>
-                    <button class="b o" id="std" type="button">Standard setup</button>
-                    <button class="b o" id="pdf" type="button">Download PDF</button>
+                    <button class="b o" id="custBtn" type="button">Customer details</button>
+                    <button class="b o" id="pdfBtn" type="button" hidden>Download PDF</button>
         </div>
         <div class="hint" id="hint"></div>
 <div class="vbar" id="vbar" role="toolbar" aria-label="Camera view and ambiance"><span class="vl">VIEW:</span><button type="button" data-v="front" aria-pressed="false">Front</button><button type="button" data-v="persp" aria-pressed="false">Perspective</button><button type="button" data-v="top" aria-pressed="false">Top Down</button><button type="button" data-v="liner" aria-pressed="false">Liner View</button><button type="button" id="vauto" aria-pressed="true">Auto rotate</button><span class="vs" aria-hidden="true"></span><span class="vl">AMBIANCE:</span><button type="button" data-a="day" aria-pressed="true">Day</button><button type="button" data-a="night" aria-pressed="false">Night</button></div>
@@ -659,9 +673,7 @@ const clock=new THREE.Clock();
 })();
 </script>
 <script>
-document.getElementById('std').onclick=()=>{st.m=0;st.s=0;st.w=5;st.a=2;st.fib=0;st.p=0;st.t=0;st.acc={stove:true,hydro:true,air:true,led:true,cover:true,ladder:true};st.stepOpen=1;
- press($('oModel'),st.m);press($('oShape'),st.s);press($('oWood'),st.w);pressMat();
- setJets(6);setAir(0);setLed(0);setCover(0);syncUI();showTab(0);};
+
 </script>
 <script>
 function readout(){const m=S.models[st.m],sh=S.shapes[st.s],sv=S.accessories.find(x=>x.id==='stove');$('rName').textContent=m.name+' · '+sh.n;
@@ -790,29 +802,36 @@ syncUI();readout();
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script>
 /* Download PDF: 3D screenshot + current configuration */
-document.getElementById('pdf').onclick=()=>{
+function nextOfferNo(){ let n=0; try{n=parseInt(localStorage.getItem('offer_seq_v1'),10)||0;}catch(e){} n++; try{localStorage.setItem('offer_seq_v1',String(n));}catch(e){} return 'OF-'+new Date().getFullYear()+'-'+String(n).padStart(4,'0'); }
+window.makePdf=()=>{
   if(!window.jspdf){alert('PDF library not loaded (check internet connection).');return;}
-  const clean=t=>String(t).replace(/\u20ac/g,' EUR').replace(/[\u00b7\u2013]/g,'-').replace(/\u00d7/g,'x');
+  const clean=t=>String(t).replace(/\u20ac/g,' EUR').replace(/[\u00b7\u2013]/g,'-').replace(/\u00d7/g,'x').normalize('NFD').replace(/[\u0300-\u036f]/g,'');
   renderer.render(scene,camera);
+  const no=(window.CUST&&window.CUST.offerNo)||nextOfferNo(); if(window.CUST&&!window.CUST.offerNo){window.CUST.offerNo=no; if(window.syncCust)window.syncCust();}
   const img=canvas.toDataURL('image/png');
   const doc=new window.jspdf.jsPDF({unit:'mm',format:'a4'});
   const W=210,M=15; let y=20;
-  doc.setFont('helvetica','bold');doc.setFontSize(18);doc.text('Hot tub configuration',M,y);y+=6;
+  doc.setFont('helvetica','bold');doc.setFontSize(18);doc.text('Hot tub quotation',M,y);doc.setFontSize(11);doc.text('Offer No. '+no,W-M,y,{align:'right'});y+=6;
   doc.setFont('helvetica','normal');doc.setFontSize(9);doc.setTextColor(110);doc.text(new Date().toLocaleDateString('en-GB'),M,y);doc.setTextColor(0);y+=6;
+  if(window.CUST){const c=window.CUST;y+=2;doc.setFontSize(8);doc.setTextColor(110);doc.text('CUSTOMER',M,y);doc.setTextColor(0);y+=5;doc.setFontSize(11);doc.setFont('helvetica','bold');doc.text(clean(c.name),M,y);y+=5;doc.setFont('helvetica','normal');doc.setFontSize(10);
+    [[c.phone,c.mail].filter(Boolean).join('  |  '),[c.addr,[c.zip,c.country].filter(Boolean).join(' ')].filter(Boolean).join(', '),c.note].filter(Boolean).forEach(t=>{doc.splitTextToSize(clean(t),W-2*M).forEach(l=>{doc.text(l,M,y);y+=4.6;});});y+=3;}
   const iw=W-2*M, ih=iw*canvas.height/canvas.width, mh=105, h=Math.min(ih,mh), w=h*canvas.width/canvas.height;
   doc.addImage(img,'PNG',M+(iw-w)/2,y,w,h);y+=h+8;
+  doc.setFontSize(8);doc.setTextColor(110);doc.text('CONFIGURATION',M,y);doc.setTextColor(0);y+=6;
   doc.setFontSize(11);
   [...document.querySelectorAll('#rList .rr')].forEach(r=>{
-    const a=clean(r.children[0].textContent),b=clean(r.children[1].textContent),tot=r.classList.contains('rt');
+    const tot=r.classList.contains('rt'),a=tot?clean('Total'):clean(r.children[0].textContent),b=clean(r.children[1].textContent);
     if(y>280){doc.addPage();y=20;}
     if(tot){doc.setDrawColor(150);doc.line(M,y-4.5,W-M,y-4.5);doc.setFont('helvetica','bold');y+=1;}else doc.setFont('helvetica','normal');
     doc.text(doc.splitTextToSize(a,iw-40),M,y);doc.text(b,W-M,y,{align:'right'});y+=7;
   });
-  doc.save('hot-tub-configuration.pdf');
+  if(window.syncCust)window.syncCust();
+  const fn=no+(window.CUST?'-'+clean(window.CUST.name).replace(/[^A-Za-z0-9]+/g,'-').replace(/^-|-$/g,''):'');
+  doc.save(fn+'.pdf');
 };
 </script>
 <script>
-/* Kainos: full price list with editable new prices (saved in this browser) */
+/* Prices: full price list with editable new prices (saved in this browser) */
 (function(){
   const dlg=document.getElementById('prDlg'),body=document.getElementById('prBody');
   const e=n=>n===0?'included':new Intl.NumberFormat('en-IE',{maximumFractionDigits:0}).format(n)+' EUR';
@@ -848,6 +867,147 @@ document.getElementById('pdf').onclick=()=>{
     try{localStorage.removeItem('prices_v1');}catch(x){}
     location.reload();
   };
+})();
+</script>
+<script>
+/* New customer + Customer list (saved in this browser) */
+(function(){
+  const KEY='clients_v1', $=id=>document.getElementById(id);
+  const load=()=>{try{return JSON.parse(localStorage.getItem(KEY)||'[]')}catch(e){return []}};
+  const save=a=>{try{localStorage.setItem(KEY,JSON.stringify(a));return true}catch(e){alert('Could not save in this browser.');return false}};
+  const esc=t=>String(t==null?'':t).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+  $('newCfg').onclick=()=>{ if(confirm('Start a new order from scratch?')) location.reload(); };
+  const PAGE=`<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Customer list</title>
+<style>*{box-sizing:border-box}body{margin:0;font:16px/1.5 system-ui,sans-serif;color:#10282f;background:#f4f7f6}
+.w{max-width:860px;margin:0 auto;padding:24px 20px 60px}h1{font:700 28px Georgia,serif;margin:0 0 6px}.sub{color:#4d6169;font-size:.9rem;margin-bottom:14px}
+#q{width:100%;font:inherit;padding:10px 12px;border:1px solid #b9c6c2;border-radius:8px;margin-bottom:6px}
+.cl{background:#fff;border:1px solid #d3dcd9;border-radius:10px;padding:14px 16px;margin-top:12px}
+.clh{display:flex;justify-content:space-between;gap:12px;align-items:baseline}.clh b{font-size:1.1rem}.clh span{font-weight:700;white-space:nowrap}
+.cls{font-size:.86rem;color:#4d6169;margin-top:2px}.cln{font-size:.9rem;margin-top:6px;font-style:italic}
+details{margin-top:8px}summary{font-size:.85rem;font-weight:600;cursor:pointer}
+.clr{display:flex;justify-content:space-between;gap:12px;font-size:.88rem;padding:3px 0;border-bottom:1px solid #eef1f0}
+.cle{margin-top:10px;margin-right:8px;background:#10282f;color:#fff;border:1px solid #10282f;border-radius:6px;padding:4px 12px;font:inherit;font-size:.82rem;cursor:pointer}
+.clc{margin-top:10px;margin-right:8px;background:none;border:1px solid #10282f;border-radius:6px;padding:4px 12px;font:inherit;font-size:.82rem;cursor:pointer;color:#10282f}
+.ef{display:grid;gap:8px;margin-top:6px}.ef label{display:grid;gap:3px;font-size:.8rem;color:#4d6169}
+.ef input,.ef textarea{font:inherit;color:#10282f;padding:7px 9px;border:1px solid #b9c6c2;border-radius:6px}
+.ef .efb{display:flex;gap:8px;margin-top:4px}.efs{background:#10282f;color:#fff;border:1px solid #10282f;border-radius:6px;padding:6px 14px;font:inherit;font-size:.85rem;cursor:pointer}.efc{background:none;border:1px solid #b9c6c2;border-radius:6px;padding:6px 14px;font:inherit;font-size:.85rem;cursor:pointer;color:#10282f}
+.cld{margin-top:10px;background:none;border:1px solid #b9c6c2;border-radius:6px;padding:4px 12px;font:inherit;font-size:.82rem;cursor:pointer;color:#a33}
+.empty{color:#4d6169;padding:14px 0}</style></head><body><div class="w"><h1>Customer list</h1><div class="sub" id="cnt"></div>
+<input id="q" type="search" placeholder="Search by name, phone, address..." aria-label="Search"><div id="box"></div></div>
+<script>
+const KEY='clients_v1';
+let editId=null;
+const load=()=>{try{return JSON.parse(localStorage.getItem(KEY)||'[]')}catch(e){return []}};
+const esc=t=>String(t==null?'':t).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+function render(){
+  const a=load(), q=document.getElementById('q').value.trim().toLowerCase();
+  document.getElementById('cnt').textContent='Total customers: '+a.length;
+  const list=a.filter(c=>!q||[c.name,c.phone,c.mail,c.country,c.zip,c.addr,c.note].join(' ').toLowerCase().includes(q));
+  const box=document.getElementById('box');
+  if(!list.length){box.innerHTML='<p class="empty">'+(a.length?'No results found.':'No customers yet.')+'</p>';return;}
+  const fld=[['name','Full name *'],['phone','Phone'],['mail','Email'],['country','Country'],['zip','Postal code'],['addr','Delivery address']];
+  box.innerHTML=list.map(c=>{
+    if(String(c.id)===String(editId)) return '<div class="cl" data-id="'+c.id+'"><div class="clh"><b>Edit customer details</b></div><div class="ef">'+fld.map(([k,l])=>'<label>'+l+'<input data-f="'+k+'" value="'+esc(c[k]||'')+'"></label>').join('')+'<label>Notes<textarea data-f="note" rows="3">'+esc(c.note||'')+'</textarea></label><div class="efb"><button class="efs" type="button">Save</button><button class="efc" type="button">Cancel</button></div></div></div>';
+    const d=new Date(c.date).toLocaleString('en-GB',{dateStyle:'short',timeStyle:'short'});
+    const addr=[c.addr,[c.zip,c.country].filter(Boolean).join(' ')].filter(Boolean).join(', ');
+    const contact=[c.phone,c.mail].filter(Boolean).map(esc).join(' · ');
+    return '<div class="cl"><div class="clh"><b>'+esc(c.name)+'</b><span>'+esc(c.cfg.total)+'</span></div>'+
+      '<div class="cls">'+(c.offerNo?'<b>'+esc(c.offerNo)+'</b> · ':'')+esc(d)+(contact?' · '+contact:'')+'</div>'+
+      (addr?'<div class="cls">'+esc(addr)+'</div>':'')+
+      '<div class="cls">'+esc(c.cfg.model)+'</div>'+
+      (c.note?'<div class="cln">'+esc(c.note)+'</div>':'')+
+      '<details><summary>Configuration</summary>'+c.cfg.rows.map(r=>'<div class="clr"><span>'+esc(r[0])+'</span><span>'+esc(r[1])+'</span></div>').join('')+'</details>'+
+      '<button class="cle" type="button" data-id="'+c.id+'">Edit order</button><button class="clc" type="button" data-id="'+c.id+'">Edit customer details</button><button class="cld" type="button" data-id="'+c.id+'">Delete</button></div>';
+  }).join('');
+}
+document.getElementById('q').oninput=render;
+document.getElementById('box').onclick=e=>{
+  const cc=e.target.closest('.clc'); if(cc){ editId=cc.dataset.id; render(); return; }
+  if(e.target.closest('.efc')){ editId=null; render(); return; }
+  const sv=e.target.closest('.efs');
+  if(sv){
+    const card=sv.closest('.cl'), id=card.dataset.id, vals={};
+    card.querySelectorAll('[data-f]').forEach(i=>vals[i.dataset.f]=i.value.trim());
+    if(!vals.name){ card.querySelector('[data-f=name]').focus(); return; }
+    const a=load(), i=a.findIndex(c=>String(c.id)===String(id));
+    if(i>=0){ Object.assign(a[i],vals); try{localStorage.setItem(KEY,JSON.stringify(a));}catch(x){alert('Could not save.');return;} }
+    try{ const o=window.opener; if(o&&!o.closed&&o.refreshCust) o.refreshCust(id); }catch(x){}
+    editId=null; render(); return;
+  }
+  const ed=e.target.closest('.cle');
+  if(ed){ const o=window.opener; if(o&&!o.closed&&o.loadOrder){ o.loadOrder(ed.dataset.id); try{o.focus();}catch(x){} window.close(); } else alert('Open the configurator page and click Customer list from there.'); return; }
+  const b=e.target.closest('.cld'); if(!b||!confirm('Delete this customer?')) return;
+  try{localStorage.setItem(KEY,JSON.stringify(load().filter(c=>String(c.id)!==b.dataset.id)));}catch(x){}
+  render();
+};
+render();
+<\/script></body></html>`;
+  $('clList').onclick=()=>{
+    const w=window.open('','_blank');
+    if(!w){ alert('The browser blocked the new window. Please allow pop-ups for this page.'); return; }
+    w.document.open(); w.document.write(PAGE); w.document.close();
+  };
+})();
+</script>
+<script>
+/* Customer details: form above Download PDF; saved to Customer list and printed in the PDF */
+(function(){
+  const KEY='clients_v1', $=id=>document.getElementById(id), dlg=$('cuDlg');
+  const F=[['name','cuName'],['phone','cuPhone'],['mail','cuMail'],['country','cuCountry'],['zip','cuZip'],['addr','cuAddr'],['note','cuNote']];
+  const load=()=>{try{return JSON.parse(localStorage.getItem(KEY)||'[]')}catch(e){return []}};
+  const store=a=>{try{localStorage.setItem(KEY,JSON.stringify(a));return true}catch(e){alert('Could not save in this browser.');return false}};
+  function snapshot(){
+    const rows=[...document.querySelectorAll('#rList .rr')].map(r=>[r.children[0].textContent,r.children[1].textContent,r.classList.contains('rt')]);
+    const tot=rows.find(r=>r[2]);
+    return {rows:rows.filter(r=>!r[2]).map(r=>[r[0],r[1]]),total:tot?tot[1]:'',model:S.models[st.m].name+' - '+S.shapes[st.s].n};
+  }
+  function upsert(){
+    const c=window.CUST; if(!c) return true;
+    const a=load(), i=a.findIndex(x=>x.id===c.id), rec=Object.assign({},c,{cfg:snapshot(),state:JSON.parse(JSON.stringify(st))});
+    if(i>=0){ rec.date=a[i].date; a[i]=rec; } else { rec.date=new Date().toISOString(); a.unshift(rec); }
+    return store(a);
+  }
+  window.syncCust=()=>{ if(window.CUST) upsert(); };
+  window.refreshCust=id=>{ if(window.CUST&&String(window.CUST.id)===String(id)){ const c=load().find(x=>String(x.id)===String(id)); if(c){ F.forEach(([k])=>window.CUST[k]=c[k]||''); label(); } } };
+  window.loadOrder=function(id){
+    const c=load().find(x=>String(x.id)===String(id)); if(!c){ alert('Customer not found.'); return; }
+    const cu={id:c.id,offerNo:c.offerNo||''}; F.forEach(([k])=>cu[k]=c[k]||'');
+    window.CUST=cu; label(); $('pdfBtn').hidden=false; window.scrollTo(0,0);
+    if(!c.state){ alert('The configuration for this order was not saved; only the customer details were loaded. Choose a configuration and save again.'); return; }
+    const state=JSON.parse(JSON.stringify(c.state));
+    Object.assign(st,state);
+    press($('oModel'),st.m); press($('oShape'),st.s); press($('oWood'),st.w); pressMat();
+    const on=k=>st.acc[k]&&!state.pend[k];
+    if(on('hydro')&&state.jets!=null) setJets(state.jets);
+    if(on('thermo')&&state.th!=null) setTh(state.th);
+    if(on('shelf')&&state.shelfC!=null) setShelf(state.shelfC);
+    if(on('led')&&state.led!=null) setLed(state.led);
+    if(on('air')&&state.air!=null) setAir(state.air);
+    if(on('filter')&&state.filter!=null) setFilter(state.filter);
+    if(st.acc.cover) setCover(state.coverC||0);
+    Object.assign(st.pend,state.pend);
+    syncUI(); build(); readout(); showTab(0);
+    window.scrollTo(0,0);
+  };
+  function label(){ $('custBtn').textContent=window.CUST?'Customer: '+window.CUST.name:'Customer details'; }
+  $('custBtn').onclick=()=>{
+    const c=window.CUST||{}; F.forEach(([k,id])=>$(id).value=c[k]||'');
+    toggle(); if(!dlg.open) dlg.showModal(); $('cuName').focus();
+  };
+  const toggle=()=>{ const ok=$('cuName').value.trim()!==''; $('cuSave').hidden=!ok; };
+  $('cuName').addEventListener('input',toggle);
+  $('cuX').onclick=$('cuCancel').onclick=()=>dlg.close();
+  dlg.addEventListener('click',e=>{if(e.target===dlg)dlg.close();});
+  function commit(){
+    const name=$('cuName').value.trim(); if(!name){ $('cuName').focus(); return false; }
+    const c={id:(window.CUST&&window.CUST.id)||Date.now(),offerNo:(window.CUST&&window.CUST.offerNo)||''};
+    F.forEach(([k,id])=>c[k]=$(id).value.trim());
+    window.CUST=c;
+    if(!upsert()) return false;
+    label(); $('pdfBtn').hidden=false; dlg.close(); return true;
+  }
+  $('cuSave').onclick=commit;
+  $('pdfBtn').onclick=()=>window.makePdf();
 })();
 </script>
 </body>
