@@ -871,7 +871,15 @@ window.makePdf=()=>{
       doc.text(clean(l),M,y); doc.text(clean(m[f]),W-M,y,{align:'right'}); y+=6;
       const t=add[m.id+':'+f];
       if(t){ doc.setFontSize(9);doc.setTextColor(90); doc.splitTextToSize(clean(t),iw-8).forEach(ln=>{ if(y>282){doc.addPage();y=20;} doc.text(ln,M+4,y); y+=4.6; }); doc.setTextColor(0);doc.setFontSize(11); y+=1.5; }
-      y+=1; }); }
+      y+=1; });
+    if(window.techGroups) window.techGroups().forEach(g=>{ const its=g.items.filter(i=>i.sel&&add[i.key]); if(!its.length) return;   /* selected options that have additional data */
+      if(y>262){doc.addPage();y=20;}
+      y+=3; doc.setFont('helvetica','normal');doc.setFontSize(8);doc.setTextColor(110);doc.text(clean(g.title).toUpperCase(),M,y);doc.setTextColor(0);y+=6;
+      its.forEach(i=>{ if(y>275){doc.addPage();y=20;}
+        doc.setFontSize(11);doc.setTextColor(0);doc.text(clean(i.label),M,y);y+=6;
+        doc.setFontSize(9);doc.setTextColor(90);
+        doc.splitTextToSize(clean(add[i.key]),iw-8).forEach(ln=>{ if(y>282){doc.addPage();y=20;} doc.text(ln,M+4,y); y+=4.6; });
+        doc.setTextColor(0);doc.setFontSize(11); y+=2.5; }); }); }
   if(window.syncCust)window.syncCust();
   const fn=no+(window.CUST?'-'+clean(window.CUST.name).replace(/[^A-Za-z0-9]+/g,'-').replace(/^-|-$/g,''):'');
   doc.save(fn+'.pdf');
@@ -1058,15 +1066,46 @@ render();
 })();
 </script>
 <script>
-/* Technical data: specifications per model, each with a free-text "Additional data" field (saved in this browser) */
+/* Technical data: every configurator option (models, Shape & finish, Equipment, Accessories incl. sub-menu items) gets an "Additional data" field (saved in this browser) */
 (function(){
   const KEY='tech_add_v1', dlg=document.getElementById('tdDlg'), body=document.getElementById('tdBody');
   const F=[['size','Size (inner / outer)'],['people','Seats'],['liters','Water volume'],['heat','Heat-up time']];
   const esc=t=>String(t==null?'':t).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
   const load=()=>{try{return JSON.parse(localStorage.getItem(KEY)||'{}')}catch(e){return {}}};
+  const IN={hydro:'Hydro massage system',air:'Air massage system',thermo:'Thermometer',shelf:'Drink shelf',guard:'Chimney guard',led:'LED lighting',cover:'Thermal cover',sound:'Sound system',filter:'Filtration system',wifi:'Hot tub control (Wi-Fi)'};
+  const on=id=>!!st.acc[id]&&!st.pend[id];
+  /* all options as groups of {key,label,sel}; sel = currently chosen in the configurator (used by the PDF) */
+  window.techGroups=function(){
+    const el=!!S.stoveTypes[st.t].electric, shp=S.shapes[st.s].id, G=[];
+    G.push({title:'Shape & finish',items:[
+      ...S.shapes.map(x=>({key:'shape:'+x.id,label:'Shape: '+x.n,sel:x.id===shp})),
+      ...S.woods.map((x,i)=>({key:'wood:'+x.n,label:'Wood: '+x.n,sel:i===st.w})),
+      ...S.acrylics.map((x,i)=>({key:'acr:'+x.n,label:'Acrylic: '+x.n,sel:!st.fib&&i===st.a})),
+      ...S.acrylics.map((x,i)=>({key:'fib:'+x.n,label:'Fiberglass: '+x.n,sel:!!st.fib&&i===st.a}))]});
+    G.push({title:'Equipment',items:[
+      ...S.stoveTypes.map((x,i)=>({key:'stove:'+x.id,label:'Stove type: '+x.n,sel:!!st.acc.stove&&i===st.t})),
+      ...S.stovePlaces.map((x,i)=>({key:'pos:'+x.id,label:'Stove position: '+x.n,sel:!!st.acc.stove&&!el&&i===st.p})),
+      {key:'steps:open',label:'Steps: Open',sel:!!st.acc.ladder&&!!st.stepOpen},
+      {key:'steps:closed',label:'Steps: Closed',sel:!!st.acc.ladder&&!st.stepOpen}]});
+    const A=[];
+    JT.forEach(([n])=>A.push({key:'jets:'+n,label:IN.hydro+' - '+n+' jets',sel:on('hydro')&&st.jets===n}));
+    AO.forEach(([n],i)=>A.push({key:'air:'+i,label:IN.air+' - '+n,sel:on('air')&&st.air===i}));
+    TO.forEach(([n],i)=>A.push({key:'thermo:'+i,label:IN.thermo+' - '+n,sel:on('thermo')&&st.th===i}));
+    SHC.forEach(([n],i)=>A.push({key:'shelf:'+i,label:IN.shelf+' - '+n,sel:on('shelf')&&st.shelfC===i}));
+    A.push({key:'acc:guard',label:IN.guard,sel:on('guard')});
+    LO.forEach(([n],i)=>A.push({key:'led:'+i,label:n,sel:on('led')&&st.led===i}));
+    COVC.forEach(([n],i)=>A.push({key:'cover:'+i,label:IN.cover+' - '+n,sel:!!st.acc.cover&&(st.coverC||0)===i}));
+    A.push({key:'acc:sound',label:IN.sound,sel:on('sound')});
+    FO.forEach(([n],i)=>A.push({key:'filter:'+i,label:IN.filter+' - '+n,sel:on('filter')&&st.filter===i}));
+    A.push({key:'acc:wifi',label:IN.wifi,sel:on('wifi')});
+    G.push({title:'Accessories',items:A});
+    return G;
+  };
+  const inp=(k,l,v)=>'<input type="text" placeholder="Additional data" value="'+esc(v||'')+'" data-k="'+esc(k)+'" aria-label="Additional data: '+esc(l)+'">';
   function render(){
     const add=load();
-    body.innerHTML=S.models.map(m=>'<h4>'+esc(m.name)+'</h4>'+F.map(([f,l])=>'<div class="pr"><span>'+l+'</span><b>'+esc(m[f])+'</b><input type="text" placeholder="Additional data" value="'+esc(add[m.id+':'+f]||'')+'" data-k="'+m.id+':'+f+'" aria-label="Additional data: '+esc(m.name)+' - '+l+'"></div>').join('')).join('');
+    body.innerHTML=S.models.map(m=>'<h4>'+esc(m.name)+'</h4>'+F.map(([f,l])=>{ const k=m.id+':'+f; return '<div class="pr"><span>'+l+'</span><b>'+esc(m[f])+'</b>'+inp(k,m.name+' - '+l,add[k])+'</div>'; }).join('')).join('')
+      +window.techGroups().map(g=>'<h4>'+esc(g.title)+'</h4>'+g.items.map(i=>'<div class="pr"><span>'+esc(i.label)+'</span>'+inp(i.key,i.label,add[i.key])+'</div>').join('')).join('');
   }
   document.getElementById('tdBtn').onclick=()=>{render();if(!dlg.open)dlg.showModal();};
   document.getElementById('tdX').onclick=()=>dlg.close();
