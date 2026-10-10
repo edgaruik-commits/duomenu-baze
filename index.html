@@ -864,7 +864,7 @@ window.makePdf=()=>{
   { let add={}; try{add=JSON.parse(localStorage.getItem('tech_add_v1')||'{}');}catch(e){}   /* Technical tub information: model data + the "Additional data" notes */
     const m=S.models[st.m], FT=[['size','Size (inner / outer)'],['people','Seats'],['liters','Water volume'],['heat','Heat-up time']];
     doc.addPage(); y=20;   /* separate page, heading in the same style as the "Hot tub quotation" title */
-    doc.setFont('helvetica','bold');doc.setFontSize(18);doc.setTextColor(0);doc.text('Technical tub information',M,y);doc.setFontSize(11);doc.text('Offer No. '+no,W-M,y,{align:'right'});y+=6;
+    doc.setFont('helvetica','bold');doc.setFontSize(18);doc.setTextColor(0);doc.text('Hot tub technical information',M,y);doc.setFontSize(11);doc.text('Offer No. '+no,W-M,y,{align:'right'});y+=6;
     doc.setFont('helvetica','normal');doc.setFontSize(9);doc.setTextColor(110);doc.text(clean(m.name+' - '+S.shapes[st.s].n),M,y);doc.setTextColor(0);y+=10;doc.setFontSize(11);
     FT.forEach(([f,l])=>{ if(y>275){doc.addPage();y=20;}
       doc.setFont('helvetica','normal');doc.setFontSize(11);doc.setTextColor(0);
