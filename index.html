@@ -47,8 +47,8 @@ h2{font:700 30px Georgia,serif;margin:56px 0 24px;color:#1f3a34}
 @media(max-width:900px){.stage{min-height:640px}.panel{top:auto;bottom:34px;left:14px;right:14px;width:auto;max-height:52%;overflow:auto}.pane{flex-direction:row;flex-wrap:wrap;gap:8px 18px}.acc{flex-direction:row;flex-wrap:wrap}.readout{max-width:90%}}
 button.b{font:700 16px system-ui,sans-serif;cursor:pointer}
 .sw{flex-wrap:wrap}
-.panel #custBtn,.panel #pdfBtn{margin:4px 0 0;width:100%;text-align:center;padding:10px 14px;border-color:#10282f;color:#10282f}
-.panel #custBtn:hover,.panel #pdfBtn:hover{background:#10282f;color:#fff}
+.panel #custBtn,.panel #trBtn,.panel #pdfBtn{margin:4px 0 0;width:100%;text-align:center;padding:10px 14px;border-color:#10282f;color:#10282f}
+.panel #custBtn:hover,.panel #trBtn:hover,.panel #pdfBtn:hover{background:#10282f;color:#fff}
 .readout #rList{margin-top:10px;font-size:.85rem;line-height:1.55;color:#10282f}
 .readout #rList span{display:inline-block;min-width:58px;color:#4d6169}
 .readout #rList{width:min(330px,100%);background:rgba(244,247,246,.85);border-radius:12px;padding:8px 12px}
@@ -69,7 +69,7 @@ button.b{font:700 16px system-ui,sans-serif;cursor:pointer}
 .acc .sub.sw2 button[aria-pressed=true]{border-color:#10282f;outline:2px solid #fff;outline-offset:-5px}
 /* panel: buttons always visible below, only the options scroll */
 .panel{max-height:calc(100% - 28px);overflow:hidden;box-sizing:border-box}
-.panel .tabs,.panel #custBtn,.panel #pdfBtn{flex:none}
+.panel .tabs,.panel #custBtn,.panel #trBtn,.panel #pdfBtn{flex:none}
 .panel .pane{min-height:0;flex:0 1 auto;overflow-y:auto;overscroll-behavior:contain;scrollbar-width:thin;padding-right:2px}
 @media(max-width:900px){.panel{max-height:52%;overflow:hidden}}
 .stage::before{content:"";position:absolute;inset:0;pointer-events:none;opacity:0;transition:opacity .9s;
@@ -121,24 +121,39 @@ button.b{font:700 16px system-ui,sans-serif;cursor:pointer}
 #prDlg .pf .b{margin:0;padding:9px 18px;cursor:pointer;font:inherit;font-weight:700}
 #tdDlg .pf .b{margin:0;padding:9px 18px;cursor:pointer;font:inherit;font-weight:700}
 #cuDlg{position:fixed;inset:0;margin:auto;border:0;border-radius:14px;padding:22px 26px;max-width:560px;width:calc(100% - 28px);max-height:90vh;overflow:auto;color:#10282f;box-shadow:0 20px 60px rgba(0,0,0,.35)}
+#trDlg{position:fixed;inset:0;margin:auto;border:0;border-radius:14px;padding:22px 26px;max-width:560px;width:calc(100% - 28px);max-height:90vh;overflow:auto;color:#10282f;box-shadow:0 20px 60px rgba(0,0,0,.35)}
 #cuDlg::backdrop{background:rgba(16,40,47,.65)}
+#trDlg::backdrop{background:rgba(16,40,47,.65)}
 #cuDlg h3{font:700 24px Georgia,serif;margin:0 0 12px}
+#trDlg h3{font:700 24px Georgia,serif;margin:0 0 12px}
 #cuDlg .x{float:right;background:none;border:0;font-size:1.6rem;cursor:pointer;line-height:1;color:#10282f}
+#trDlg .x{float:right;background:none;border:0;font-size:1.6rem;cursor:pointer;line-height:1;color:#10282f}
 #cuDlg .fg{display:grid;gap:10px}
+#trDlg .fg{display:grid;gap:10px}
 #cuDlg label{display:grid;gap:4px;font-size:.85rem;color:#4d6169}
+#trDlg label{display:grid;gap:4px;font-size:.85rem;color:#4d6169}
 #cuDlg input,#cuDlg textarea{font:inherit;color:#10282f;padding:8px 10px;border:1px solid #b9c6c2;border-radius:6px}
+#trDlg input,#trDlg textarea{font:inherit;color:#10282f;padding:8px 10px;border:1px solid #b9c6c2;border-radius:6px}
 #cuDlg .pf{display:flex;gap:10px;margin-top:14px}
+#trDlg .pf{display:flex;gap:10px;margin-top:14px}
 #cuDlg .pf .b{margin:0;padding:9px 18px;cursor:pointer;font:inherit;font-weight:700}
+#trDlg .pf .b{margin:0;padding:9px 18px;cursor:pointer;font:inherit;font-weight:700}
 
 #tdDlg .pr input{width:210px;text-align:left}
 #tdDlg .ni{width:210px}
 #tdDlg .pr b{white-space:normal;text-align:right;max-width:46%}
+
+#trDlg select{font:inherit;color:#10282f;padding:8px 10px;border:1px solid #b9c6c2;border-radius:6px;background:#fff}
+#trDlg input[readonly]{background:#f1f4f3;color:#4d6169}
 </style>
 </head>
 <body>
 <div class="topbar"><button class="b" id="prBtn" type="button">Prices</button><button class="b o" id="tdBtn" type="button">Technical data</button><button class="b o" id="newCfg" type="button">New order</button><button class="b o" id="clList" type="button">Customer list</button></div>
 <dialog id="prDlg" aria-labelledby="prT"><button class="x" id="prX" type="button" aria-label="Close">&times;</button><h3 id="prT">Prices</h3><div id="prBody"></div><div class="pf"><button class="b" id="prSave" type="button">Save</button><button class="b o" id="prReset" type="button">Reset prices</button></div></dialog>
 <dialog id="tdDlg" aria-labelledby="tdT"><button class="x" id="tdX" type="button" aria-label="Close">&times;</button><h3 id="tdT">Technical data</h3><div id="tdBody"></div><div class="pf"><button class="b" id="tdSave" type="button">Save</button><button class="b o" id="tdReset" type="button">Clear data</button></div></dialog>
+<dialog id="trDlg" aria-labelledby="trT"><button class="x" id="trX" type="button" aria-label="Close">&times;</button><h3 id="trT">Transportation cost</h3>
+<div class="fg"><label>Customer<input id="trName" readonly></label><label>Delivery address<input id="trAddr" readonly></label><label>Postal code<input id="trZip" readonly></label><label>Country<input id="trCountry" readonly></label><p style="font-size:.8rem;color:#4d6169;margin:0">The delivery address comes from Customer details.</p><label>Delivery terms (Incoterms 2020)<select id="trTerms"></select></label><label>Transportation cost (EUR)<input id="trCost" type="number" min="0" step="1" placeholder="Enter price"></label></div>
+<div class="pf"><button class="b" id="trSave" type="button">Save</button><button class="b o" id="trClear" type="button">Remove</button><button class="b o" id="trCancel" type="button">Cancel</button></div></dialog>
 <dialog id="cuDlg" aria-labelledby="cuT"><button class="x" id="cuX" type="button" aria-label="Close">&times;</button><h3 id="cuT">Customer details</h3>
 <div class="fg"><label>Full name *<input id="cuName" autocomplete="off"></label><label>Phone<input id="cuPhone" type="tel" autocomplete="off"></label><label>Email<input id="cuMail" type="email" autocomplete="off"></label><label>Country<input id="cuCountry" list="cuCountries" autocomplete="off"></label><datalist id="cuCountries"><option value="Lithuania"><option value="Germany"><option value="Austria"><option value="Switzerland"><option value="France"><option value="Latvia"><option value="Estonia"><option value="Poland"></datalist><label>Postal code<input id="cuZip" autocomplete="off"></label><label>Delivery address<input id="cuAddr" autocomplete="off"></label><label>Notes<textarea id="cuNote" rows="3"></textarea></label></div>
 <div class="pf"><button class="b" id="cuSave" type="button" hidden>Save</button><button class="b o" id="cuCancel" type="button">Cancel</button></div></dialog>
@@ -163,6 +178,7 @@ button.b{font:700 16px system-ui,sans-serif;cursor:pointer}
             <div class="acc" id="chips"></div>
           </div>
                     <button class="b o" id="custBtn" type="button">Customer details</button>
+                    <button class="b o" id="trBtn" type="button">Transportation cost</button>
                     <button class="b o" id="pdfBtn" type="button" hidden>Download PDF</button>
         </div>
         <div class="hint" id="hint"></div>
@@ -248,14 +264,14 @@ S.models.forEach(m=>['price','priceSquare','priceRect'].forEach(f=>{const v=PRIC
 S.stoveTypes.forEach(t=>{const v=PRICE_OV['st:'+t.id]; if(v!=null) t.extra=v;});
 S.stovePlaces.forEach(t=>{const v=PRICE_OV['sp:'+t.id]; if(v!=null) t.extra=v;});
 S.accessories.forEach(a=>{const v=PRICE_OV['a:'+a.id]; if(v!=null&&!['stove','ladder','hydro','thermo','shelf'].includes(a.id)) a.price=v;});
-const st = { m:0, s:0, w:5, a:2, fib:0, coverC:0, stepOpen:1, p:0, t:0, fire:true, acc:{ladder:true}, pend:{hydro:false,thermo:true,shelf:true,led:true,air:true,filter:true} };   // fire is always on
+const st = { transport:0, terms:'', m:0, s:0, w:5, a:2, fib:0, coverC:0, stepOpen:1, p:0, t:0, fire:true, acc:{ladder:true}, pend:{hydro:false,thermo:true,shelf:true,led:true,air:true,filter:true} };   // fire is always on
 S.defaultAccessories.forEach(i => st.acc[i] = true);
 const fmt = n => n===0?'':new Intl.NumberFormat('en-IE',{maximumFractionDigits:0}).format(n)+'€';   // number first, then the euro sign: 25€
 const plus = n => n ? '+'+fmt(n) : '';   // price shown in the option menus, e.g. +€120
 /* accessories shown in the 3D view: an option appears only after a variant button was clicked */
 const visAcc = () => { const a=Object.assign({},st.acc); for(const k in st.pend) if(st.pend[k]) a[k]=false; return a; };
 const mp = (m,si) => { const id=S.shapes[si].id; return id==='rect' ? (m.priceRect!=null?m.priceRect:(m.priceSquare!=null?m.priceSquare:m.price)) : (id==='square' && m.priceSquare!=null) ? m.priceSquare : m.price; };   // base price depends on the shape
-const total = () => mp(S.models[st.m],st.s) + S.shapes[st.s].extra + (st.acc.stove?(S.stoveTypes[st.t].electric?0:S.stovePlaces[st.p].extra)+S.stoveTypes[st.t].extra:0) + S.accessories.reduce((t,a)=>t+(st.acc[a.id]&&!st.pend[a.id]?a.price:0),0);
+const total = () => mp(S.models[st.m],st.s) + S.shapes[st.s].extra + (st.acc.stove?(S.stoveTypes[st.t].electric?0:S.stovePlaces[st.p].extra)+S.stoveTypes[st.t].extra:0) + S.accessories.reduce((t,a)=>t+(st.acc[a.id]&&!st.pend[a.id]?a.price:0),0) + (st.transport||0);
 
 /* ---------- Text ---------- */
 /* ---------- Text ---------- */
@@ -699,6 +715,8 @@ function readout(){const m=S.models[st.m],sh=S.shapes[st.s],sv=S.accessories.fin
   st.acc.stove?['Stove: '+S.stoveTypes[st.t].n,fmt(sv.price+S.stoveTypes[st.t].extra)]:['Stove: None','']];
  if(st.acc.stove&&!S.stoveTypes[st.t].electric) L.push(['Stove position: '+S.stovePlaces[st.p].n,S.stovePlaces[st.p].extra?fmt(S.stovePlaces[st.p].extra):'']);
  S.accessories.filter(x=>x.id!=='stove'&&st.acc[x.id]&&!st.pend[x.id]).forEach(x=>L.push([x.name,fmt(x.price)]));
+ if(st.transport>0) L.push(['Transportation cost'+(window.CUST&&window.CUST.country?' ('+window.CUST.country+')':''),fmt(st.transport)]);
+ if(st.terms&&window.INCO&&window.INCO[st.terms]) L.push(['Delivery terms: '+st.terms+' - '+window.INCO[st.terms],'']);
  $('rList').innerHTML=L.map(([k,v,n])=>'<div class="rr"><span'+(n?' style="flex:none"':'')+'>'+k+'</span><b'+(n?' style="font-weight:400;white-space:normal;text-align:right"':'')+'>'+v+'</b></div>').join('')+'<div class="rr rt"><span>Total</span><b>'+fmt(total())+'</b></div>';}
 [...$('oWood').children,...$('oAcr').children,...$('oFib').children].forEach(b=>b.addEventListener('click',readout));
 readout();
@@ -1004,7 +1022,7 @@ render();
     window.CUST=cu; label(); $('pdfBtn').hidden=false; window.scrollTo(0,0);
     if(!c.state){ alert('The configuration for this order was not saved; only the customer details were loaded. Choose a configuration and save again.'); return; }
     const state=JSON.parse(JSON.stringify(c.state));
-    Object.assign(st,state);
+    Object.assign(st,state); if(state.transport==null) st.transport=0; if(state.terms==null) st.terms='';
     press($('oModel'),st.m); press($('oShape'),st.s); press($('oWood'),st.w); pressMat();
     const on=k=>st.acc[k]&&!state.pend[k];
     if(on('hydro')&&state.jets!=null) setJets(state.jets);
@@ -1015,7 +1033,7 @@ render();
     if(on('filter')&&state.filter!=null) setFilter(state.filter);
     if(st.acc.cover) setCover(state.coverC||0);
     Object.assign(st.pend,state.pend);
-    syncUI(); build(); readout(); showTab(0);
+    syncUI(); build(); readout(); showTab(0); if(window.refreshTransport)window.refreshTransport();
     window.scrollTo(0,0);
   };
   function label(){ $('custBtn').textContent=window.CUST?'Customer: '+window.CUST.name:'Customer details'; }
@@ -1064,6 +1082,28 @@ render();
     try{localStorage.removeItem(KEY);}catch(x){}
     render();
   };
+})();
+</script>
+<script>
+/* Transportation cost: delivery address comes from Customer details, the price is typed into an empty field and added to the total */
+(function(){
+  const $=id=>document.getElementById(id), dlg=$('trDlg');
+  const ANY=[['EXW','Ex Works'],['FCA','Free Carrier'],['CPT','Carriage Paid To'],['CIP','Carriage and Insurance Paid To'],['DAP','Delivered at Place'],['DPU','Delivered at Place Unloaded'],['DDP','Delivered Duty Paid']],
+        SEA=[['FAS','Free Alongside Ship'],['FOB','Free on Board'],['CFR','Cost and Freight'],['CIF','Cost, Insurance and Freight']];
+  window.INCO={}; ANY.concat(SEA).forEach(([c,n])=>window.INCO[c]=n);
+  { const sel=$('trTerms'), og=(t,a)=>'<optgroup label="'+t+'">'+a.map(([c,n])=>'<option value="'+c+'">'+c+' - '+n+'</option>').join('')+'</optgroup>';
+    sel.innerHTML='<option value="">Not specified</option>'+og('Any mode of transport',ANY)+og('Sea and inland waterway only',SEA); }
+  function label(){ $('trBtn').textContent=st.transport>0?'Transportation cost: '+fmt(st.transport):'Transportation cost'; }
+  window.refreshTransport=label;
+  $('trBtn').onclick=()=>{ const c=window.CUST||{};
+    $('trName').value=c.name||''; $('trAddr').value=c.addr||''; $('trZip').value=c.zip||''; $('trCountry').value=c.country||'';
+    $('trCost').value=st.transport>0?st.transport:''; $('trTerms').value=st.terms||''; if(!dlg.open)dlg.showModal(); $('trCost').focus(); };
+  $('trX').onclick=$('trCancel').onclick=()=>dlg.close();
+  dlg.addEventListener('click',e=>{if(e.target===dlg)dlg.close();});
+  function apply(v){ st.transport=v>0?Math.round(v):0; st.terms=$('trTerms').value; label(); readout(); if(window.syncCust)window.syncCust(); dlg.close(); }
+  $('trSave').onclick=()=>apply(parseFloat($('trCost').value));
+  $('trClear').onclick=()=>apply(0);
+  $('trCost').addEventListener('keydown',e=>{ if(e.key==='Enter'){ e.preventDefault(); apply(parseFloat($('trCost').value)); } });
 })();
 </script>
 </body>
