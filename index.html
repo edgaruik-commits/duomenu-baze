@@ -123,6 +123,45 @@ button.b{font:700 16px system-ui,sans-serif;cursor:pointer}
 #cuDlg{position:fixed;inset:0;margin:auto;border:0;border-radius:14px;padding:22px 26px;max-width:560px;width:calc(100% - 28px);max-height:90vh;overflow:auto;color:#10282f;box-shadow:0 20px 60px rgba(0,0,0,.35)}
 #trDlg{position:fixed;inset:0;margin:auto;border:0;border-radius:14px;padding:22px 26px;max-width:560px;width:calc(100% - 28px);max-height:90vh;overflow:auto;color:#10282f;box-shadow:0 20px 60px rgba(0,0,0,.35)}
 #cuDlg::backdrop{background:rgba(16,40,47,.65)}
+#mfDlg{position:fixed;inset:0;margin:auto;border:0;border-radius:14px;padding:22px 26px;max-width:560px;width:calc(100% - 28px);max-height:90vh;overflow:auto;color:#10282f;box-shadow:0 20px 60px rgba(0,0,0,.35)}
+#mfDlg::backdrop{background:rgba(16,40,47,.65)}
+#mfDlg h3{font:700 24px Georgia,serif;margin:0 0 12px}
+#mfDlg .x{float:right;background:none;border:0;font-size:1.6rem;cursor:pointer;line-height:1;color:#10282f}
+#mfDlg .fg{display:grid;gap:10px}
+#mfDlg label{display:grid;gap:4px;font-size:.85rem;color:#4d6169}
+#mfDlg input,#mfDlg textarea{font:inherit;color:#10282f;padding:8px 10px;border:1px solid #b9c6c2;border-radius:6px}
+#mfDlg .pf{display:flex;gap:10px;margin-top:14px}
+#mfDlg .pf .b{margin:0;padding:9px 18px;cursor:pointer;font:inherit;font-weight:700}
+.panel #mkBtn{margin:4px 0 0;width:100%;text-align:center;padding:10px 14px;border-color:#10282f;color:#10282f;flex:none}
+.panel #mkBtn:hover{background:#10282f;color:#fff}
+.panel #pdfBtn2{margin:4px 0 0;width:100%;text-align:center;padding:10px 14px;border-color:#10282f;color:#10282f;flex:none}
+.panel #pdfBtn2:hover{background:#10282f;color:#fff}
+.panel #epBtn{margin:4px 0 0;width:100%;text-align:center;padding:10px 14px;border-color:#10282f;color:#10282f;flex:none}
+.panel #epBtn:hover{background:#10282f;color:#fff}
+#epDlg{position:fixed;inset:0;margin:auto;border:0;border-radius:14px;padding:22px 26px;max-width:600px;width:calc(100% - 28px);max-height:86vh;overflow:auto;color:#10282f;box-shadow:0 20px 60px rgba(0,0,0,.35)}
+#epDlg::backdrop{background:rgba(16,40,47,.65)}
+#epDlg h3{font:700 24px Georgia,serif;margin:0 0 10px}
+#epDlg .x{float:right;background:none;border:0;font-size:1.6rem;cursor:pointer;line-height:1;color:#10282f}
+#epDlg .pr{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:8px 0;border-bottom:1px solid #e3e8e6;font-size:.92rem}
+#epDlg .pr>span{flex:1}
+#epDlg .pr small{display:block;color:#4d6169;font-size:.78rem}
+#epDlg .pr input{width:110px;flex:none;font:inherit;padding:5px 8px;border:1px solid #b9c6c2;border-radius:6px;text-align:right;color:#10282f}
+#epDlg .pf{position:sticky;bottom:-22px;background:#fff;padding:14px 0 4px;margin-top:12px;display:flex;gap:10px;flex-wrap:wrap;border-top:1px solid #e3e8e6}
+#epDlg .pf .b{margin:0;padding:9px 18px;cursor:pointer;font:inherit;font-weight:700}
+#mkDlg{position:fixed;inset:0;margin:auto;border:0;border-radius:14px;padding:22px 26px;max-width:560px;width:calc(100% - 28px);max-height:90vh;overflow:auto;color:#10282f;box-shadow:0 20px 60px rgba(0,0,0,.35)}
+#mkDlg::backdrop{background:rgba(16,40,47,.65)}
+#mkDlg h3{font:700 24px Georgia,serif;margin:0 0 12px}
+#mkDlg .x{float:right;background:none;border:0;font-size:1.6rem;cursor:pointer;line-height:1;color:#10282f}
+#mkDlg .fg{display:grid;gap:10px}
+#mkDlg label{display:grid;gap:4px;font-size:.85rem;color:#4d6169}
+#mkDlg select{font:inherit;color:#10282f;padding:8px 10px;border:1px solid #b9c6c2;border-radius:6px;background:#fff}
+#mkDlg .mkd{font-size:.85rem;color:#4d6169;line-height:1.5}
+#mkDlg .pf{display:flex;gap:10px;margin-top:14px}
+#mkDlg .pf .b{margin:0;padding:9px 18px;cursor:pointer;font:inherit;font-weight:700}
+#mfBtn,#mlBtn{margin:0;cursor:pointer;font:inherit;font-weight:700;color:#10282f;border-color:#10282f}
+#mlBtn:hover{background:#10282f;color:#fff}
+#mfBtn{margin:0;cursor:pointer;font:inherit;font-weight:700;color:#10282f;border-color:#10282f}
+#mfBtn:hover{background:#10282f;color:#fff}
 #trDlg::backdrop{background:rgba(16,40,47,.65)}
 #cuDlg h3{font:700 24px Georgia,serif;margin:0 0 12px}
 #trDlg h3{font:700 24px Georgia,serif;margin:0 0 12px}
@@ -148,12 +187,22 @@ button.b{font:700 16px system-ui,sans-serif;cursor:pointer}
 </style>
 </head>
 <body>
-<div class="topbar"><button class="b" id="prBtn" type="button">Prices</button><button class="b o" id="tdBtn" type="button">Technical data</button><button class="b o" id="newCfg" type="button">New order</button><button class="b o" id="clList" type="button">Customer list</button></div>
-<dialog id="prDlg" aria-labelledby="prT"><button class="x" id="prX" type="button" aria-label="Close">&times;</button><h3 id="prT">Prices</h3><div id="prBody"></div><div class="pf"><button class="b" id="prSave" type="button">Save</button><button class="b o" id="prReset" type="button">Reset prices</button></div></dialog>
+<div class="topbar"><button class="b" id="prBtn" type="button">Basic price</button><button class="b o" id="tdBtn" type="button">Technical data</button><button class="b o" id="newCfg" type="button">New order</button><button class="b o" id="clList" type="button">Order list</button><button class="b o" id="mfBtn" type="button">New manufacturer</button><button class="b o" id="mlBtn" type="button">Manufacturer list</button></div>
+
+<dialog id="mfDlg" aria-labelledby="mfT"><button class="x" id="mfX" type="button" aria-label="Close">&times;</button><h3 id="mfT">New manufacturer</h3>
+<div class="fg"><label>Company name *<input id="mfName" autocomplete="off"></label><label>Contact person<input id="mfContact" autocomplete="off"></label><label>Phone<input id="mfPhone" type="tel" autocomplete="off"></label><label>Email<input id="mfMail" type="email" autocomplete="off"></label><label>Website<input id="mfWeb" type="url" placeholder="https://" autocomplete="off"></label><label>Country<input id="mfCountry" list="cuCountries" autocomplete="off"></label><label>Postal code<input id="mfZip" autocomplete="off"></label><label>Address<input id="mfAddr" autocomplete="off"></label><label>Products / materials<input id="mfProd" autocomplete="off"></label><label>Notes<textarea id="mfNote" rows="3"></textarea></label></div>
+<div class="pf"><button class="b" id="mfSave" type="button">Save</button><button class="b o" id="mfCancel" type="button">Cancel</button></div></dialog>
+<dialog id="prDlg" aria-labelledby="prT"><button class="x" id="prX" type="button" aria-label="Close">&times;</button><h3 id="prT">Basic price</h3><div id="prBody"></div><div class="pf"><button class="b" id="prSave" type="button">Save</button><button class="b o" id="prReset" type="button">Reset prices</button></div></dialog>
 <dialog id="tdDlg" aria-labelledby="tdT"><button class="x" id="tdX" type="button" aria-label="Close">&times;</button><h3 id="tdT">Technical data</h3><div id="tdBody"></div><div class="pf"><button class="b" id="tdSave" type="button">Save</button><button class="b o" id="tdReset" type="button">Clear data</button></div></dialog>
 <dialog id="trDlg" aria-labelledby="trT"><button class="x" id="trX" type="button" aria-label="Close">&times;</button><h3 id="trT">Transportation cost</h3>
 <div class="fg"><label>Customer<input id="trName" readonly></label><label>Delivery address<input id="trAddr" readonly></label><label>Postal code<input id="trZip" readonly></label><label>Country<input id="trCountry" readonly></label><p style="font-size:.8rem;color:#4d6169;margin:0">The delivery address comes from Customer details.</p><label>Delivery terms (Incoterms 2020)<select id="trTerms"></select></label><label>Transportation cost (EUR)<input id="trCost" type="number" min="0" step="1" placeholder="Enter price"></label></div>
 <div class="pf"><button class="b" id="trSave" type="button">Save</button><button class="b o" id="trClear" type="button">Remove</button><button class="b o" id="trCancel" type="button">Cancel</button></div></dialog>
+<dialog id="epDlg" aria-labelledby="epT"><button class="x" id="epX" type="button" aria-label="Close">&times;</button><h3 id="epT">Edit price</h3>
+<p style="font-size:.85rem;color:#4d6169;margin:0 0 6px">Prices changed here apply to this order only. The price list is not changed.</p><div id="epBody"></div>
+<div class="pf"><button class="b" id="epSave" type="button">Save</button><button class="b o" id="epReset" type="button">Reset to standard</button><button class="b o" id="epCancel" type="button">Cancel</button></div></dialog>
+<dialog id="mkDlg" aria-labelledby="mkT"><button class="x" id="mkX" type="button" aria-label="Close">&times;</button><h3 id="mkT">Manufacturer</h3>
+<div class="fg"><label>Who will produce this order<select id="mkSel"></select></label><div class="mkd" id="mkDet"></div></div>
+<div class="pf"><button class="b" id="mkSave" type="button">Save</button><button class="b o" id="mkClear" type="button">Remove</button><button class="b o" id="mkCancel" type="button">Cancel</button></div></dialog>
 <dialog id="cuDlg" aria-labelledby="cuT"><button class="x" id="cuX" type="button" aria-label="Close">&times;</button><h3 id="cuT">Customer details</h3>
 <div class="fg"><label>Full name *<input id="cuName" autocomplete="off"></label><label>Phone<input id="cuPhone" type="tel" autocomplete="off"></label><label>Email<input id="cuMail" type="email" autocomplete="off"></label><label>Country<input id="cuCountry" list="cuCountries" autocomplete="off"></label><datalist id="cuCountries"><option value="Lithuania"><option value="Germany"><option value="Austria"><option value="Switzerland"><option value="France"><option value="Latvia"><option value="Estonia"><option value="Poland"></datalist><label>Postal code<input id="cuZip" autocomplete="off"></label><label>Delivery address<input id="cuAddr" autocomplete="off"></label><label>Notes<textarea id="cuNote" rows="3"></textarea></label></div>
 <div class="pf"><button class="b" id="cuSave" type="button" hidden>Save</button><button class="b o" id="cuCancel" type="button">Cancel</button></div></dialog>
@@ -178,8 +227,11 @@ button.b{font:700 16px system-ui,sans-serif;cursor:pointer}
             <div class="acc" id="chips"></div>
           </div>
                     <button class="b o" id="custBtn" type="button">Customer details</button>
+                    <button class="b o" id="mkBtn" type="button">Manufacturer</button>
                     <button class="b o" id="trBtn" type="button">Transportation cost</button>
-                    <button class="b o" id="pdfBtn" type="button" hidden>Download PDF</button>
+                    <button class="b o" id="epBtn" type="button">Edit price</button>
+                    <button class="b o" id="pdfBtn" type="button" hidden>Download for customer</button>
+                    <button class="b o" id="pdfBtn2" type="button" hidden>Download for producer</button>
         </div>
         <div class="hint" id="hint"></div>
 <div class="vbar" id="vbar" role="toolbar" aria-label="Camera view and ambiance"><span class="vl">VIEW:</span><button type="button" data-v="front" aria-pressed="false">Front</button><button type="button" data-v="persp" aria-pressed="false">Perspective</button><button type="button" data-v="top" aria-pressed="false">Top Down</button><button type="button" data-v="liner" aria-pressed="false">Liner View</button><button type="button" id="vauto" aria-pressed="true">Auto rotate</button><span class="vs" aria-hidden="true"></span><span class="vl">AMBIANCE:</span><button type="button" data-a="day" aria-pressed="true">Day</button><button type="button" data-a="night" aria-pressed="false">Night</button></div>
@@ -264,14 +316,25 @@ S.models.forEach(m=>['price','priceSquare','priceRect'].forEach(f=>{const v=PRIC
 S.stoveTypes.forEach(t=>{const v=PRICE_OV['st:'+t.id]; if(v!=null) t.extra=v;});
 S.stovePlaces.forEach(t=>{const v=PRICE_OV['sp:'+t.id]; if(v!=null) t.extra=v;});
 S.accessories.forEach(a=>{const v=PRICE_OV['a:'+a.id]; if(v!=null&&!['stove','ladder','hydro','thermo','shelf'].includes(a.id)) a.price=v;});
-const st = { transport:0, terms:'', m:0, s:0, w:5, a:2, fib:0, coverC:0, stepOpen:1, p:0, t:0, fire:true, acc:{ladder:true}, pend:{hydro:false,thermo:true,shelf:true,led:true,air:true,filter:true} };   // fire is always on
+const st = { po:{}, transport:0, terms:'', m:0, s:0, w:5, a:2, fib:0, coverC:0, stepOpen:1, p:0, t:0, fire:true, acc:{ladder:true}, pend:{hydro:false,thermo:true,shelf:true,led:true,air:true,filter:true} };   // fire is always on
 S.defaultAccessories.forEach(i => st.acc[i] = true);
 const fmt = n => n===0?'':new Intl.NumberFormat('en-IE',{maximumFractionDigits:0}).format(n)+'€';   // number first, then the euro sign: 25€
 const plus = n => n ? '+'+fmt(n) : '';   // price shown in the option menus, e.g. +€120
 /* accessories shown in the 3D view: an option appears only after a variant button was clicked */
 const visAcc = () => { const a=Object.assign({},st.acc); for(const k in st.pend) if(st.pend[k]) a[k]=false; return a; };
 const mp = (m,si) => { const id=S.shapes[si].id; return id==='rect' ? (m.priceRect!=null?m.priceRect:(m.priceSquare!=null?m.priceSquare:m.price)) : (id==='square' && m.priceSquare!=null) ? m.priceSquare : m.price; };   // base price depends on the shape
-const total = () => mp(S.models[st.m],st.s) + S.shapes[st.s].extra + (st.acc.stove?(S.stoveTypes[st.t].electric?0:S.stovePlaces[st.p].extra)+S.stoveTypes[st.t].extra:0) + S.accessories.reduce((t,a)=>t+(st.acc[a.id]&&!st.pend[a.id]?a.price:0),0) + (st.transport||0);
+/* Per-order price edits: st.po maps a price-line key to a price that applies to THIS order only (the price list / base prices are never changed).
+   The key contains the chosen variant, so an edit stops applying when the configuration of that line changes. */
+const kB=()=>'base:'+S.models[st.m].id+':'+S.shapes[st.s].id, kS=()=>'stove:'+S.stoveTypes[st.t].id, kP=()=>'stovepos:'+S.stovePlaces[st.p].id, kA=x=>'a:'+x.id+':'+x.name, kT=()=>'transport:'+st.transport;
+const ovp=(k,v)=>(st.po&&st.po[k]!=null)?st.po[k]:v;
+function priceLines(){   // every priced line of the current order with its standard (price list) price
+  const m=S.models[st.m], sh=S.shapes[st.s], A=[{k:kB(),label:m.name+' · '+sh.n+' (base price)',price:mp(m,st.s)+sh.extra}];
+  if(st.acc.stove){ const t=S.stoveTypes[st.t]; A.push({k:kS(),label:'Stove: '+t.n,price:t.extra});
+    if(!t.electric){ const p=S.stovePlaces[st.p]; A.push({k:kP(),label:'Stove position: '+p.n,price:p.extra}); } }
+  S.accessories.filter(x=>x.id!=='stove'&&st.acc[x.id]&&!st.pend[x.id]).forEach(x=>A.push({k:kA(x),label:x.name,price:x.price}));
+  if(st.transport>0) A.push({k:kT(),label:'Transportation cost',price:st.transport});
+  return A; }
+const total = () => priceLines().reduce((t,p)=>t+ovp(p.k,p.price),0);
 
 /* ---------- Text ---------- */
 /* ---------- Text ---------- */
@@ -712,11 +775,13 @@ const clock=new THREE.Clock();
 <script>
 function readout(){const m=S.models[st.m],sh=S.shapes[st.s],sv=S.accessories.find(x=>x.id==='stove');$('rName').textContent=m.name+' · '+sh.n;
  const L=[[m.name,m.size,1],['Size: '+m.people,''],['Shape: '+sh.n,sh.extra?'+'+fmt(sh.extra):''],['Wood: '+S.woods[st.w].n,''],[(st.fib?S.ui.fib:S.ui.acr)+': '+S.acrylics[st.a].n,''],
-  st.acc.stove?['Stove: '+S.stoveTypes[st.t].n,fmt(sv.price+S.stoveTypes[st.t].extra)]:['Stove: None','']];
- if(st.acc.stove&&!S.stoveTypes[st.t].electric) L.push(['Stove position: '+S.stovePlaces[st.p].n,S.stovePlaces[st.p].extra?fmt(S.stovePlaces[st.p].extra):'']);
- S.accessories.filter(x=>x.id!=='stove'&&st.acc[x.id]&&!st.pend[x.id]).forEach(x=>L.push([x.name,fmt(x.price)]));
- if(st.transport>0) L.push(['Transportation cost'+(window.CUST&&window.CUST.country?' ('+window.CUST.country+')':''),fmt(st.transport)]);
+  st.acc.stove?['Stove: '+S.stoveTypes[st.t].n,fmt(ovp(kS(),sv.price+S.stoveTypes[st.t].extra))]:['Stove: None','']];
+ if(st.po[kB()]!=null) L.splice(1,0,['Hot tub price',fmt(st.po[kB()])]);   // base price is listed only when it was edited for this order
+ if(st.acc.stove&&!S.stoveTypes[st.t].electric) L.push(['Stove position: '+S.stovePlaces[st.p].n,fmt(ovp(kP(),S.stovePlaces[st.p].extra))]);
+ S.accessories.filter(x=>x.id!=='stove'&&st.acc[x.id]&&!st.pend[x.id]).forEach(x=>L.push([x.name,fmt(ovp(kA(x),x.price))]));
+ if(st.transport>0) L.push(['Transportation cost'+(window.CUST&&window.CUST.country?' ('+window.CUST.country+')':''),fmt(ovp(kT(),st.transport))]);
  if(st.terms&&window.INCO&&window.INCO[st.terms]) L.push(['Delivery terms: '+st.terms+' - '+window.INCO[st.terms],'']);
+ if(st.mf&&window.mfName&&window.mfName(st.mf)) L.push(['Manufacturer: '+window.mfName(st.mf),'']);
  $('rList').innerHTML=L.map(([k,v,n])=>'<div class="rr"><span'+(n?' style="flex:none"':'')+'>'+k+'</span><b'+(n?' style="font-weight:400;white-space:normal;text-align:right"':'')+'>'+v+'</b></div>').join('')+'<div class="rr rt"><span>Total</span><b>'+fmt(total())+'</b></div>';}
 [...$('oWood').children,...$('oAcr').children,...$('oFib').children].forEach(b=>b.addEventListener('click',readout));
 readout();
@@ -839,7 +904,7 @@ syncUI();readout();
 <script>
 /* Download PDF: 3D screenshot + current configuration */
 function nextOfferNo(){ let n=0; try{n=parseInt(localStorage.getItem('offer_seq_v1'),10)||0;}catch(e){} n++; try{localStorage.setItem('offer_seq_v1',String(n));}catch(e){} return 'OF-'+new Date().getFullYear()+'-'+String(n).padStart(4,'0'); }
-window.makePdf=()=>{
+window.makePdf=(producer)=>{   /* producer = true: production copy for the manufacturer, without prices */
   if(!window.jspdf){alert('PDF library not loaded (check internet connection).');return;}
   const clean=t=>String(t).replace(/\u20ac/g,' EUR').replace(/[\u00b7\u2013]/g,'-').replace(/\u00d7/g,'x').normalize('NFD').replace(/[\u0300-\u036f]/g,'');
   renderer.render(scene,camera);
@@ -847,16 +912,24 @@ window.makePdf=()=>{
   const img=canvas.toDataURL('image/png');
   const doc=new window.jspdf.jsPDF({unit:'mm',format:'a4'});
   const W=210,M=15; let y=20;
-  doc.setFont('helvetica','bold');doc.setFontSize(18);doc.text('Hot tub quotation',M,y);doc.setFontSize(11);doc.text('Offer No. '+no,W-M,y,{align:'right'});y+=6;
+  doc.setFont('helvetica','bold');doc.setFontSize(18);doc.text(producer?'Hot tub production order':'Hot tub quotation',M,y);doc.setFontSize(11);doc.text('Offer No. '+no,W-M,y,{align:'right'});y+=6;
   doc.setFont('helvetica','normal');doc.setFontSize(9);doc.setTextColor(110);doc.text(new Date().toLocaleDateString('en-GB'),M,y);doc.setTextColor(0);y+=6;
-  if(window.CUST){const c=window.CUST;y+=2;doc.setFontSize(8);doc.setTextColor(110);doc.text('CUSTOMER',M,y);doc.setTextColor(0);y+=5;doc.setFontSize(11);doc.setFont('helvetica','bold');doc.text(clean(c.name),M,y);y+=5;doc.setFont('helvetica','normal');doc.setFontSize(10);
+  if(producer){ y+=2; doc.setFontSize(8);doc.setTextColor(110);doc.text('ORDERED BY',M,y);doc.setTextColor(0);y+=5;doc.setFontSize(11);doc.setFont('helvetica','bold');doc.text(clean('Europaletės MB'),M,y);y+=5;doc.setFont('helvetica','normal');doc.setFontSize(10);   /* the ordering party of every production order */
+    ['Vytauto g. 9, Meškučių k., LT-68129 Marijampolė, Lithuania','Company code: 304924983  |  VAT no.: LT100012395710','Bank: Swedbank, AB  |  IBAN: LT21 7300 0101 5643 0123'].forEach(t=>{doc.splitTextToSize(clean(t),W-2*M).forEach(l=>{doc.text(l,M,y);y+=4.6;});}); y+=3; }
+  if(producer&&window.CUST){ y+=2; doc.setFontSize(8);doc.setTextColor(110);doc.text('CUSTOMER',M,y);doc.setTextColor(0);y+=5;doc.setFontSize(11);doc.setFont('helvetica','bold');doc.text('Order No. '+no,M,y);y+=5;doc.setFont('helvetica','normal');doc.setFontSize(10);y+=3; }   /* production copy: no customer data, only the order number linked to the customer's order */
+  if(!producer&&window.CUST){const c=window.CUST;y+=2;doc.setFontSize(8);doc.setTextColor(110);doc.text('CUSTOMER',M,y);doc.setTextColor(0);y+=5;doc.setFontSize(11);doc.setFont('helvetica','bold');doc.text(clean(c.name),M,y);y+=5;doc.setFont('helvetica','normal');doc.setFontSize(10);
     [[c.phone,c.mail].filter(Boolean).join('  |  '),[c.addr,[c.zip,c.country].filter(Boolean).join(' ')].filter(Boolean).join(', '),c.note].filter(Boolean).forEach(t=>{doc.splitTextToSize(clean(t),W-2*M).forEach(l=>{doc.text(l,M,y);y+=4.6;});});y+=3;}
+  if(producer){ let mf=null; try{ mf=JSON.parse(localStorage.getItem('manufacturers_v1')||'[]').find(x=>String(x.id)===String(st.mf)); }catch(e){}
+    if(mf){ doc.setFontSize(8);doc.setTextColor(110);doc.text('MANUFACTURER',M,y);doc.setTextColor(0);y+=5;doc.setFontSize(11);doc.setFont('helvetica','bold');doc.text(clean(mf.name),M,y);y+=5;doc.setFont('helvetica','normal');doc.setFontSize(10);
+      [[mf.contact,mf.phone,mf.mail].filter(Boolean).join('  |  '),[mf.addr,[mf.zip,mf.country].filter(Boolean).join(' ')].filter(Boolean).join(', ')].filter(Boolean).forEach(t=>{doc.splitTextToSize(clean(t),W-2*M).forEach(l=>{doc.text(l,M,y);y+=4.6;});});y+=3; } }
   const iw=W-2*M, ih=iw*canvas.height/canvas.width, mh=105, h=Math.min(ih,mh), w=h*canvas.width/canvas.height;
   doc.addImage(img,'PNG',M+(iw-w)/2,y,w,h);y+=h+8;
   doc.setFontSize(8);doc.setTextColor(110);doc.text('CONFIGURATION',M,y);doc.setTextColor(0);y+=6;
   doc.setFontSize(11);
   [...document.querySelectorAll('#rList .rr')].forEach(r=>{
-    const tot=r.classList.contains('rt'),a=tot?clean('Total'):clean(r.children[0].textContent),b=clean(r.children[1].textContent);
+    const tot=r.classList.contains('rt'), lab=r.children[0].textContent;
+    if(producer&&(tot||/^(Transportation cost|Hot tub price)/.test(lab))) return;   /* production copy: no prices */
+    const a=tot?clean('Total'):clean(lab), b=(producer&&r.parentNode.firstElementChild!==r)?'':clean(r.children[1].textContent);
     if(y>280){doc.addPage();y=20;}
     if(tot){doc.setDrawColor(150);doc.line(M,y-4.5,W-M,y-4.5);doc.setFont('helvetica','bold');y+=1;}else doc.setFont('helvetica','normal');
     doc.text(doc.splitTextToSize(a,iw-40),M,y);doc.text(b,W-M,y,{align:'right'});y+=7;
@@ -882,7 +955,7 @@ window.makePdf=()=>{
         doc.setTextColor(0);doc.setFontSize(11); y+=2.5; }); }); }
   if(window.syncCust)window.syncCust();
   const fn=no+(window.CUST?'-'+clean(window.CUST.name).replace(/[^A-Za-z0-9]+/g,'-').replace(/^-|-$/g,''):'');
-  doc.save(fn+'.pdf');
+  doc.save(fn+(producer?'-production':'')+'.pdf');
 };
 </script>
 <script>
@@ -925,14 +998,14 @@ window.makePdf=()=>{
 })();
 </script>
 <script>
-/* New customer + Customer list (saved in this browser) */
+/* New customer + Order list (saved in this browser) */
 (function(){
   const KEY='clients_v1', $=id=>document.getElementById(id);
   const load=()=>{try{return JSON.parse(localStorage.getItem(KEY)||'[]')}catch(e){return []}};
   const save=a=>{try{localStorage.setItem(KEY,JSON.stringify(a));return true}catch(e){alert('Could not save in this browser.');return false}};
   const esc=t=>String(t==null?'':t).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
   $('newCfg').onclick=()=>{ if(confirm('Start a new order from scratch?')) location.reload(); };
-  const PAGE=`<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Customer list</title>
+  const PAGE=`<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Order list</title>
 <style>*{box-sizing:border-box}body{margin:0;font:16px/1.5 system-ui,sans-serif;color:#10282f;background:#f4f7f6}
 .w{max-width:860px;margin:0 auto;padding:24px 20px 60px}h1{font:700 28px Georgia,serif;margin:0 0 6px}.sub{color:#4d6169;font-size:.9rem;margin-bottom:14px}
 #q{width:100%;font:inherit;padding:10px 12px;border:1px solid #b9c6c2;border-radius:8px;margin-bottom:6px}
@@ -947,7 +1020,7 @@ details{margin-top:8px}summary{font-size:.85rem;font-weight:600;cursor:pointer}
 .ef input,.ef textarea{font:inherit;color:#10282f;padding:7px 9px;border:1px solid #b9c6c2;border-radius:6px}
 .ef .efb{display:flex;gap:8px;margin-top:4px}.efs{background:#10282f;color:#fff;border:1px solid #10282f;border-radius:6px;padding:6px 14px;font:inherit;font-size:.85rem;cursor:pointer}.efc{background:none;border:1px solid #b9c6c2;border-radius:6px;padding:6px 14px;font:inherit;font-size:.85rem;cursor:pointer;color:#10282f}
 .cld{margin-top:10px;background:none;border:1px solid #b9c6c2;border-radius:6px;padding:4px 12px;font:inherit;font-size:.82rem;cursor:pointer;color:#a33}
-.empty{color:#4d6169;padding:14px 0}</style></head><body><div class="w"><h1>Customer list</h1><div class="sub" id="cnt"></div>
+.empty{color:#4d6169;padding:14px 0}</style></head><body><div class="w"><h1>Order list</h1><div class="sub" id="cnt"></div>
 <input id="q" type="search" placeholder="Search by name, phone, address..." aria-label="Search"><div id="box"></div></div>
 <script>
 const KEY='clients_v1';
@@ -990,7 +1063,7 @@ document.getElementById('box').onclick=e=>{
     editId=null; render(); return;
   }
   const ed=e.target.closest('.cle');
-  if(ed){ const o=window.opener; if(o&&!o.closed&&o.loadOrder){ o.loadOrder(ed.dataset.id); try{o.focus();}catch(x){} window.close(); } else alert('Open the configurator page and click Customer list from there.'); return; }
+  if(ed){ const o=window.opener; if(o&&!o.closed&&o.loadOrder){ o.loadOrder(ed.dataset.id); try{o.focus();}catch(x){} window.close(); } else alert('Open the configurator page and click Order list from there.'); return; }
   const b=e.target.closest('.cld'); if(!b||!confirm('Delete this customer?')) return;
   try{localStorage.setItem(KEY,JSON.stringify(load().filter(c=>String(c.id)!==b.dataset.id)));}catch(x){}
   render();
@@ -1005,7 +1078,7 @@ render();
 })();
 </script>
 <script>
-/* Customer details: form above Download PDF; saved to Customer list and printed in the PDF */
+/* Customer details: form above Download PDF; saved to Order list and printed in the PDF */
 (function(){
   const KEY='clients_v1', $=id=>document.getElementById(id), dlg=$('cuDlg');
   const F=[['name','cuName'],['phone','cuPhone'],['mail','cuMail'],['country','cuCountry'],['zip','cuZip'],['addr','cuAddr'],['note','cuNote']];
@@ -1030,7 +1103,7 @@ render();
     window.CUST=cu; label(); $('pdfBtn').hidden=false; window.scrollTo(0,0);
     if(!c.state){ alert('The configuration for this order was not saved; only the customer details were loaded. Choose a configuration and save again.'); return; }
     const state=JSON.parse(JSON.stringify(c.state));
-    Object.assign(st,state); if(state.transport==null) st.transport=0; if(state.terms==null) st.terms='';
+    Object.assign(st,state); if(state.transport==null) st.transport=0; if(state.terms==null) st.terms=''; if(state.mf==null) st.mf=''; if(state.po==null) st.po={};
     press($('oModel'),st.m); press($('oShape'),st.s); press($('oWood'),st.w); pressMat();
     const on=k=>st.acc[k]&&!state.pend[k];
     if(on('hydro')&&state.jets!=null) setJets(state.jets);
@@ -1143,6 +1216,153 @@ render();
   $('trSave').onclick=()=>apply(parseFloat($('trCost').value));
   $('trClear').onclick=()=>apply(0);
   $('trCost').addEventListener('keydown',e=>{ if(e.key==='Enter'){ e.preventDefault(); apply(parseFloat($('trCost').value)); } });
+})();
+</script>
+<script>
+/* Download for producer: shown together with "Download for customer", produces the price-free production copy */
+(function(){
+  const c=document.getElementById('pdfBtn'), p=document.getElementById('pdfBtn2');
+  const sync=()=>{ p.hidden=c.hidden; };
+  new MutationObserver(sync).observe(c,{attributes:true,attributeFilter:['hidden']}); sync();
+  p.onclick=()=>window.makePdf(true);
+})();
+</script>
+<script>
+/* Edit price: change the price of any line for THIS order only (st.po); base prices and the Prices list stay untouched */
+(function(){
+  const $=id=>document.getElementById(id), dlg=$('epDlg'), body=$('epBody');
+  const eur=n=>new Intl.NumberFormat('en-IE',{maximumFractionDigits:0}).format(n)+' EUR';
+  const esc=t=>String(t==null?'':t).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+  $('epBtn').onclick=()=>{
+    body.innerHTML=priceLines().map(p=>{ const o=st.po[p.k], edited=o!=null;
+      return '<div class="pr"><span>'+esc(p.label)+'<small>Standard: '+(p.price?eur(p.price):'included')+(edited?' · edited':'')+'</small></span><input type="number" min="0" step="1" data-k="'+esc(p.k)+'" data-std="'+p.price+'" value="'+(edited?o:p.price)+'" aria-label="Price: '+esc(p.label)+'"></div>'; }).join('');
+    if(!dlg.open) dlg.showModal(); };
+  $('epX').onclick=$('epCancel').onclick=()=>dlg.close();
+  dlg.addEventListener('click',e=>{if(e.target===dlg)dlg.close();});
+  function done(){ readout(); if(window.syncCust)window.syncCust(); dlg.close(); }
+  $('epSave').onclick=()=>{
+    body.querySelectorAll('input[data-k]').forEach(i=>{ const k=i.dataset.k, v=i.value.trim();
+      if(v===''||Number(v)===Number(i.dataset.std)) delete st.po[k]; else st.po[k]=Math.max(0,Math.round(Number(v))); });
+    done(); };
+  $('epReset').onclick=()=>{ if(!Object.keys(st.po).length){ dlg.close(); return; } if(!confirm('Restore the standard prices for this order?')) return; st.po={}; done(); };
+})();
+</script>
+<script>
+/* Manufacturer: choose who produces the order (from the saved manufacturers) */
+(function(){
+  const $=id=>document.getElementById(id), dlg=$('mkDlg'), KEY='manufacturers_v1';
+  const load=()=>{try{return JSON.parse(localStorage.getItem(KEY)||'[]')}catch(e){return []}};
+  const esc=t=>String(t==null?'':t).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+  const find=id=>load().find(m=>String(m.id)===String(id));
+  window.mfName=id=>{ const m=find(id); return m?m.name:''; };
+  function label(){ const n=st.mf?window.mfName(st.mf):''; $('mkBtn').textContent=n?'Manufacturer: '+n:'Manufacturer'; }
+  function detail(){ const m=find($('mkSel').value); $('mkDet').innerHTML=m?[[m.contact,m.phone,m.mail].filter(Boolean).map(esc).join(' · '),[m.addr,[m.zip,m.country].filter(Boolean).join(' ')].filter(Boolean).map(esc).join(', '),m.prod?'Products: '+esc(m.prod):''].filter(Boolean).join('<br>'):''; }
+  $('mkSel').onchange=detail;
+  $('mkBtn').onclick=()=>{ const a=load();
+    $('mkSel').innerHTML='<option value="">Not selected</option>'+a.map(m=>'<option value="'+m.id+'">'+esc(m.name)+'</option>').join('');
+    $('mkSel').value=st.mf&&find(st.mf)?String(st.mf):'';
+    if(!a.length) $('mkDet').textContent='No manufacturers yet. Add one with the New manufacturer button.'; else detail();
+    if(!dlg.open) dlg.showModal(); $('mkSel').focus(); };
+  $('mkX').onclick=$('mkCancel').onclick=()=>dlg.close();
+  dlg.addEventListener('click',e=>{if(e.target===dlg)dlg.close();});
+  function apply(v){ st.mf=v||''; label(); readout(); if(window.syncCust)window.syncCust(); dlg.close(); }
+  $('mkSave').onclick=()=>apply($('mkSel').value);
+  $('mkClear').onclick=()=>apply('');
+  const _rt=window.refreshTransport; window.refreshTransport=function(){ if(_rt)_rt(); label(); };   // also refresh the label when an order is loaded from the Order list
+  label();
+})();
+</script>
+<script>
+/* New manufacturer: form saved in this browser (manufacturers_v1) */
+(function(){
+  const KEY='manufacturers_v1', $=id=>document.getElementById(id), dlg=$('mfDlg');
+  const F=[['name','mfName'],['contact','mfContact'],['phone','mfPhone'],['mail','mfMail'],['web','mfWeb'],['country','mfCountry'],['zip','mfZip'],['addr','mfAddr'],['prod','mfProd'],['note','mfNote']];
+  const load=()=>{try{return JSON.parse(localStorage.getItem(KEY)||'[]')}catch(e){return []}};
+  const toggle=()=>{};
+  let editId=null;
+  const openForm=rec=>{ editId=rec?rec.id:null; $('mfT').textContent=rec?'Edit manufacturer':'New manufacturer'; F.forEach(([k,id])=>$(id).value=rec?(rec[k]||''):''); toggle(); if(!dlg.open) dlg.showModal(); $('mfName').focus(); };
+  $('mfBtn').onclick=()=>openForm(null);
+  /* Manufacturer list: opens in its own browser window, like Order list */
+  const PAGE=`<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Manufacturer list</title>
+<style>*{box-sizing:border-box}body{margin:0;font:16px/1.5 system-ui,sans-serif;color:#10282f;background:#f4f7f6}
+.w{max-width:860px;margin:0 auto;padding:24px 20px 60px}h1{font:700 28px Georgia,serif;margin:0 0 6px}.sub{color:#4d6169;font-size:.9rem;margin-bottom:14px}
+#q{width:100%;font:inherit;padding:10px 12px;border:1px solid #b9c6c2;border-radius:8px;margin-bottom:6px}
+.ml{background:#fff;border:1px solid #d3dcd9;border-radius:10px;padding:14px 16px;margin-top:12px}
+.mlh{display:flex;justify-content:space-between;gap:12px;align-items:baseline}.mlh b{font-size:1.1rem}.mlh span{font-size:.82rem;color:#4d6169;white-space:nowrap}
+.mls{font-size:.86rem;color:#4d6169;margin-top:2px}.mln{font-size:.9rem;margin-top:6px;font-style:italic}
+.mla{display:flex;gap:8px;margin-top:10px}.mla button{font:inherit;font-size:.82rem;padding:4px 12px;border-radius:6px;cursor:pointer;border:1px solid #10282f;background:#10282f;color:#fff}
+.mla button.del{background:none;border-color:#b9c6c2;color:#a33}
+.empty{color:#4d6169;padding:14px 0}
+.ef{display:grid;gap:8px;margin-top:6px}.ef label{display:grid;gap:3px;font-size:.8rem;color:#4d6169}
+.ef input,.ef textarea{font:inherit;color:#10282f;padding:7px 9px;border:1px solid #b9c6c2;border-radius:6px}
+.efb{display:flex;gap:8px;margin-top:4px}.efs{background:#10282f;color:#fff;border:1px solid #10282f;border-radius:6px;padding:6px 14px;font:inherit;font-size:.85rem;cursor:pointer}.efc{background:none;border:1px solid #b9c6c2;border-radius:6px;padding:6px 14px;font:inherit;font-size:.85rem;cursor:pointer;color:#10282f}</style></head><body><div class="w"><h1>Manufacturer list</h1><div class="sub" id="cnt"></div>
+<input id="q" type="search" placeholder="Search by name, contact, country, products..." aria-label="Search"><div id="box"></div></div>
+<script>
+const KEY='manufacturers_v1';
+let editId=null;
+const LB=[['name','Company name *'],['contact','Contact person'],['phone','Phone'],['mail','Email'],['web','Website'],['country','Country'],['zip','Postal code'],['addr','Address'],['prod','Products / materials']];
+const FL=['name','contact','phone','mail','web','country','zip','addr','prod','note'];
+const load=()=>{try{return JSON.parse(localStorage.getItem(KEY)||'[]')}catch(e){return []}};
+const esc=t=>String(t==null?'':t).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+function render(){
+  const a=load(), q=document.getElementById('q').value.trim().toLowerCase();
+  document.getElementById('cnt').textContent='Total manufacturers: '+a.length;
+  const list=a.filter(m=>!q||FL.map(k=>m[k]||'').join(' ').toLowerCase().includes(q));
+  const box=document.getElementById('box');
+  if(!list.length){box.innerHTML='<p class="empty">'+(a.length?'No results found.':'No manufacturers yet.')+'</p>';return;}
+  box.innerHTML=list.map(m=>{
+    if(String(m.id)===String(editId)) return '<div class="ml" data-id="'+m.id+'"><div class="mlh"><b>Edit manufacturer</b></div><div class="ef">'+LB.map(([k,l])=>'<label>'+l+'<input data-f="'+k+'" value="'+esc(m[k]||'')+'"></label>').join('')+'<label>Notes<textarea data-f="note" rows="3">'+esc(m.note||'')+'</textarea></label><div class="efb"><button class="efs" type="button">Save</button><button class="efc" type="button">Cancel</button></div></div></div>';
+    const addr=[m.addr,[m.zip,m.country].filter(Boolean).join(' ')].filter(Boolean).join(', ');
+    const contact=[m.contact,m.phone,m.mail].filter(Boolean).map(esc).join(' · ');
+    const d=new Date(m.date).toLocaleString('en-GB',{dateStyle:'short',timeStyle:'short'});
+    return '<div class="ml"><div class="mlh"><b>'+esc(m.name)+'</b><span>'+esc(d)+'</span></div>'+
+      (contact?'<div class="mls">'+contact+'</div>':'')+(addr?'<div class="mls">'+esc(addr)+'</div>':'')+
+      (m.web?'<div class="mls">'+esc(m.web)+'</div>':'')+(m.prod?'<div class="mls">Products: '+esc(m.prod)+'</div>':'')+
+      (m.note?'<div class="mln">'+esc(m.note)+'</div>':'')+
+      '<div class="mla"><button type="button" class="ed" data-id="'+m.id+'">Edit</button><button type="button" class="del" data-id="'+m.id+'">Delete</button></div></div>';
+  }).join('');
+}
+document.getElementById('q').oninput=render;
+document.getElementById('box').onclick=e=>{
+  const ed=e.target.closest('.ed');
+  if(ed){ editId=ed.dataset.id; render(); return; }
+  if(e.target.closest('.efc')){ editId=null; render(); return; }
+  const sv=e.target.closest('.efs');
+  if(sv){
+    const card=sv.closest('.ml'), id=card.dataset.id, vals={};
+    card.querySelectorAll('[data-f]').forEach(i=>vals[i.dataset.f]=i.value.trim());
+    if(!vals.name){ alert('Please enter the company name.'); card.querySelector('[data-f=name]').focus(); return; }
+    const a=load(), i=a.findIndex(m=>String(m.id)===String(id));
+    if(i>=0){ Object.assign(a[i],vals); try{localStorage.setItem(KEY,JSON.stringify(a));}catch(x){alert('Could not save.');return;} }
+    editId=null; render(); return;
+  }
+  const b=e.target.closest('.del'); if(!b||!confirm('Delete this manufacturer?')) return;
+  try{localStorage.setItem(KEY,JSON.stringify(load().filter(m=>String(m.id)!==b.dataset.id)));}catch(x){}
+  render();
+};
+render();
+<\/script></body></html>`;
+  let mlWin=null;
+  function openList(){
+    if(mlWin&&!mlWin.closed){ try{ mlWin.render(); mlWin.focus(); return; }catch(e){} }
+    const w=window.open('','_blank');
+    if(!w){ alert('The browser blocked the new window. Please allow pop-ups for this page.'); return; }
+    w.document.open(); w.document.write(PAGE); w.document.close(); mlWin=w;
+  }
+  window.editMf=id=>{ const m=load().find(x=>String(x.id)===String(id)); if(m) openForm(m); };
+  $('mlBtn').onclick=openList;
+  $('mfName').addEventListener('input',toggle);
+  $('mfX').onclick=$('mfCancel').onclick=()=>dlg.close();
+  dlg.addEventListener('click',e=>{if(e.target===dlg)dlg.close();});
+  $('mfSave').onclick=()=>{
+    if($('mfName').value.trim()===''){ alert('Please enter the company name.'); $('mfName').focus(); return; }
+    const a=load(), i=editId==null?-1:a.findIndex(x=>x.id===editId), rec=i>=0?a[i]:{id:Date.now(),date:new Date().toISOString()};
+    F.forEach(([k,id])=>rec[k]=$(id).value.trim());
+    if(i<0) a.unshift(rec);
+    try{localStorage.setItem(KEY,JSON.stringify(a));}catch(e){alert('Could not save in this browser.');return;}
+    dlg.close(); editId=null;
+    if(mlWin&&!mlWin.closed){ try{ mlWin.render(); }catch(e){} }   /* list opens only via its button; an already open list just refreshes */
+  };
 })();
 </script>
 </body>
