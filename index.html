@@ -134,6 +134,7 @@ button.b{font:700 16px system-ui,sans-serif;cursor:pointer}
 #mfDlg .pf .b{margin:0;padding:9px 18px;cursor:pointer;font:inherit;font-weight:700}
 .panel #mkBtn{margin:4px 0 0;width:100%;text-align:center;padding:10px 14px;border-color:#10282f;color:#10282f;flex:none}
 .panel #mkBtn:hover{background:#10282f;color:#fff}
+.panel.noorder #custBtn,.panel.noorder #mkBtn,.panel.noorder #trBtn,.panel.noorder #epBtn,.panel.noorder #pdfBtn,.panel.noorder #pdfBtn2{display:none!important}   /* order buttons appear only after "New order" */
 .panel #pdfBtn2{margin:4px 0 0;width:100%;text-align:center;padding:10px 14px;border-color:#10282f;color:#10282f;flex:none}
 .panel #pdfBtn2:hover{background:#10282f;color:#fff}
 .panel #epBtn{margin:4px 0 0;width:100%;text-align:center;padding:10px 14px;border-color:#10282f;color:#10282f;flex:none}
@@ -184,6 +185,28 @@ button.b{font:700 16px system-ui,sans-serif;cursor:pointer}
 
 #trDlg select{font:inherit;color:#10282f;padding:8px 10px;border:1px solid #b9c6c2;border-radius:6px;background:#fff}
 #trDlg input[readonly]{background:#f1f4f3;color:#4d6169}
+/* compact, narrower side menu: everything fits without mouse scrolling */
+@media(min-width:901px){
+ .stage{min-height:740px}
+ .panel{width:224px;padding:9px 10px 10px;gap:6px;right:10px;top:10px;max-height:calc(100% - 20px)}
+ .tabs button{font-size:.68rem;padding:5px 4px}
+ .pane{gap:4px}
+ .panel b{font-size:.72rem}
+ .opts{gap:4px}
+ .opts button{font-size:.76rem;padding:2px 8px}
+ .sw{gap:5px}
+ .sw button{width:19px;height:19px}
+ .stv{gap:3px}
+ .stv button{font-size:.74rem;padding:4px 8px;border-radius:10px}
+ .acc{gap:3px}
+ .acc button{font-size:.74rem;padding:3px 8px;border-radius:10px}
+ .acc .sub{gap:4px;padding:1px 0 3px 6px}
+ .acc .sub button{font-size:.7rem;padding:2px 8px}
+ .acc .chg{font-size:.7rem;padding:2px 8px;margin:0 0 3px 6px}
+ .panel #custBtn,.panel #mkBtn,.panel #trBtn,.panel #epBtn,.panel #pdfBtn,.panel #pdfBtn2{margin:0;padding:6px 8px;font-size:.76rem;border-width:1.5px;border-radius:8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+ .readout{max-width:calc(100% - 270px)}
+ .vbar{max-width:calc(100% - 262px)}
+}
 </style>
 </head>
 <body>
@@ -209,7 +232,7 @@ button.b{font:700 16px system-ui,sans-serif;cursor:pointer}
 <main class="w"><div class="stage" style="margin-bottom:8px">
         <canvas id="c" aria-label="3D view of the hot tub. Drag to rotate." role="img"></canvas>
         <div class="readout"><strong id="rName"></strong><div id="rList"></div></div>
-        <div class="panel">
+        <div class="panel noorder">
           <div class="tabs" id="tabs" role="tablist"></div>
           <div class="pane" id="pane0">
             <b id="lShape"></b><div class="opts" id="oShape"></div>
@@ -1004,7 +1027,13 @@ window.makePdf=(producer)=>{   /* producer = true: production copy for the manuf
   const load=()=>{try{return JSON.parse(localStorage.getItem(KEY)||'[]')}catch(e){return []}};
   const save=a=>{try{localStorage.setItem(KEY,JSON.stringify(a));return true}catch(e){alert('Could not save in this browser.');return false}};
   const esc=t=>String(t==null?'':t).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
-  $('newCfg').onclick=()=>{ if(confirm('Start a new order from scratch?')) location.reload(); };
+  /* order buttons (Customer details, Manufacturer, Transportation cost, Edit price, downloads) are hidden until an order is started */
+  const panel=document.querySelector('.panel');
+  window.orderStart=()=>{ try{sessionStorage.setItem('order_active','1')}catch(e){} panel.classList.remove('noorder'); };
+  try{ if(sessionStorage.getItem('order_active')==='1') panel.classList.remove('noorder'); }catch(e){}
+  $('newCfg').onclick=()=>{
+    if(panel.classList.contains('noorder')){ window.orderStart(); return; }   // first click: just show the order buttons
+    if(confirm('Start a new order from scratch?')) location.reload(); };       // order already running: start over (buttons stay visible)
   const PAGE=`<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Order list</title>
 <style>*{box-sizing:border-box}body{margin:0;font:16px/1.5 system-ui,sans-serif;color:#10282f;background:#f4f7f6}
 .w{max-width:860px;margin:0 auto;padding:24px 20px 60px}h1{font:700 28px Georgia,serif;margin:0 0 6px}.sub{color:#4d6169;font-size:.9rem;margin-bottom:14px}
@@ -1100,7 +1129,7 @@ render();
   window.loadOrder=function(id){
     const c=load().find(x=>String(x.id)===String(id)); if(!c){ alert('Customer not found.'); return; }
     const cu={id:c.id,offerNo:c.offerNo||''}; F.forEach(([k])=>cu[k]=c[k]||'');
-    window.CUST=cu; label(); $('pdfBtn').hidden=false; window.scrollTo(0,0);
+    window.CUST=cu; label(); if(window.orderStart)window.orderStart(); $('pdfBtn').hidden=false; window.scrollTo(0,0);
     if(!c.state){ alert('The configuration for this order was not saved; only the customer details were loaded. Choose a configuration and save again.'); return; }
     const state=JSON.parse(JSON.stringify(c.state));
     Object.assign(st,state); if(state.transport==null) st.transport=0; if(state.terms==null) st.terms=''; if(state.mf==null) st.mf=''; if(state.po==null) st.po={};
