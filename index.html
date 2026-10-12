@@ -135,6 +135,9 @@ button.b{font:700 16px system-ui,sans-serif;cursor:pointer}
 .panel #mkBtn{margin:4px 0 0;width:100%;text-align:center;padding:10px 14px;border-color:#10282f;color:#10282f;flex:none}
 .panel #mkBtn:hover{background:#10282f;color:#fff}
 .panel.noorder #custBtn,.panel.noorder #mkBtn,.panel.noorder #trBtn,.panel.noorder #epBtn,.panel.noorder #pdfBtn,.panel.noorder #pdfBtn2{display:none!important}   /* order buttons appear only after "New order" */
+.panel #pdfBtn3{margin:4px 0 0;width:100%;text-align:center;padding:10px 14px;border-color:#10282f;color:#10282f;flex:none}
+.panel #pdfBtn3:hover{background:#10282f;color:#fff}
+.panel.noorder #pdfBtn3{display:none!important}
 .panel #pdfBtn2{margin:4px 0 0;width:100%;text-align:center;padding:10px 14px;border-color:#10282f;color:#10282f;flex:none}
 .panel #pdfBtn2:hover{background:#10282f;color:#fff}
 .panel #epBtn{margin:4px 0 0;width:100%;text-align:center;padding:10px 14px;border-color:#10282f;color:#10282f;flex:none}
@@ -203,7 +206,9 @@ button.b{font:700 16px system-ui,sans-serif;cursor:pointer}
  .acc .sub{gap:4px;padding:1px 0 3px 6px}
  .acc .sub button{font-size:.7rem;padding:2px 8px}
  .acc .chg{font-size:.7rem;padding:2px 8px;margin:0 0 3px 6px}
- .panel #custBtn,.panel #mkBtn,.panel #trBtn,.panel #epBtn,.panel #pdfBtn,.panel #pdfBtn2{margin:0;padding:6px 8px;font-size:.76rem;border-width:1.5px;border-radius:8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+ .panel #custBtn,.panel #mkBtn,.panel #trBtn,.panel #epBtn,.panel #pdfBtn,.panel #pdfBtn2,.panel #pdfBtn3{margin:0;padding:6px 8px;font-size:.76rem;border-width:1.5px;border-radius:8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+ .panel #pdfBtn3{font-size:.68rem;overflow:visible;text-overflow:clip}
+ .panel #pdfBtn,.panel #pdfBtn2,.panel #pdfBtn3{text-align:left;padding-left:12px;padding-right:4px}   /* "Download" starts on the same vertical line */
  .readout{max-width:calc(100% - 270px)}
  .vbar{max-width:calc(100% - 262px)}
 }
@@ -253,7 +258,8 @@ button.b{font:700 16px system-ui,sans-serif;cursor:pointer}
                     <button class="b o" id="mkBtn" type="button">Manufacturer</button>
                     <button class="b o" id="trBtn" type="button">Transportation cost</button>
                     <button class="b o" id="epBtn" type="button">Edit price</button>
-                    <button class="b o" id="pdfBtn" type="button" hidden>Download for customer</button>
+                    <button class="b o" id="pdfBtn" type="button" hidden>Download OFFER</button>
+                    <button class="b o" id="pdfBtn3" type="button" hidden>Download ORDER CONFIRMATION</button>
                     <button class="b o" id="pdfBtn2" type="button" hidden>Download for producer</button>
         </div>
         <div class="hint" id="hint"></div>
@@ -927,7 +933,7 @@ syncUI();readout();
 <script>
 /* Download PDF: 3D screenshot + current configuration */
 function nextOfferNo(){ let n=0; try{n=parseInt(localStorage.getItem('offer_seq_v1'),10)||0;}catch(e){} n++; try{localStorage.setItem('offer_seq_v1',String(n));}catch(e){} return 'OF-'+new Date().getFullYear()+'-'+String(n).padStart(4,'0'); }
-window.makePdf=(producer)=>{   /* producer = true: production copy for the manufacturer, without prices */
+window.makePdf=(producer,confirmation)=>{   /* producer = true: production copy for the manufacturer, without prices */
   if(!window.jspdf){alert('PDF library not loaded (check internet connection).');return;}
   const clean=t=>String(t).replace(/\u20ac/g,' EUR').replace(/[\u00b7\u2013]/g,'-').replace(/\u00d7/g,'x').normalize('NFD').replace(/[\u0300-\u036f]/g,'');
   renderer.render(scene,camera);
@@ -935,7 +941,7 @@ window.makePdf=(producer)=>{   /* producer = true: production copy for the manuf
   const img=canvas.toDataURL('image/png');
   const doc=new window.jspdf.jsPDF({unit:'mm',format:'a4'});
   const W=210,M=15; let y=20;
-  doc.setFont('helvetica','bold');doc.setFontSize(18);doc.text(producer?'Hot tub production order':'Hot tub quotation',M,y);doc.setFontSize(11);doc.text('Offer No. '+no,W-M,y,{align:'right'});y+=6;
+  doc.setFont('helvetica','bold');doc.setFontSize(18);doc.text(producer?'Hot tub production order':(confirmation?'Order confirmation to Offer No. '+no:'Hot tub quotation'),M,y);doc.setFontSize(11);if(!confirmation||producer)doc.text('Offer No. '+no,W-M,y,{align:'right'});y+=6;
   doc.setFont('helvetica','normal');doc.setFontSize(9);doc.setTextColor(110);doc.text(new Date().toLocaleDateString('en-GB'),M,y);doc.setTextColor(0);y+=6;
   if(producer){ y+=2; doc.setFontSize(8);doc.setTextColor(110);doc.text('ORDERED BY',M,y);doc.setTextColor(0);y+=5;doc.setFontSize(11);doc.setFont('helvetica','bold');doc.text(clean('Europaletės MB'),M,y);y+=5;doc.setFont('helvetica','normal');doc.setFontSize(10);   /* the ordering party of every production order */
     ['Vytauto g. 9, Meškučių k., LT-68129 Marijampolė, Lithuania','Company code: 304924983  |  VAT no.: LT100012395710','Bank: Swedbank, AB  |  IBAN: LT21 7300 0101 5643 0123'].forEach(t=>{doc.splitTextToSize(clean(t),W-2*M).forEach(l=>{doc.text(l,M,y);y+=4.6;});}); y+=3; }
@@ -952,6 +958,7 @@ window.makePdf=(producer)=>{   /* producer = true: production copy for the manuf
   [...document.querySelectorAll('#rList .rr')].forEach(r=>{
     const tot=r.classList.contains('rt'), lab=r.children[0].textContent;
     if(producer&&(tot||/^(Transportation cost|Hot tub price)/.test(lab))) return;   /* production copy: no prices */
+    if(!producer&&/^Manufacturer:/.test(lab)) return;   /* customer quotation: manufacturer is not shown */
     const a=tot?clean('Total'):clean(lab), b=(producer&&r.parentNode.firstElementChild!==r)?'':clean(r.children[1].textContent);
     if(y>280){doc.addPage();y=20;}
     if(tot){doc.setDrawColor(150);doc.line(M,y-4.5,W-M,y-4.5);doc.setFont('helvetica','bold');y+=1;}else doc.setFont('helvetica','normal');
@@ -978,7 +985,7 @@ window.makePdf=(producer)=>{   /* producer = true: production copy for the manuf
         doc.setTextColor(0);doc.setFontSize(11); y+=2.5; }); }); }
   if(window.syncCust)window.syncCust();
   const fn=no+(window.CUST?'-'+clean(window.CUST.name).replace(/[^A-Za-z0-9]+/g,'-').replace(/^-|-$/g,''):'');
-  doc.save(fn+(producer?'-production':'')+'.pdf');
+  doc.save(fn+(producer?'-production':(confirmation?'-order-confirmation':''))+'.pdf');
 };
 </script>
 <script>
@@ -1251,9 +1258,11 @@ render();
 /* Download for producer: shown together with "Download for customer", produces the price-free production copy */
 (function(){
   const c=document.getElementById('pdfBtn'), p=document.getElementById('pdfBtn2');
-  const sync=()=>{ p.hidden=c.hidden; };
+  const p3=document.getElementById('pdfBtn3');
+  const sync=()=>{ p.hidden=c.hidden; p3.hidden=c.hidden; };
   new MutationObserver(sync).observe(c,{attributes:true,attributeFilter:['hidden']}); sync();
   p.onclick=()=>window.makePdf(true);
+  p3.onclick=()=>window.makePdf(false,true);
 })();
 </script>
 <script>
