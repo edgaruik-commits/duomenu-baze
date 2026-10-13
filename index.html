@@ -1382,10 +1382,32 @@ document.getElementById('box').onclick=e=>{
   }
   const ed=e.target.closest('.cle');
   if(ed){ const o=window.opener; if(o&&!o.closed&&o.loadOrder){ o.loadOrder(ed.dataset.id); try{o.focus();}catch(x){} window.close(); } else alert('Open the configurator page and click Order list from there.'); return; }
-  const b=e.target.closest('.cld'); if(!b||!confirm('Delete this customer?')) return;
-  try{localStorage.setItem(KEY,JSON.stringify(load().filter(c=>String(c.id)!==b.dataset.id)));}catch(x){}
-  render();
+  const b=e.target.closest('.cld'); if(!b) return;
+  const rec=load().find(c=>String(c.id)===b.dataset.id), nm=rec?((rec.offerNo?rec.offerNo+' · ':'')+(rec.name||'')):'this order';
+  askDel('Delete this order?','Are you sure you want to delete the order <b>'+esc(nm)+'</b>?<br><span style="color:#c62828">This cannot be undone.</span>',()=>{
+    try{localStorage.setItem(KEY,JSON.stringify(load().filter(c=>String(c.id)!==b.dataset.id)));}catch(x){}
+    render();
+  });
 };
+function askDel(title,html,yes){
+  var o=document.createElement('div');
+  o.style.cssText='position:fixed;left:0;top:0;right:0;bottom:0;background:rgba(10,20,20,.55);display:flex;align-items:center;justify-content:center;z-index:99999;font-family:system-ui,sans-serif;color:#1c2b2b';
+  o.innerHTML='<div style="background:#fff;border-radius:14px;padding:24px;max-width:400px;width:90%;box-shadow:0 10px 40px rgba(0,0,0,.35)">'
+    +'<div style="font-weight:700;font-size:1.15rem;margin-bottom:10px">'+title+'</div>'
+    +'<div style="line-height:1.45;margin-bottom:18px">'+html+'</div>'
+    +'<div style="display:flex;gap:10px;justify-content:flex-end">'
+    +'<button type="button" id="adNo" style="font:inherit;padding:8px 18px;border-radius:8px;border:1px solid #b9c6c2;background:#fff;cursor:pointer">Cancel</button>'
+    +'<button type="button" id="adYes" style="font:inherit;font-weight:700;padding:8px 18px;border-radius:8px;border:0;background:#c62828;color:#fff;cursor:pointer">Yes, delete</button>'
+    +'</div></div>';
+  document.body.appendChild(o);
+  function kd(e){if(e.key==='Escape')close();}
+  function close(){document.removeEventListener('keydown',kd);if(o.parentNode)o.parentNode.removeChild(o);}
+  document.addEventListener('keydown',kd);
+  o.onclick=function(e){if(e.target===o)close();};
+  o.querySelector('#adNo').onclick=close;
+  o.querySelector('#adYes').onclick=function(){close();yes();};
+  o.querySelector('#adNo').focus();
+}
 render();
 <\/script></body></html>`;
   $('clList').onclick=()=>{
@@ -1824,10 +1846,32 @@ document.getElementById('box').onclick=e=>{
     if(i>=0){ Object.assign(a[i],vals); try{localStorage.setItem(KEY,JSON.stringify(a));}catch(x){alert('Could not save.');return;} }
     editId=null; render(); return;
   }
-  const b=e.target.closest('.del'); if(!b||!confirm('Delete this manufacturer?')) return;
-  try{localStorage.setItem(KEY,JSON.stringify(load().filter(m=>String(m.id)!==b.dataset.id)));}catch(x){}
-  render();
+  const b=e.target.closest('.del'); if(!b) return;
+  const rec=load().find(m=>String(m.id)===b.dataset.id), nm=(rec&&rec.name)||'this manufacturer';
+  askDel('Delete this manufacturer?','Are you sure you want to delete <b>'+esc(nm)+'</b>?<br><span style="color:#c62828">This cannot be undone.</span>',()=>{
+    try{localStorage.setItem(KEY,JSON.stringify(load().filter(m=>String(m.id)!==b.dataset.id)));}catch(x){}
+    render();
+  });
 };
+function askDel(title,html,yes){
+  var o=document.createElement('div');
+  o.style.cssText='position:fixed;left:0;top:0;right:0;bottom:0;background:rgba(10,20,20,.55);display:flex;align-items:center;justify-content:center;z-index:99999;font-family:system-ui,sans-serif;color:#1c2b2b';
+  o.innerHTML='<div style="background:#fff;border-radius:14px;padding:24px;max-width:400px;width:90%;box-shadow:0 10px 40px rgba(0,0,0,.35)">'
+    +'<div style="font-weight:700;font-size:1.15rem;margin-bottom:10px">'+title+'</div>'
+    +'<div style="line-height:1.45;margin-bottom:18px">'+html+'</div>'
+    +'<div style="display:flex;gap:10px;justify-content:flex-end">'
+    +'<button type="button" id="adNo" style="font:inherit;padding:8px 18px;border-radius:8px;border:1px solid #b9c6c2;background:#fff;cursor:pointer">Cancel</button>'
+    +'<button type="button" id="adYes" style="font:inherit;font-weight:700;padding:8px 18px;border-radius:8px;border:0;background:#c62828;color:#fff;cursor:pointer">Yes, delete</button>'
+    +'</div></div>';
+  document.body.appendChild(o);
+  function kd(e){if(e.key==='Escape')close();}
+  function close(){document.removeEventListener('keydown',kd);if(o.parentNode)o.parentNode.removeChild(o);}
+  document.addEventListener('keydown',kd);
+  o.onclick=function(e){if(e.target===o)close();};
+  o.querySelector('#adNo').onclick=close;
+  o.querySelector('#adYes').onclick=function(){close();yes();};
+  o.querySelector('#adNo').focus();
+}
 render();
 <\/script></body></html>`;
   let mlWin=null;
@@ -1925,10 +1969,32 @@ document.getElementById('box').onclick=e=>{
     if(i>=0){ Object.assign(a[i],vals); try{localStorage.setItem(KEY,JSON.stringify(a));}catch(x){alert('Could not save.');return;} }
     editId=null; render(); return;
   }
-  const b=e.target.closest('.del'); if(!b||!confirm('Delete this customer?')) return;
-  try{localStorage.setItem(KEY,JSON.stringify(load().filter(m=>String(m.id)!==b.dataset.id)));}catch(x){}
-  render();
+  const b=e.target.closest('.del'); if(!b) return;
+  const rec=load().find(m=>String(m.id)===b.dataset.id), nm=(rec&&rec.name)||'this customer';
+  askDel('Delete this customer?','Are you sure you want to delete <b>'+esc(nm)+'</b>?<br><span style="color:#c62828">This cannot be undone.</span>',()=>{
+    try{localStorage.setItem(KEY,JSON.stringify(load().filter(m=>String(m.id)!==b.dataset.id)));}catch(x){}
+    render();
+  });
 };
+function askDel(title,html,yes){
+  var o=document.createElement('div');
+  o.style.cssText='position:fixed;left:0;top:0;right:0;bottom:0;background:rgba(10,20,20,.55);display:flex;align-items:center;justify-content:center;z-index:99999;font-family:system-ui,sans-serif;color:#1c2b2b';
+  o.innerHTML='<div style="background:#fff;border-radius:14px;padding:24px;max-width:400px;width:90%;box-shadow:0 10px 40px rgba(0,0,0,.35)">'
+    +'<div style="font-weight:700;font-size:1.15rem;margin-bottom:10px">'+title+'</div>'
+    +'<div style="line-height:1.45;margin-bottom:18px">'+html+'</div>'
+    +'<div style="display:flex;gap:10px;justify-content:flex-end">'
+    +'<button type="button" id="adNo" style="font:inherit;padding:8px 18px;border-radius:8px;border:1px solid #b9c6c2;background:#fff;cursor:pointer">Cancel</button>'
+    +'<button type="button" id="adYes" style="font:inherit;font-weight:700;padding:8px 18px;border-radius:8px;border:0;background:#c62828;color:#fff;cursor:pointer">Yes, delete</button>'
+    +'</div></div>';
+  document.body.appendChild(o);
+  function kd(e){if(e.key==='Escape')close();}
+  function close(){document.removeEventListener('keydown',kd);if(o.parentNode)o.parentNode.removeChild(o);}
+  document.addEventListener('keydown',kd);
+  o.onclick=function(e){if(e.target===o)close();};
+  o.querySelector('#adNo').onclick=close;
+  o.querySelector('#adYes').onclick=function(){close();yes();};
+  o.querySelector('#adNo').focus();
+}
 render();
 <\/script></body></html>`;
   $('ncBtn').onclick=()=>{ FP.concat(FC).forEach(([k,id])=>$(id).value=''); showT('person'); if(!dlg.open) dlg.showModal(); $('ncName').focus(); };
