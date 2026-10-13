@@ -21,7 +21,7 @@
     var xhr=new XMLHttpRequest();
     xhr.open('GET',REST+'?select=key,value',false);
     var h=hdr();for(var k in h)xhr.setRequestHeader(k,h[k]);
-    xhr.timeout=8000;xhr.send();
+    xhr.send();
     if(xhr.status>=200&&xhr.status<300){
       var rows=JSON.parse(xhr.responseText);ok=true;
       if(rows.length){ rows.forEach(function(r){rawSet.call(ls,r.key,r.value);}); }
