@@ -1590,7 +1590,7 @@ render();
   window.mfName=id=>{ const m=find(id); return m?m.name:''; };
   const wk=n=>n+(n==1?' week':' weeks');
   function label(){ const n=st.mf?window.mfName(st.mf):''; $('mkBtn').textContent=(n?'Manufacturer: '+n:'Manufacturer')+(st.lead>0?' · '+wk(st.lead):''); }
-  function detail(){ const m=find($('mkSel').value); $('mkDet').innerHTML=m?[[m.contact,m.phone,m.mail].filter(Boolean).map(esc).join(' · '),[m.addr,[m.zip,m.country].filter(Boolean).join(' ')].filter(Boolean).map(esc).join(', '),m.prod?'Products: '+esc(m.prod):''].filter(Boolean).join('<br>'):''; }
+  function detail(){ $('mkDet').innerHTML=''; }   /* manufacturer contact/address are not shown in this dialog */
   $('mkSel').onchange=detail;
   $('mkBtn').onclick=()=>{ const a=load();
     $('mkSel').innerHTML='<option value="">Not selected</option>'+a.map(m=>'<option value="'+m.id+'">'+esc(m.name)+'</option>').join('');
