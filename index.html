@@ -1391,7 +1391,7 @@ render();
   const loadMf=()=>{try{return JSON.parse(localStorage.getItem('manufacturers_v1')||'[]')}catch(e){return []}};
   const whOf=(m,n)=>n==='2'?[m.waddr2,m.whours2,m.wcontact2]:[m.waddr,m.whours,m.wcontact];
   const curMf=()=>loadMf().find(x=>String(x.id)===String(st.mf));
-  function pickDet(){ const m=curMf(), v=$('trPick').value; $('trPickDet').innerHTML=(m&&v)?whOf(m,v).filter(Boolean).map(esc).join('<br>'):''; }
+  function pickDet(){ $('trPickDet').innerHTML=''; }   /* warehouse address/hours/contact are not shown here; they still go into the transport PDF */
   function fillPick(){ const sel=$('trPick'), det=$('trPickDet'), m=curMf();
     if(!m){ sel.innerHTML='<option value="">Select a manufacturer first</option>'; sel.disabled=true; det.textContent='Choose the manufacturer with the Manufacturer button; its warehouses will appear here.'; return; }
     const opts=['1','2'].filter(n=>whOf(m,n).some(Boolean));
