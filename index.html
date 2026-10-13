@@ -222,7 +222,7 @@ button.b{font:700 16px system-ui,sans-serif;cursor:pointer}
 #trDlg input[readonly]{background:#f1f4f3;color:#4d6169}
 /* compact, narrower side menu: everything fits without mouse scrolling */
 @media(min-width:901px){
- .stage{height:calc(100vh - 150px);min-height:500px;max-height:740px}
+ .stage{height:auto;min-height:500px}
  .panel{width:262px;padding:9px 10px 10px;gap:6px;right:10px;top:10px;max-height:calc(100% - 20px)}
  .tabs button{font-size:.68rem;padding:5px 4px}
  .pane{gap:4px}
@@ -254,6 +254,23 @@ button.b{font:700 16px system-ui,sans-serif;cursor:pointer}
 .dlbox b.sec{margin:0 6px 0 0;font-size:.82rem;color:#10282f}
 .dlbox .b{margin:0!important;padding:6px 14px!important;font-size:.82rem!important;border:1.5px solid #10282f;border-radius:8px;background:transparent;color:#10282f;cursor:pointer;white-space:nowrap}
 .dlbox .b:hover{background:#10282f;color:#fff}
+/* desktop: price list scrolls inside the 3D view, the Total row stays visible */
+@media(min-width:901px){
+ .readout{bottom:40px;display:flex;flex-direction:column}
+ .readout #rList{flex:0 1 auto;min-height:0;overflow-y:auto;scrollbar-width:thin;overscroll-behavior:contain}
+ .readout #rList .rt{position:sticky;bottom:0;background:#eef2f1;border-top:1.5px solid rgba(16,40,47,.35);margin-top:10px;margin-bottom:-8px;padding-top:7px;padding-bottom:8px;box-shadow:0 -10px 0 #eef2f1}
+}
+.readout #rList .rr.hid{display:none}   /* Delivery terms and Manufacturer stay in the PDF data, only hidden on screen */
+.vbar{display:none!important}   /* VIEW / AMBIANCE bar hidden (kept in the page so the 3D scripts keep working) */
+/* desktop: no inner scrolling, the 3D view grows downward when the menus get longer (height set by script) */
+@media(min-width:901px){
+ .stage .panel{max-height:none!important;overflow:visible!important}
+ .stage .panel .pane{overflow:visible!important;max-height:none!important}
+ .readout{bottom:auto!important}
+ .readout #rList{overflow:visible!important;max-height:none!important}
+ .readout #rList .rt{position:static!important;box-shadow:none!important;margin:0!important;padding:7px 0 3px!important}
+}
+.hint{display:none!important}   /* "Drag to rotate" text hidden, dragging still works */
 </style>
 <style>
 .panel #pdfBtn4{margin:4px 0 0;width:100%;text-align:center;padding:10px 14px;border-color:#10282f;color:#10282f;flex:none}
@@ -332,16 +349,12 @@ button.b{font:700 16px system-ui,sans-serif;cursor:pointer}
           <div class="pane" id="pane2" hidden>
             <div class="acc" id="chips"></div>
           </div>
-                    <b class="sec">Order information</b>
-                    <button class="b o" id="custBtn" type="button">Customer details</button>
-                    <button class="b o" id="mkBtn" type="button">Manufacturer</button>
-                    <button class="b o" id="trBtn" type="button">Transportation cost</button>
-                    <button class="b o" id="epBtn" type="button">Edit price</button>
-        </div>
+</div>
         <div class="hint" id="hint"></div>
 <div class="vbar" id="vbar" role="toolbar" aria-label="Camera view and ambiance"><span class="vl">VIEW:</span><button type="button" data-v="front" aria-pressed="false">Front</button><button type="button" data-v="persp" aria-pressed="false">Perspective</button><button type="button" data-v="top" aria-pressed="false">Top Down</button><button type="button" data-v="liner" aria-pressed="false">Liner View</button><button type="button" id="vauto" aria-pressed="true">Auto rotate</button><span class="vs" aria-hidden="true"></span><span class="vl">AMBIANCE:</span><button type="button" data-a="day" aria-pressed="true">Day</button><button type="button" data-a="night" aria-pressed="false">Night</button></div>
 
       </div>
+<div class="dlbox" id="ordBox" hidden><b class="sec">Order information</b><button class="b o" id="custBtn" type="button">Customer details</button><button class="b o" id="mkBtn" type="button">Manufacturer</button><button class="b o" id="trBtn" type="button">Transportation cost</button><button class="b o" id="epBtn" type="button">Edit price</button></div>
 <div class="dlbox" id="dlBox" hidden><b class="sec" id="dlHead" hidden>Download documents</b><button class="b o" id="pdfBtn" type="button" hidden>Customer offer</button><button class="b o" id="pdfBtn3" type="button" hidden>Order confirmation</button><button class="b o" id="pdfBtn2" type="button" hidden>Production</button><button class="b o" id="pdfBtn4" type="button" hidden>Transportation</button><button class="b o" id="pdfBtn5" type="button" hidden>Packing list</button></div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script>var PRICE_OV=(function(){try{return JSON.parse(localStorage.getItem('prices_v1')||'{}')}catch(e){return {}}})();</script>
@@ -906,7 +919,7 @@ function readout(){const m=S.models[st.m],sh=S.shapes[st.s],sv=S.accessories.fin
  if(st.transport>0) L.push(['Transportation cost'+(((st.del?st.del.country:(window.CUST&&window.CUST.country)))?' ('+(st.del?st.del.country:window.CUST.country)+')':''),fmt(ovp(kT(),st.transport))]);
  if(st.terms&&window.INCO&&window.INCO[st.terms]) L.push(['Delivery terms: '+st.terms+' - '+window.INCO[st.terms],'']);
  if(st.mf&&window.mfName&&window.mfName(st.mf)) L.push(['Manufacturer: '+window.mfName(st.mf),'']);
- $('rList').innerHTML=L.map(([k,v,n])=>'<div class="rr"><span'+(n?' style="flex:none"':'')+'>'+k+'</span><b'+(n?' style="font-weight:400;white-space:normal;text-align:right"':'')+'>'+v+'</b></div>').join('')+'<div class="rr rt"><span>Total</span><b>'+fmt(total())+'</b></div>';}
+ $('rList').innerHTML=L.map(([k,v,n])=>'<div class="rr'+(/^(Delivery terms|Manufacturer):/.test(k)?' hid':'')+'"><span'+(n?' style="flex:none"':'')+'>'+k+'</span><b'+(n?' style="font-weight:400;white-space:normal;text-align:right"':'')+'>'+v+'</b></div>').join('')+'<div class="rr rt"><span>Total</span><b>'+fmt(total())+'</b></div>';}
 [...$('oWood').children,...$('oAcr').children,...$('oFib').children].forEach(b=>b.addEventListener('click',readout));
 readout();
 </script>
@@ -1493,6 +1506,31 @@ render();
     doc.save(no+(c.name?'-'+clean(c.name).replace(/[^A-Za-z0-9]+/g,'-').replace(/^-|-$/g,''):'')+'-packing-list.pdf');
   };
   document.getElementById('pdfBtn5').onclick=()=>window.makePackingList();
+})();
+</script>
+<script>
+/* desktop: the 3D view is as tall as the longer of the two menus, so nothing needs inner scrolling */
+(function(){
+  const stage=document.querySelector('.stage'), panel=stage.querySelector('.panel'), ro=stage.querySelector('.readout');
+  let last=0;
+  function fit(){
+    if(innerWidth<=900){ if(stage.style.minHeight){ stage.style.minHeight=''; window.dispatchEvent(new Event('resize')); } last=0; return; }
+    const base=Math.max(500,Math.min(740,innerHeight-215));
+    const need=Math.max(panel.offsetHeight+20, ro.offsetHeight+16+34);
+    const h=Math.ceil(Math.max(base,need));
+    if(h!==last){ last=h; stage.style.minHeight=h+'px'; window.dispatchEvent(new Event('resize')); }
+  }
+  if(window.ResizeObserver){ const r=new ResizeObserver(fit); r.observe(panel); r.observe(ro); }
+  new MutationObserver(fit).observe(stage,{childList:true,subtree:true,attributes:true,attributeFilter:['hidden','class','style']});
+  addEventListener('resize',fit); fit(); setTimeout(fit,300);
+})();
+</script>
+<script>
+/* Order information bar (below the 3D view): shown once an order has been started, like the old side-panel block */
+(function(){
+  const panel=document.querySelector('.panel'), box=document.getElementById('ordBox');
+  const sync=()=>{ box.hidden=panel.classList.contains('noorder'); };
+  new MutationObserver(sync).observe(panel,{attributes:true,attributeFilter:['class']}); sync();
 })();
 </script>
 <script>
