@@ -12,7 +12,7 @@
   var SKEY='sb_auth_v1';
   var REST=SB_URL+'/rest/v1/kv', AUTH=SB_URL+'/auth/v1/token';
   var ls=window.localStorage, rawSet=Storage.prototype.setItem, rawRem=Storage.prototype.removeItem;
-  var sess=null, ok=false, timers={};
+  var sess=null, ok=false, synced={};
   function now(){return Math.floor(Date.now()/1000);}
   try{sess=JSON.parse(ls.getItem(SKEY)||'null');}catch(e){sess=null;}
   function saveSess(d){
@@ -93,25 +93,22 @@
     xhr.send();
     if(xhr.status>=200&&xhr.status<300){
       var rows=JSON.parse(xhr.responseText);ok=true;
-      if(rows.length){rows.forEach(function(r){rawSet.call(ls,r.key,r.value);});}
-      else{
-        var up=[];for(var i=0;i<ls.length;i++){var kk=ls.key(i);if(kk!==SKEY)up.push({key:kk,value:ls.getItem(kk)});}
-        if(up.length)push(up);
-      }
+      rows.forEach(function(r){rawSet.call(ls,r.key,r.value);synced[r.key]=r.value;});
     }else if(xhr.status===401||xhr.status===403){clearSess();location.reload();return;}
   }catch(e){console.warn('Supabase nepasiekiamas',e);}
 
-  function post(arr){
-    return fetch(REST+'?on_conflict=key',{method:'POST',
-      headers:hdr({'Prefer':'resolution=merge-duplicates,return=minimal'}),body:JSON.stringify(arr)});
+  function post(arr,ka){
+    var body=JSON.stringify(arr);
+    return fetch(REST+'?on_conflict=key',{method:'POST',keepalive:!!ka&&body.length<60000,
+      headers:hdr({'Prefer':'resolution=merge-duplicates,return=minimal'}),body:body});
   }
-  function push(arr){
-    return ensure().then(function(){return post(arr);})
-      .then(function(r){
-        if(r.status===401){return refreshAsync().then(function(g){return g?post(arr):r;});}
-        return r;})
-      .then(function(r){if(!r.ok)throw new Error(r.status);flag(true);})
-      .catch(function(e){console.warn('Nepavyko išsaugoti debesyje',e);flag(false);});
+  function del(k,ka){
+    return fetch(REST+'?key=eq.'+encodeURIComponent(k),{method:'DELETE',keepalive:!!ka,headers:hdr()});
+  }
+  function authed(fn){
+    return ensure().then(fn).then(function(r){
+      if(r&&r.status===401)return refreshAsync().then(function(g){return g?fn():r;});
+      return r;});
   }
   function flag(good){
     var b=document.getElementById('sbflag');
@@ -121,17 +118,29 @@
     if(b){b.textContent=good?'☁ išsaugota':'⚠ debesis nepasiekiamas';b.style.background=good?'#2e7d32':'#c62828';b.style.opacity='1';
       if(good){clearTimeout(b._t);b._t=setTimeout(function(){b.style.opacity='0';},2000);}}
   }
-  Storage.prototype.setItem=function(k,v){
-    rawSet.call(this,k,v);
-    if(this!==ls||!ok||k===SKEY)return;
-    clearTimeout(timers[k]);
-    timers[k]=setTimeout(function(){push([{key:k,value:String(v)}]);},400);
-  };
-  Storage.prototype.removeItem=function(k){
-    rawRem.call(this,k);
-    if(this!==ls||!ok||k===SKEY)return;
-    ensure().then(function(){return fetch(REST+'?key=eq.'+encodeURIComponent(k),{method:'DELETE',headers:hdr()});}).catch(function(){});
-  };
+  /* Palyginame visą localStorage su paskutine debesies būsena ir išsiunčiame skirtumus
+     (pakeitimus ir ištrynimus) – nesvarbu, kuris langas ar kodas juos padarė. */
+  var busy=false, skip=0;
+  function sync(final){
+    if(!ok)return;
+    if(!final){if(busy)return;if(skip>0){skip--;return;}}
+    var cur={},up=[],rm=[],i,k;
+    for(i=0;i<ls.length;i++){k=ls.key(i);if(k!==SKEY)cur[k]=ls.getItem(k);}
+    for(k in cur)if(synced[k]!==cur[k])up.push({key:k,value:cur[k]});
+    for(k in synced)if(!(k in cur))rm.push(k);
+    if(!up.length&&!rm.length)return;
+    busy=true;
+    var jobs=[];
+    if(up.length)jobs.push(authed(function(){return post(up,final);}).then(function(r){
+      if(!r.ok)throw new Error(r.status);up.forEach(function(x){synced[x.key]=x.value;});}));
+    rm.forEach(function(key){jobs.push(authed(function(){return del(key,final);}).then(function(r){
+      if(!r.ok)throw new Error(r.status);delete synced[key];}));});
+    Promise.all(jobs).then(function(){busy=false;skip=0;flag(true);})
+      .catch(function(e){busy=false;skip=3;console.warn('Nepavyko išsaugoti debesyje',e);flag(false);});
+  }
+  setInterval(sync,1500);
+  window.addEventListener('pagehide',function(){sync(true);});
+  document.addEventListener('visibilitychange',function(){if(document.visibilityState==='hidden')sync(true);});
   /* atsijungimo nuoroda */
   document.addEventListener('DOMContentLoaded',function(){
     var a=document.createElement('a');a.textContent='Atsijungti';a.href='#';
