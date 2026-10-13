@@ -76,7 +76,7 @@ button.b{font:700 16px system-ui,sans-serif;cursor:pointer}
  background:radial-gradient(1.4px 1.4px at 8% 14%,#fffc,transparent),radial-gradient(1px 1px at 19% 32%,#fff9,transparent),radial-gradient(1.6px 1.6px at 31% 9%,#fffd,transparent),radial-gradient(1px 1px at 44% 22%,#fff8,transparent),radial-gradient(1.4px 1.4px at 57% 12%,#fffc,transparent),radial-gradient(1px 1px at 68% 30%,#fff9,transparent),radial-gradient(1.5px 1.5px at 79% 8%,#fffc,transparent),radial-gradient(1px 1px at 90% 20%,#fff8,transparent),radial-gradient(1px 1px at 14% 46%,#fff7,transparent),radial-gradient(1.2px 1.2px at 52% 40%,#fff7,transparent),linear-gradient(180deg,#070d1c 0%,#14243a 55%,#223347 100%)}
 .stage.night::before{opacity:1}
 .stage.night .hint{color:#9fb3b3}
-.vbar{position:absolute;left:14px;bottom:12px;max-width:calc(100% - 310px);display:flex;flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;align-items:center;gap:5px;padding:7px 10px;border-radius:999px;background:rgba(16,32,36,.92);color:#cfe0e0;font-size:.78rem}
+.vbar{position:absolute;left:14px;bottom:12px;max-width:calc(100% - 348px);display:flex;flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;align-items:center;gap:5px;padding:7px 10px;border-radius:999px;background:rgba(16,32,36,.92);color:#cfe0e0;font-size:.78rem}
 .vbar .vl{font-weight:700;letter-spacing:.04em;color:#7f9696;font-size:.64rem}
 .vbar .vs{width:1px;height:20px;background:rgba(255,255,255,.14);margin:0 3px}
 .vbar::-webkit-scrollbar{display:none}
@@ -222,8 +222,8 @@ button.b{font:700 16px system-ui,sans-serif;cursor:pointer}
 #trDlg input[readonly]{background:#f1f4f3;color:#4d6169}
 /* compact, narrower side menu: everything fits without mouse scrolling */
 @media(min-width:901px){
- .stage{min-height:740px}
- .panel{width:224px;padding:9px 10px 10px;gap:6px;right:10px;top:10px;max-height:calc(100% - 20px)}
+ .stage{height:calc(100vh - 150px);min-height:500px;max-height:740px}
+ .panel{width:262px;padding:9px 10px 10px;gap:6px;right:10px;top:10px;max-height:calc(100% - 20px)}
  .tabs button{font-size:.68rem;padding:5px 4px}
  .pane{gap:4px}
  .panel b{font-size:.72rem}
@@ -244,6 +244,16 @@ button.b{font:700 16px system-ui,sans-serif;cursor:pointer}
  .readout{max-width:calc(100% - 270px)}
  .vbar{max-width:calc(100% - 262px)}
 }
+/* compact top menu buttons */
+.topbar{gap:6px;padding-top:10px;flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none}
+.topbar::-webkit-scrollbar{display:none}
+.topbar .b{flex:none;white-space:nowrap}
+.topbar .b{padding:5px 12px!important;font-size:13px!important;line-height:1.3;border-width:1.5px;border-radius:6px;margin:0!important}
+/* Download documents: below the 3D view */
+.dlbox{display:flex;flex-wrap:wrap;align-items:center;gap:8px;background:var(--fog2);border-radius:18px;padding:10px 14px;margin:0 0 14px}
+.dlbox b.sec{margin:0 6px 0 0;font-size:.82rem;color:#10282f}
+.dlbox .b{margin:0!important;padding:6px 14px!important;font-size:.82rem!important;border:1.5px solid #10282f;border-radius:8px;background:transparent;color:#10282f;cursor:pointer;white-space:nowrap}
+.dlbox .b:hover{background:#10282f;color:#fff}
 </style>
 <style>
 .panel #pdfBtn4{margin:4px 0 0;width:100%;text-align:center;padding:10px 14px;border-color:#10282f;color:#10282f;flex:none}
@@ -264,9 +274,9 @@ button.b{font:700 16px system-ui,sans-serif;cursor:pointer}
 </style>
 </head>
 <body>
-<div class="topbar"><button class="b" id="prBtn" type="button">Basic price</button><button class="b o" id="tdBtn" type="button">Technical data</button><button class="b o" id="newCfg" type="button">New order</button><button class="b o" id="clList" type="button">Order list</button><button class="b o" id="mfBtn" type="button">New manufacturer</button><button class="b o" id="mlBtn" type="button">Manufacturer list</button></div>
+<div class="topbar"><button class="b" id="prBtn" type="button">Basic price</button><button class="b o" id="tdBtn" type="button">Technical data</button><button class="b o" id="newCfg" type="button">New order</button><button class="b o" id="clList" type="button">Order list</button><button class="b o" id="mfBtn" type="button">New manufacturer</button><button class="b o" id="mlBtn" type="button">Manufacturer list</button><button class="b o" id="ncBtn" type="button">New customer</button><button class="b o" id="cnList" type="button">Customer list</button></div>
 
-<div class="topbar" style="padding-top:10px"><button class="b o" id="ncBtn" type="button">New customer</button><button class="b o" id="cnList" type="button">Customer list</button></div>
+
 
 <dialog id="pdDlg" aria-labelledby="pdT"><button class="x" id="pdX" type="button" aria-label="Close">&times;</button><h3 id="pdT">Production document</h3>
 <div class="pdl"><button class="b o" id="pdReq" type="button">Production request</button><button class="b o" id="pdOrd" type="button">Production order</button></div></dialog>
@@ -291,7 +301,7 @@ button.b{font:700 16px system-ui,sans-serif;cursor:pointer}
 <dialog id="prDlg" aria-labelledby="prT"><button class="x" id="prX" type="button" aria-label="Close">&times;</button><h3 id="prT">Basic price</h3><div id="prBody"></div><div class="pf"><button class="b" id="prSave" type="button">Save</button><button class="b o" id="prReset" type="button">Reset prices</button></div></dialog>
 <dialog id="tdDlg" aria-labelledby="tdT"><button class="x" id="tdX" type="button" aria-label="Close">&times;</button><h3 id="tdT">Technical data</h3><div id="tdBody"></div><div class="pf"><button class="b" id="tdSave" type="button">Save</button><button class="b o" id="tdReset" type="button">Clear data</button></div></dialog>
 <dialog id="trDlg" aria-labelledby="trT"><button class="x" id="trX" type="button" aria-label="Close">&times;</button><h3 id="trT">Transportation cost</h3>
-<div class="fg"><b class="trh">Shipment delivery address</b><label>Customer<input id="trName" readonly></label><label>Delivery address<input id="trAddr" autocomplete="off"></label><label>Postal code<input id="trZip" autocomplete="off"></label><label>Country<input id="trCountry" list="cuCountries" autocomplete="off"></label><p style="font-size:.8rem;color:#4d6169;margin:0">Prefilled from Customer details. You can change the address for this shipment.</p><b class="trh">Shipment pick up address</b><label>Pick-up warehouse<select id="trPick"></select></label><div class="trd" id="trPickDet"></div><label>Delivery terms (Incoterms 2020)<select id="trTerms"></select></label><label>Transportation cost (EUR)<input id="trCost" type="number" min="0" step="1" placeholder="Enter price"></label></div>
+<div class="fg"><b class="trh">Shipment delivery address</b><label>Customer<input id="trName" readonly></label><label>Delivery address<input id="trAddr" autocomplete="off"></label><label>Postal code<input id="trZip" autocomplete="off"></label><label>Country<input id="trCountry" list="cuCountries" autocomplete="off"></label><p style="font-size:.8rem;color:#4d6169;margin:0">Prefilled from Customer details. You can change the address for this shipment.</p><b class="trh">Shipment pick up address</b><label>Pick-up warehouse<select id="trPick"></select></label><div class="trd" id="trPickDet"></div><label>Carrier<input id="trCarrier" autocomplete="off" placeholder="Carrier name"></label><label>Delivery terms (Incoterms 2020)<select id="trTerms"></select></label><label>Transportation cost (EUR)<input id="trCost" type="number" min="0" step="1" placeholder="Enter price"></label></div>
 <div class="pf"><button class="b" id="trSave" type="button">Save</button><button class="b o" id="trClear" type="button">Remove</button><button class="b o" id="trCancel" type="button">Cancel</button></div></dialog>
 <dialog id="epDlg" aria-labelledby="epT"><button class="x" id="epX" type="button" aria-label="Close">&times;</button><h3 id="epT">Edit price</h3>
 <p style="font-size:.85rem;color:#4d6169;margin:0 0 6px">Prices changed here apply to this order only. The price list is not changed.</p><div id="epBody"></div>
@@ -327,16 +337,12 @@ button.b{font:700 16px system-ui,sans-serif;cursor:pointer}
                     <button class="b o" id="mkBtn" type="button">Manufacturer</button>
                     <button class="b o" id="trBtn" type="button">Transportation cost</button>
                     <button class="b o" id="epBtn" type="button">Edit price</button>
-                    <b class="sec" id="dlHead" hidden>Download documents</b>
-                    <button class="b o" id="pdfBtn" type="button" hidden>Customer offer</button>
-                    <button class="b o" id="pdfBtn3" type="button" hidden>Order confirmation</button>
-                    <button class="b o" id="pdfBtn2" type="button" hidden>Production</button>
-                    <button class="b o" id="pdfBtn4" type="button" hidden>Transportation</button>
         </div>
         <div class="hint" id="hint"></div>
 <div class="vbar" id="vbar" role="toolbar" aria-label="Camera view and ambiance"><span class="vl">VIEW:</span><button type="button" data-v="front" aria-pressed="false">Front</button><button type="button" data-v="persp" aria-pressed="false">Perspective</button><button type="button" data-v="top" aria-pressed="false">Top Down</button><button type="button" data-v="liner" aria-pressed="false">Liner View</button><button type="button" id="vauto" aria-pressed="true">Auto rotate</button><span class="vs" aria-hidden="true"></span><span class="vl">AMBIANCE:</span><button type="button" data-a="day" aria-pressed="true">Day</button><button type="button" data-a="night" aria-pressed="false">Night</button></div>
 
       </div>
+<div class="dlbox" id="dlBox" hidden><b class="sec" id="dlHead" hidden>Download documents</b><button class="b o" id="pdfBtn" type="button" hidden>Customer offer</button><button class="b o" id="pdfBtn3" type="button" hidden>Order confirmation</button><button class="b o" id="pdfBtn2" type="button" hidden>Production</button><button class="b o" id="pdfBtn4" type="button" hidden>Transportation</button><button class="b o" id="pdfBtn5" type="button" hidden>Packing list</button></div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script>var PRICE_OV=(function(){try{return JSON.parse(localStorage.getItem('prices_v1')||'{}')}catch(e){return {}}})();</script>
 <script>
@@ -1255,7 +1261,7 @@ render();
     window.CUST=cu; label(); if(window.orderStart)window.orderStart(); $('pdfBtn').hidden=false; window.scrollTo(0,0);
     if(!c.state){ alert('The configuration for this order was not saved; only the customer details were loaded. Choose a configuration and save again.'); return; }
     const state=JSON.parse(JSON.stringify(c.state));
-    Object.assign(st,state); if(state.transport==null) st.transport=0; if(state.terms==null) st.terms=''; if(state.pick==null) st.pick=''; if(state.del==null) st.del=null; if(state.mf==null) st.mf=''; if(state.po==null) st.po={};
+    Object.assign(st,state); if(state.transport==null) st.transport=0; if(state.terms==null) st.terms=''; if(state.carrier==null) st.carrier=''; if(state.pick==null) st.pick=''; if(state.del==null) st.del=null; if(state.mf==null) st.mf=''; if(state.po==null) st.po={};
     press($('oModel'),st.m); press($('oShape'),st.s); press($('oWood'),st.w); pressMat();
     const on=k=>st.acc[k]&&!state.pend[k];
     if(on('hydro')&&state.jets!=null) setJets(state.jets);
@@ -1299,7 +1305,7 @@ render();
   const load=()=>{try{return JSON.parse(localStorage.getItem(KEY)||'{}')}catch(e){return {}}};
   const IN={hydro:'Hydro massage system',air:'Air massage system',thermo:'Thermometer',shelf:'Drink shelf',guard:'Chimney guard',led:'LED lighting',cover:'Thermal cover',sound:'Sound system',filter:'Filtration system',wifi:'Hot tub control (Wi-Fi)'};
   const on=id=>!!st.acc[id]&&!st.pend[id];
-  window.LDF=[['len','Length (cm)'],['wid','Width (cm)'],['hei','Height (cm)'],['pal','Packed on pallet'],['wgt','Weight (kg)'],['note','Notes']];   /* loading dimensions for the carrier, per model + shape */
+  window.LDF=[['len','Length (cm)'],['wid','Width (cm)'],['hei','Height (cm)'],['pal','Packed on pallet'],['wgt','Weight (kg)'],['palw','Pallet weight (kg)'],['note','Notes']];   /* loading dimensions for the carrier, per model + shape */
   window.techVal=(m,sid,f)=>{ const v=load()['val:'+m.id+':'+sid+':'+f]; return v!=null&&v!==''?v:m[f]; };   /* value edited for this model + shape, else the default */
   /* all options as groups of {key,label,sel}; sel = currently chosen in the configurator (used by the PDF) */
   window.techGroups=function(){
@@ -1381,15 +1387,112 @@ render();
   $('trPick').onchange=pickDet;
   $('trBtn').onclick=()=>{ const c=window.CUST||{};
     const d=st.del||c; $('trName').value=c.name||''; $('trAddr').value=d.addr||''; $('trZip').value=d.zip||''; $('trCountry').value=d.country||'';
-    $('trCost').value=st.transport>0?st.transport:''; $('trTerms').value=st.terms||''; fillPick(); if(!dlg.open)dlg.showModal(); $('trCost').focus(); };
+    $('trCost').value=st.transport>0?st.transport:''; $('trTerms').value=st.terms||''; $('trCarrier').value=st.carrier||''; fillPick(); if(!dlg.open)dlg.showModal(); $('trCost').focus(); };
   $('trX').onclick=$('trCancel').onclick=()=>dlg.close();
   dlg.addEventListener('click',e=>{if(e.target===dlg)dlg.close();});
-  function apply(v){ st.transport=v>0?Math.round(v):0; st.terms=$('trTerms').value; st.pick=$('trPick').disabled?'':$('trPick').value;
+  function apply(v){ st.transport=v>0?Math.round(v):0; st.terms=$('trTerms').value; st.carrier=$('trCarrier').value.trim(); st.pick=$('trPick').disabled?'':$('trPick').value;
     { const c=window.CUST||{}, d={addr:$('trAddr').value.trim(),zip:$('trZip').value.trim(),country:$('trCountry').value.trim()}; st.del=(d.addr===(c.addr||'')&&d.zip===(c.zip||'')&&d.country===(c.country||''))?null:d; }   /* shipment delivery address: only stored when it differs from Customer details */
     label(); readout(); if(window.syncCust)window.syncCust(); dlg.close(); }
   $('trSave').onclick=()=>apply(parseFloat($('trCost').value));
   $('trClear').onclick=()=>apply(0);
   $('trCost').addEventListener('keydown',e=>{ if(e.key==='Enter'){ e.preventDefault(); apply(parseFloat($('trCost').value)); } });
+})();
+</script>
+<script>
+/* Packing list: shipper, consignee, carrier, numbered goods, packing / loading data, signatures */
+(function(){
+  const clean=t=>String(t==null?'':t).replace(/\u20ac/g,' EUR').replace(/[\u00b7\u2013]/g,'-').replace(/\u00d7/g,'x').normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+  const num=v=>{ const n=parseFloat(String(v==null?'':v).replace(',','.').replace(/[^0-9.\-]/g,'')); return isFinite(n)?n:null; };
+  window.makePackingList=function(){
+    if(!window.jspdf){ alert('PDF library not loaded (check internet connection).'); return; }
+    const no=(window.CUST&&window.CUST.offerNo)||nextOfferNo(); if(window.CUST&&!window.CUST.offerNo){ window.CUST.offerNo=no; if(window.syncCust)window.syncCust(); }
+    const doc=new window.jspdf.jsPDF({unit:'mm',format:'a4'}), W=210, M=15, iw=W-2*M; let y=20;
+    const m=S.models[st.m], sh=S.shapes[st.s], c=window.CUST||{}, dv=st.del||c;
+    let add={}; try{ add=JSON.parse(localStorage.getItem('tech_add_v1')||'{}'); }catch(e){}
+    const room=n=>{ if(y+n>280){ doc.addPage(); y=20; } };
+    const label=t=>{ doc.setFont('helvetica','normal');doc.setFontSize(8);doc.setTextColor(110);doc.text(t,M,y);doc.setTextColor(0);y+=5; };
+    const lines=(arr,sz)=>{ doc.setFont('helvetica','normal');doc.setFontSize(sz||10); arr.filter(Boolean).forEach(t=>doc.splitTextToSize(clean(t),iw).forEach(l=>{ room(5); doc.text(l,M,y); y+=4.6; })); };
+    const head=(t)=>{ room(14); doc.setFont('helvetica','bold');doc.setFontSize(11);doc.text(clean(t),M,y);y+=5; };
+
+    /* title */
+    doc.setFont('helvetica','bold');doc.setFontSize(18);doc.text('Packing list',M,y);doc.setFontSize(11);doc.text('Order No. '+no,W-M,y,{align:'right'});y+=6;
+    doc.setFont('helvetica','normal');doc.setFontSize(9);doc.setTextColor(110);doc.text(new Date().toLocaleDateString('en-GB'),M,y);doc.setTextColor(0);y+=8;
+
+    /* shipper (sender) */
+    label('SHIPPER (SENDER)');
+    head('Europaletės MB');
+    lines(['Vytauto g. 9, Meškučių k., LT-68129 Marijampolė, Lithuania','Company code: 304924983  |  VAT no.: LT100012395710']);
+    y+=3;
+
+    /* consignee (receiver) */
+    label('CONSIGNEE (RECEIVER)');
+    head(c.name||'-');
+    lines([ [c.phone,c.mail].filter(Boolean).join('  |  '), 'Delivery address: '+[dv.addr,[dv.zip,dv.country].filter(Boolean).join(' ')].filter(Boolean).join(', '), c.note ]);
+    y+=3;
+
+    /* carrier */
+    label('CARRIER');
+    if(st.carrier){ head(st.carrier); } else { doc.setDrawColor(150); doc.line(M,y+4,M+90,y+4); y+=7; }
+    y+=2;
+
+    /* terms */
+    const inco=(st.terms&&window.INCO&&window.INCO[st.terms])?(st.terms+' - '+window.INCO[st.terms]):'Not specified';
+    label('INCOTERMS 2020'); head(inco); y+=2;
+
+    /* goods */
+    room(30); doc.setDrawColor(150); doc.line(M,y-2,W-M,y-2); y+=3;
+    doc.setFont('helvetica','bold');doc.setFontSize(9);doc.setTextColor(110);doc.text('NO.',M,y);doc.text('DESCRIPTION OF GOODS',M+14,y);doc.text('QTY',W-M,y,{align:'right'});doc.setTextColor(0);y+=2;doc.line(M,y,W-M,y);y+=6;
+    const G=[];
+    G.push(['Wood-fired hot tub '+m.name+', '+sh.n, ['Wood: '+S.woods[st.w].n, (st.fib?S.ui.fib:S.ui.acr)+': '+S.acrylics[st.a].n]]);
+    if(st.acc.stove){ const sv=['Stove: '+S.stoveTypes[st.t].n]; if(!S.stoveTypes[st.t].electric) sv.push('Stove position: '+S.stovePlaces[st.p].n); G.push(['Stove',sv]); }
+    S.accessories.filter(x=>x.id!=='stove'&&st.acc[x.id]&&!st.pend[x.id]).forEach(x=>G.push([x.name,[]]));
+    G.forEach(([t,sub],i)=>{
+      room(8+sub.length*5);
+      doc.setFont('helvetica','normal');doc.setFontSize(11);doc.text(String(i+1),M,y);
+      doc.setFont('helvetica','bold');doc.splitTextToSize(clean(t),iw-40).forEach((l,k)=>{ doc.text(l,M+14,y); if(k===0) { doc.setFont('helvetica','normal'); doc.text('1 pc',W-M,y,{align:'right'}); doc.setFont('helvetica','bold'); } y+=5; });
+      doc.setFont('helvetica','normal');doc.setFontSize(9);doc.setTextColor(90);
+      sub.forEach(l=>{ doc.text(clean(l),M+14,y); y+=4.6; });
+      doc.setTextColor(0); y+=2.5;
+    });
+    doc.setDrawColor(150); doc.line(M,y-1,W-M,y-1); y+=7;
+
+    /* packing / loading data */
+    const g=f=>add['ld:'+m.id+':'+sh.id+':'+f]||'';
+    const dims=[g('len'),g('wid'),g('hei')];
+    const gw=(num(g('wgt'))!=null&&num(g('palw'))!=null)?(num(g('wgt'))+num(g('palw'))):null;
+    const rows=[
+      ['Packed on pallet', g('pal')],
+      ['Dimensions L x W x H (cm)', dims.some(Boolean)?dims.map(v=>v||'?').join(' x '):''],
+      ['Net weight (kg)', g('wgt')],
+      ['Pallet weight (kg)', g('palw')],
+      ['Total gross weight (kg)', gw!=null?String(Math.round(gw*100)/100):''],
+      ['Notes', g('note')]
+    ].filter(r=>r[1]);
+    label('PACKING DETAILS');
+    if(rows.length){ rows.forEach(([l,v])=>{ room(7); doc.setFont('helvetica','normal');doc.setFontSize(11);doc.text(clean(l),M,y);
+        const bold=/^Total/.test(l); doc.setFont('helvetica',bold?'bold':'normal');
+        doc.splitTextToSize(clean(v),iw-70).forEach(t=>{ room(6); doc.text(t,W-M,y,{align:'right'}); y+=6; }); }); }
+    else { lines(['Packing data is not filled in. Enter it in Technical data > Loading dimensions.'],9); }
+    y+=8;
+
+    /* signatures */
+    room(30); doc.setDrawColor(120); doc.setFont('helvetica','normal');doc.setFontSize(9);doc.setTextColor(110);
+    [['Shipper',M],['Carrier / driver',M+64],['Consignee (received)',M+128]].forEach(([t,x])=>{ doc.line(x,y+12,x+52,y+12); doc.text(t,x,y+17); doc.text('Name, date, signature',x,y+21); });
+    doc.setTextColor(0); y+=26;
+
+    /* company details at the bottom (same as transportation documents) */
+    doc.setPage(doc.getNumberOfPages()); let fy=Math.max(y+4,266); if(fy>282){ doc.addPage(); fy=266; }
+    doc.setDrawColor(150); doc.line(M,fy-5,W-M,fy-5);
+    [ {x:M,w:62,name:true,t:['Vytauto g. 9, Meškučių k., LT-68129 Marijampolė, Lithuania']}, {x:M+66,w:52,t:['Company code: 304924983','VAT no.: LT100012395710']}, {x:M+122,w:58,t:['Bank: Swedbank, AB','IBAN: LT21 7300 0101 5643 0123']} ].forEach(k=>{ let cy=fy;
+      if(k.name){ doc.setFont('helvetica','bold');doc.setFontSize(10);doc.setTextColor(0);doc.text(clean('Europaletės MB'),k.x,cy);cy+=4.8; }
+      doc.setFont('helvetica','normal');doc.setFontSize(9);doc.setTextColor(60);
+      k.t.forEach(t=>doc.splitTextToSize(clean(t),k.w).forEach(l=>{ doc.text(l,k.x,cy);cy+=4.4; })); });
+    doc.setTextColor(0);
+
+    if(window.syncCust)window.syncCust();
+    doc.save(no+(c.name?'-'+clean(c.name).replace(/[^A-Za-z0-9]+/g,'-').replace(/^-|-$/g,''):'')+'-packing-list.pdf');
+  };
+  document.getElementById('pdfBtn5').onclick=()=>window.makePackingList();
 })();
 </script>
 <script>
@@ -1401,6 +1504,8 @@ render();
   new MutationObserver(sync).observe(c,{attributes:true,attributeFilter:['hidden']}); sync();
   const p4=document.getElementById('pdfBtn4'); p4.hidden=c.hidden; new MutationObserver(()=>{p4.hidden=c.hidden;}).observe(c,{attributes:true,attributeFilter:['hidden']});
   const dh=document.getElementById('dlHead'); dh.hidden=c.hidden; new MutationObserver(()=>{dh.hidden=c.hidden;}).observe(c,{attributes:true,attributeFilter:['hidden']});   /* "Download documents" heading follows the download buttons */
+  const db=document.getElementById('dlBox'); db.hidden=c.hidden; new MutationObserver(()=>{db.hidden=c.hidden;}).observe(c,{attributes:true,attributeFilter:['hidden']});   /* whole block follows the download buttons */
+  const p5=document.getElementById('pdfBtn5'); p5.hidden=c.hidden; new MutationObserver(()=>{p5.hidden=c.hidden;}).observe(c,{attributes:true,attributeFilter:['hidden']});
   const tq=document.getElementById('trqDlg');   /* Transportation button: choose Transportation request or Transportation order */
   p4.onclick=()=>{ if(!tq.open) tq.showModal(); };
   document.getElementById('trqX').onclick=()=>tq.close();
