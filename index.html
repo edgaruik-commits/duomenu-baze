@@ -4,6 +4,60 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Hot tub 3D</title>
+<script>
+/* ===== Supabase sync: localStorage kopija saugoma ir debesyje ===== */
+(function(){
+  var SB_URL='https://lyxjkfoypxglufvyavfd.supabase.co';
+  var SB_KEY='sb_publishable_OPiaZ6q25j5fWZ-0lkBtJA_yNBkyLim';
+  if(SB_KEY.indexOf('IKLIJUOKITE')===0){console.warn('Supabase raktas neįrašytas – duomenys saugomi tik naršyklėje.');return;}
+  var REST=SB_URL+'/rest/v1/kv';
+  function hdr(x){var h={'apikey':SB_KEY,'Content-Type':'application/json'};
+    if(SB_KEY.indexOf('eyJ')===0)h['Authorization']='Bearer '+SB_KEY;
+    for(var k in (x||{}))h[k]=x[k];return h;}
+  var ls=window.localStorage, rawSet=Storage.prototype.setItem, rawRem=Storage.prototype.removeItem;
+  var ok=false;
+  /* 1) Sinchroniškai pasiimame duomenis prieš startuojant programai */
+  try{
+    var xhr=new XMLHttpRequest();
+    xhr.open('GET',REST+'?select=key,value',false);
+    var h=hdr();for(var k in h)xhr.setRequestHeader(k,h[k]);
+    xhr.timeout=8000;xhr.send();
+    if(xhr.status>=200&&xhr.status<300){
+      var rows=JSON.parse(xhr.responseText);ok=true;
+      if(rows.length){ rows.forEach(function(r){rawSet.call(ls,r.key,r.value);}); }
+      else{ /* debesis tuščias – įkeliame esamus naršyklės duomenis */
+        var up=[];for(var i=0;i<ls.length;i++){var kk=ls.key(i);up.push({key:kk,value:ls.getItem(kk)});}
+        if(up.length)push(up);
+      }
+    }
+  }catch(e){console.warn('Supabase nepasiekiamas',e);}
+  function push(arr){
+    return fetch(REST+'?on_conflict=key',{method:'POST',
+      headers:hdr({'Prefer':'resolution=merge-duplicates,return=minimal'}),
+      body:JSON.stringify(arr)}).then(function(r){if(!r.ok)throw new Error(r.status);flag(true);})
+      .catch(function(e){console.warn('Nepavyko išsaugoti debesyje',e);flag(false);});
+  }
+  var timers={};
+  function flag(good){var b=document.getElementById('sbflag');
+    if(!b&&document.body){b=document.createElement('div');b.id='sbflag';
+      b.style.cssText='position:fixed;left:8px;bottom:8px;z-index:99999;font:12px system-ui;padding:3px 9px;border-radius:99px;color:#fff';
+      document.body.appendChild(b);}
+    if(b){b.textContent=good?'☁ išsaugota':'⚠ debesis nepasiekiamas';b.style.background=good?'#2e7d32':'#c62828';
+      if(good){setTimeout(function(){b.style.opacity='0'},2000);b.style.opacity='1';}else b.style.opacity='1';}}
+  /* 2) Kiekvienas įrašymas į localStorage keliauja ir į debesį */
+  Storage.prototype.setItem=function(k,v){
+    rawSet.call(this,k,v);
+    if(this!==ls||!ok)return;
+    clearTimeout(timers[k]);
+    timers[k]=setTimeout(function(){push([{key:k,value:String(v)}]);},400);
+  };
+  Storage.prototype.removeItem=function(k){
+    rawRem.call(this,k);
+    if(this!==ls||!ok)return;
+    fetch(REST+'?key=eq.'+encodeURIComponent(k),{method:'DELETE',headers:hdr()}).catch(function(){});
+  };
+})();
+</script>
 <style>
 *{box-sizing:border-box;margin:0}
 body{font:16px/1.6 system-ui,sans-serif;color:#2a2420;background:#f7f3ec}
