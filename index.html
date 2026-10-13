@@ -5,18 +5,87 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Hot tub 3D</title>
 <script>
-/* ===== Supabase sync: localStorage kopija saugoma ir debesyje ===== */
+/* ===== Supabase sync + prisijungimas ===== */
 (function(){
   var SB_URL='https://lyxjkfoypxglufvyavfd.supabase.co';
   var SB_KEY='sb_publishable_OPiaZ6q25j5fWZ-0lkBtJA_yNBkyLim';
-  if(SB_KEY.indexOf('IKLIJUOKITE')===0){console.warn('Supabase raktas neįrašytas – duomenys saugomi tik naršyklėje.');return;}
-  var REST=SB_URL+'/rest/v1/kv';
-  function hdr(x){var h={'apikey':SB_KEY,'Content-Type':'application/json'};
-    if(SB_KEY.indexOf('eyJ')===0)h['Authorization']='Bearer '+SB_KEY;
-    for(var k in (x||{}))h[k]=x[k];return h;}
+  var SKEY='sb_auth_v1';
+  var REST=SB_URL+'/rest/v1/kv', AUTH=SB_URL+'/auth/v1/token';
   var ls=window.localStorage, rawSet=Storage.prototype.setItem, rawRem=Storage.prototype.removeItem;
-  var ok=false;
-  /* 1) Sinchroniškai pasiimame duomenis prieš startuojant programai */
+  var sess=null, ok=false, timers={};
+  function now(){return Math.floor(Date.now()/1000);}
+  try{sess=JSON.parse(ls.getItem(SKEY)||'null');}catch(e){sess=null;}
+  function saveSess(d){
+    if(!d||!d.access_token)return false;
+    sess={access_token:d.access_token,refresh_token:d.refresh_token,expires_at:d.expires_at||(now()+(d.expires_in||3600))};
+    rawSet.call(ls,SKEY,JSON.stringify(sess));return true;
+  }
+  function clearSess(){sess=null;try{rawRem.call(ls,SKEY);}catch(e){}}
+  function hdr(x){
+    var h={'apikey':SB_KEY,'Content-Type':'application/json'};
+    if(sess)h['Authorization']='Bearer '+sess.access_token;
+    for(var k in (x||{}))h[k]=x[k];return h;
+  }
+  /* sinchroninis tokeno atnaujinimas startuojant; 'net' = nėra ryšio */
+  function refreshSync(){
+    try{
+      var x=new XMLHttpRequest();
+      x.open('POST',AUTH+'?grant_type=refresh_token',false);
+      x.setRequestHeader('apikey',SB_KEY);x.setRequestHeader('Content-Type','application/json');
+      x.send(JSON.stringify({refresh_token:sess.refresh_token}));
+      if(x.status===200&&saveSess(JSON.parse(x.responseText)))return 'ok';
+      return 'bad';
+    }catch(e){return 'net';}
+  }
+  var refreshing=null;
+  function refreshAsync(){
+    if(refreshing)return refreshing;
+    refreshing=fetch(AUTH+'?grant_type=refresh_token',{method:'POST',
+      headers:{'apikey':SB_KEY,'Content-Type':'application/json'},
+      body:JSON.stringify({refresh_token:sess&&sess.refresh_token})})
+      .then(function(r){return r.ok?r.json():Promise.reject(r.status);})
+      .then(function(d){saveSess(d);refreshing=null;return true;})
+      .catch(function(){refreshing=null;return false;});
+    return refreshing;
+  }
+  function ensure(){return(sess&&sess.expires_at-now()<90)?refreshAsync():Promise.resolve(true);}
+
+  /* ---- prisijungimo langas ---- */
+  window.__sbLogin=function(f){
+    var err=document.getElementById('sberr'),btn=document.getElementById('sbbtn');
+    err.textContent='';btn.disabled=true;btn.textContent='Jungiamasi…';
+    fetch(AUTH+'?grant_type=password',{method:'POST',
+      headers:{'apikey':SB_KEY,'Content-Type':'application/json'},
+      body:JSON.stringify({email:f.em.value.trim(),password:f.pw.value})})
+      .then(function(r){return r.json().then(function(d){return{ok:r.ok,d:d};});})
+      .then(function(o){
+        if(o.ok&&saveSess(o.d)){location.reload();}
+        else{err.textContent='Neteisingas el. paštas arba slaptažodis.';btn.disabled=false;btn.textContent='Prisijungti';}
+      })
+      .catch(function(){err.textContent='Nepavyko prisijungti – patikrinkite ryšį.';btn.disabled=false;btn.textContent='Prisijungti';});
+    return false;
+  };
+  function showLogin(){
+    document.write('<div id="sblogin" style="position:fixed;top:0;left:0;right:0;bottom:0;z-index:2147483647;background:#f7f3ec;display:flex;align-items:center;justify-content:center;font:16px system-ui,sans-serif;color:#2a2420">'
+     +'<form onsubmit="return window.__sbLogin(this)" style="background:#fff;padding:28px;border-radius:14px;box-shadow:0 6px 30px rgba(0,0,0,.12);width:min(340px,90vw);display:flex;flex-direction:column;gap:12px">'
+     +'<b style="font:700 22px Georgia,serif;color:#1f3a34">Prisijungimas</b>'
+     +'<input name="em" type="email" placeholder="El. paštas" autocomplete="username" required style="font:inherit;padding:10px;border:1.5px solid #b9c6c2;border-radius:8px">'
+     +'<input name="pw" type="password" placeholder="Slaptažodis" autocomplete="current-password" required style="font:inherit;padding:10px;border:1.5px solid #b9c6c2;border-radius:8px">'
+     +'<button id="sbbtn" type="submit" style="font:inherit;font-weight:700;padding:11px;border:0;border-radius:8px;background:#d98a1c;color:#1a1410;cursor:pointer">Prisijungti</button>'
+     +'<div id="sberr" style="color:#c62828;font-size:14px;min-height:18px"></div></form></div>');
+  }
+
+  /* ---- startas ---- */
+  var state='ok';
+  if(!sess){state='login';}
+  else if(sess.expires_at-now()<90){
+    var rr=refreshSync();
+    if(rr==='bad'){clearSess();state='login';}
+    else if(rr==='net'){state='offline';}
+  }
+  if(state==='login'){showLogin();return;}
+  if(state==='offline'){console.warn('Nėra ryšio su Supabase – darbas tik naršyklėje.');return;}
+
   try{
     var xhr=new XMLHttpRequest();
     xhr.open('GET',REST+'?select=key,value',false);
@@ -24,38 +93,52 @@
     xhr.send();
     if(xhr.status>=200&&xhr.status<300){
       var rows=JSON.parse(xhr.responseText);ok=true;
-      if(rows.length){ rows.forEach(function(r){rawSet.call(ls,r.key,r.value);}); }
-      else{ /* debesis tuščias – įkeliame esamus naršyklės duomenis */
-        var up=[];for(var i=0;i<ls.length;i++){var kk=ls.key(i);up.push({key:kk,value:ls.getItem(kk)});}
+      if(rows.length){rows.forEach(function(r){rawSet.call(ls,r.key,r.value);});}
+      else{
+        var up=[];for(var i=0;i<ls.length;i++){var kk=ls.key(i);if(kk!==SKEY)up.push({key:kk,value:ls.getItem(kk)});}
         if(up.length)push(up);
       }
-    }
+    }else if(xhr.status===401||xhr.status===403){clearSess();location.reload();return;}
   }catch(e){console.warn('Supabase nepasiekiamas',e);}
-  function push(arr){
+
+  function post(arr){
     return fetch(REST+'?on_conflict=key',{method:'POST',
-      headers:hdr({'Prefer':'resolution=merge-duplicates,return=minimal'}),
-      body:JSON.stringify(arr)}).then(function(r){if(!r.ok)throw new Error(r.status);flag(true);})
+      headers:hdr({'Prefer':'resolution=merge-duplicates,return=minimal'}),body:JSON.stringify(arr)});
+  }
+  function push(arr){
+    return ensure().then(function(){return post(arr);})
+      .then(function(r){
+        if(r.status===401){return refreshAsync().then(function(g){return g?post(arr):r;});}
+        return r;})
+      .then(function(r){if(!r.ok)throw new Error(r.status);flag(true);})
       .catch(function(e){console.warn('Nepavyko išsaugoti debesyje',e);flag(false);});
   }
-  var timers={};
-  function flag(good){var b=document.getElementById('sbflag');
+  function flag(good){
+    var b=document.getElementById('sbflag');
     if(!b&&document.body){b=document.createElement('div');b.id='sbflag';
-      b.style.cssText='position:fixed;left:8px;bottom:8px;z-index:99999;font:12px system-ui;padding:3px 9px;border-radius:99px;color:#fff';
+      b.style.cssText='position:fixed;left:8px;bottom:8px;z-index:99999;font:12px system-ui;padding:3px 9px;border-radius:99px;color:#fff;transition:opacity .3s';
       document.body.appendChild(b);}
-    if(b){b.textContent=good?'☁ išsaugota':'⚠ debesis nepasiekiamas';b.style.background=good?'#2e7d32':'#c62828';
-      if(good){setTimeout(function(){b.style.opacity='0'},2000);b.style.opacity='1';}else b.style.opacity='1';}}
-  /* 2) Kiekvienas įrašymas į localStorage keliauja ir į debesį */
+    if(b){b.textContent=good?'☁ išsaugota':'⚠ debesis nepasiekiamas';b.style.background=good?'#2e7d32':'#c62828';b.style.opacity='1';
+      if(good){clearTimeout(b._t);b._t=setTimeout(function(){b.style.opacity='0';},2000);}}
+  }
   Storage.prototype.setItem=function(k,v){
     rawSet.call(this,k,v);
-    if(this!==ls||!ok)return;
+    if(this!==ls||!ok||k===SKEY)return;
     clearTimeout(timers[k]);
     timers[k]=setTimeout(function(){push([{key:k,value:String(v)}]);},400);
   };
   Storage.prototype.removeItem=function(k){
     rawRem.call(this,k);
-    if(this!==ls||!ok)return;
-    fetch(REST+'?key=eq.'+encodeURIComponent(k),{method:'DELETE',headers:hdr()}).catch(function(){});
+    if(this!==ls||!ok||k===SKEY)return;
+    ensure().then(function(){return fetch(REST+'?key=eq.'+encodeURIComponent(k),{method:'DELETE',headers:hdr()});}).catch(function(){});
   };
+  /* atsijungimo nuoroda */
+  document.addEventListener('DOMContentLoaded',function(){
+    var a=document.createElement('a');a.textContent='Atsijungti';a.href='#';
+    a.style.cssText='position:fixed;right:8px;bottom:8px;z-index:99999;font:12px system-ui;padding:3px 9px;border-radius:99px;background:rgba(255,255,255,.85);color:#4d6169;text-decoration:none;border:1px solid #b9c6c2';
+    a.onclick=function(e){e.preventDefault();clearSess();location.reload();};
+    document.body.appendChild(a);
+  });
 })();
 </script>
 <style>
