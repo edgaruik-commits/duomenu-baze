@@ -144,7 +144,7 @@
   /* atsijungimo nuoroda */
   document.addEventListener('DOMContentLoaded',function(){
     var a=document.createElement('a');a.textContent='Atsijungti';a.href='#';
-    a.style.cssText='position:fixed;right:8px;bottom:8px;z-index:99999;font:12px system-ui;padding:3px 9px;border-radius:99px;background:rgba(255,255,255,.85);color:#4d6169;text-decoration:none;border:1px solid #b9c6c2';
+    a.style.cssText='position:fixed;right:12px;top:10px;z-index:99999;font:12px system-ui;padding:3px 9px;border-radius:99px;background:rgba(255,255,255,.85);color:#4d6169;text-decoration:none;border:1px solid #b9c6c2';
     a.onclick=function(e){e.preventDefault();clearSess();location.reload();};
     document.body.appendChild(a);
   });
@@ -232,13 +232,14 @@ button.b{font:700 16px system-ui,sans-serif;cursor:pointer}
 .vbar button[aria-pressed=true]{background:#d98a1c;border-color:#d98a1c;color:#1a1410}
 .vbar button:focus-visible{outline:3px solid #d98a1c;outline-offset:2px}
 .hint{bottom:64px}
+#oStove{gap:4px!important;padding:1px 0 3px 10px!important}#oStove .rw{flex:0 0 100%;display:flex;flex-wrap:wrap;gap:4px}#oStove .sl{flex:0 0 100%;font-size:.66rem;font-weight:600;color:#4d6169;margin-top:3px}#oStove button{font-size:.74rem!important;padding:2px 9px!important}
 @media(max-width:900px){.hint{display:none}.vbar{left:10px;right:10px;bottom:8px;max-width:none;flex-wrap:nowrap;overflow-x:auto;border-radius:999px;scrollbar-width:none}.vbar::-webkit-scrollbar{display:none}.panel{bottom:56px}.vbar .vl{display:none}}
 .readout strong{transition:color .6s}
 .stage.night .readout strong{color:#fff;text-shadow:0 1px 8px rgba(0,0,0,.45)}
 
 .topbar{max-width:1100px;margin:0 auto;padding:14px 20px 0;display:flex;gap:10px;flex-wrap:wrap}
-#newCfg,#clList,#tdBtn{margin:0;cursor:pointer;font:inherit;font-weight:700;color:#10282f;border-color:#10282f}
-#newCfg:hover,#clList:hover,#tdBtn:hover{background:#10282f;color:#fff}
+#newCfg,#clList,#tdBtn,#impBtn{margin:0;cursor:pointer;font:inherit;font-weight:700;color:#10282f;border-color:#10282f}
+#newCfg:hover,#clList:hover,#tdBtn:hover,#impBtn:hover{background:#10282f;color:#fff}
 #prBtn{margin:0;cursor:pointer;font:inherit;font-weight:700}
 #prDlg{position:fixed;inset:0;margin:auto;border:0;border-radius:14px;padding:22px 26px;max-width:640px;width:calc(100% - 28px);max-height:86vh;overflow:auto;color:#10282f;box-shadow:0 20px 60px rgba(0,0,0,.35)}
 #tdDlg{position:fixed;inset:0;margin:auto;border:0;border-radius:14px;padding:22px 26px;max-width:640px;width:calc(100% - 28px);max-height:86vh;overflow:auto;color:#10282f;box-shadow:0 20px 60px rgba(0,0,0,.35)}
@@ -277,6 +278,13 @@ button.b{font:700 16px system-ui,sans-serif;cursor:pointer}
 #mfDlg label{display:grid;gap:4px;font-size:.85rem;color:#4d6169}
 #mfDlg input,#mfDlg textarea{font:inherit;color:#10282f;padding:8px 10px;border:1px solid #b9c6c2;border-radius:6px}
 #pdDlg,#trqDlg{position:fixed;inset:0;margin:auto;border:0;border-radius:14px;padding:22px 26px;max-width:380px;width:calc(100% - 28px);color:#10282f;box-shadow:0 20px 60px rgba(0,0,0,.35)}
+#dcDlg,#dxDlg{position:fixed;inset:0;margin:auto;border:0;border-radius:14px;padding:22px 26px;max-width:380px;width:calc(100% - 28px);color:#10282f;box-shadow:0 20px 60px rgba(0,0,0,.35)}
+#dcDlg::backdrop,#dxDlg::backdrop{background:rgba(16,40,47,.65)}
+#dcDlg h3,#dxDlg h3{font:700 22px Georgia,serif;margin:0 0 14px}
+#dcDlg .x,#dxDlg .x{float:right;background:none;border:0;font-size:1.6rem;cursor:pointer;line-height:1;color:#10282f}
+#dcDlg .pdl,#dxDlg .pdl{display:grid;gap:10px}
+#dcDlg .pdl .b,#dxDlg .pdl .b{margin:0;padding:11px 18px;cursor:pointer;font:inherit;font-weight:700;text-align:left}
+#dcDlg .pdl .b:hover,#dxDlg .pdl .b:hover{background:#10282f;color:#fff}
 #pdDlg::backdrop,#trqDlg::backdrop{background:rgba(16,40,47,.65)}
 #pdDlg h3,#trqDlg h3{font:700 22px Georgia,serif;margin:0 0 14px}
 #pdDlg .x,#trqDlg .x{float:right;background:none;border:0;font-size:1.6rem;cursor:pointer;line-height:1;color:#10282f}
@@ -400,6 +408,7 @@ button.b{font:700 16px system-ui,sans-serif;cursor:pointer}
 .dlbox b.sec{margin:0 6px 0 0;font-size:.82rem;color:#10282f}
 .dlbox .b{margin:0!important;padding:6px 14px!important;font-size:.82rem!important;border:1.5px solid #10282f;border-radius:8px;background:transparent;color:#10282f;cursor:pointer;white-space:nowrap}
 .dlbox .b:hover{background:#10282f;color:#fff}
+.dlbox .dlx{display:none!important}
 /* desktop: price list scrolls inside the 3D view, the Total row stays visible */
 @media(min-width:901px){
  .readout{bottom:40px;display:flex;flex-direction:column}
@@ -437,7 +446,7 @@ button.b{font:700 16px system-ui,sans-serif;cursor:pointer}
 </style>
 </head>
 <body>
-<div class="topbar"><button class="b" id="prBtn" type="button">Basic price</button><button class="b o" id="tdBtn" type="button">Technical data</button><button class="b o" id="newCfg" type="button">New order</button><button class="b o" id="clList" type="button">Order list</button><button class="b o" id="mfBtn" type="button">New manufacturer</button><button class="b o" id="mlBtn" type="button">Manufacturer list</button><button class="b o" id="ncBtn" type="button">New customer</button><button class="b o" id="cnList" type="button">Customer list</button></div>
+<div class="topbar"><button class="b" id="prBtn" type="button">Basic price</button><button class="b o" id="tdBtn" type="button">Technical data</button><button class="b o" id="newCfg" type="button">New order</button><button class="b o" id="clList" type="button">Order list</button><button class="b o" id="impBtn" type="button">Import order</button><input type="file" id="impFile" accept=".json,application/json" hidden><button class="b o" id="mfBtn" type="button">New manufacturer</button><button class="b o" id="mlBtn" type="button">Manufacturer list</button><button class="b o" id="ncBtn" type="button">New customer</button><button class="b o" id="cnList" type="button">Customer list</button></div>
 
 
 
@@ -446,6 +455,10 @@ button.b{font:700 16px system-ui,sans-serif;cursor:pointer}
 
 <dialog id="trqDlg" aria-labelledby="trqT"><button class="x" id="trqX" type="button" aria-label="Close">&times;</button><h3 id="trqT">Transportation document</h3>
 <div class="pdl"><button class="b o" id="trqReq" type="button">Transportation request</button><button class="b o" id="trqOrd" type="button">Transportation order</button></div></dialog>
+<dialog id="dcDlg" aria-labelledby="dcT"><button class="x" id="dcX" type="button" aria-label="Close">&times;</button><h3 id="dcT">Customer document</h3>
+<div class="pdl"><button class="b o" id="dlOffer" type="button">Offer</button><button class="b o" id="dlConf" type="button">Order confirmation</button></div></dialog>
+<dialog id="dxDlg" aria-labelledby="dxT"><button class="x" id="dxX" type="button" aria-label="Close">&times;</button><h3 id="dxT">Custom document</h3>
+<div class="pdl"><button class="b o" id="dlPack" type="button">Packing list</button></div></dialog>
 
 <dialog id="ncDlg" aria-labelledby="ncT"><button class="x" id="ncX" type="button" aria-label="Close">&times;</button><h3 id="ncT">New customer</h3>
 <div class="ncTabs" role="tablist"><button type="button" class="nct" data-t="person" aria-pressed="true">Individual</button><button type="button" class="nct" data-t="company" aria-pressed="false">Legal entity</button></div>
@@ -486,6 +499,7 @@ button.b{font:700 16px system-ui,sans-serif;cursor:pointer}
             <b id="lFib"></b><div class="sw" id="oFib"></div>
             <b id="lAcr"></b><div class="sw" id="oAcr"></div>
             <b id="lWood"></b><div class="sw" id="oWood"></div>
+            <b id="lWpc"></b><div class="sw" id="oWpc"></div>
           </div>
           <div class="pane" id="pane1" hidden>
             <b id="lStove"></b><div class="stv" id="oStove"></div>
@@ -501,11 +515,14 @@ button.b{font:700 16px system-ui,sans-serif;cursor:pointer}
 
       </div>
 <div class="dlbox" id="ordBox" hidden><b class="sec">Order information</b><button class="b o" id="custBtn" type="button">Customer details</button><button class="b o" id="mkBtn" type="button">Manufacturer</button><button class="b o" id="trBtn" type="button">Transportation cost</button><button class="b o" id="epBtn" type="button">Edit price</button></div>
-<div class="dlbox" id="dlBox" hidden><b class="sec" id="dlHead" hidden>Download documents</b><button class="b o" id="pdfBtn" type="button" hidden>Customer offer</button><button class="b o" id="pdfBtn3" type="button" hidden>Order confirmation</button><button class="b o" id="pdfBtn2" type="button" hidden>Production</button><button class="b o" id="pdfBtn4" type="button" hidden>Transportation</button><button class="b o" id="pdfBtn5" type="button" hidden>Packing list</button></div>
+<div class="dlbox" id="dlBox" hidden><b class="sec" id="dlHead" hidden>Download documents</b><button class="b o" id="dlCust" type="button" hidden>Customer</button><button class="b o dlx" id="pdfBtn" type="button" hidden>Customer offer</button><button class="b o dlx" id="pdfBtn3" type="button" hidden>Order confirmation</button><button class="b o" id="pdfBtn2" type="button" hidden>Production</button><button class="b o" id="pdfBtn4" type="button" hidden>Transportation</button><button class="b o" id="dlCus" type="button" hidden>Custom</button><button class="b o dlx" id="pdfBtn5" type="button" hidden>Packing list</button><button class="b o" id="dlExp" type="button" hidden>Export order</button></div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script>var PRICE_OV=(function(){try{return JSON.parse(localStorage.getItem('prices_v1')||'{}')}catch(e){return {}}})();</script>
 <script>
 /* ============ EDIT HERE: all content of the page ============ */
+/* Stove type options: [label, surcharge EUR]. Edit prices here. */
+const STV={ orient:[['Vertical',0],['Horizontal',0]], glass:[['Without glass',0],['With glass',0]], metal:[['AISI 304',0],['AISI 316',150]], thick:[['1.5 mm',0],['2 mm',200]] };
+Object.keys(STV).forEach(k=>STV[k].forEach((o,i)=>{const v=PRICE_OV['stv:'+k+':'+i]; if(v!=null)o[1]=v;}));   // price-list overrides
 const SITE = {
   brand: 'Fjord|fire',               // "|" splits the coloured part
   email: 'edgaruik@gmail.com',   // placeholder
@@ -526,7 +543,10 @@ const SITE = {
   // stove position: inside the tub (integrated stove behind a wooden guard) or outside (free-standing)
   stovePlaces: [ {id:'out', n:'Outside', extra:0}, {id:'in', n:'Inside', extra:200} ],
   // stove types (Stove tab). extra = surcharge in EUR (set the real prices here). electric:true = no chimney / no fire
-  stoveTypes: [ {id:'s304_15', n:'Stove AISI 304 1.5 mm', extra:0, free:true}, {id:'s316_15', n:'Stove AISI 316 1.5 mm', extra:150}, {id:'s304_20', n:'Stove AISI 304 2.0 mm', extra:200}, {id:'el9', n:'Electric 9 kW', extra:250, electric:true} ],
+  stoveTypes: [ {id:'wood', free:true,
+      get n(){ const v=st.sv; return STV.orient[v.o][0]+' \u00b7 '+STV.glass[v.g][0].toLowerCase()+' \u00b7 '+STV.metal[v.m][0]+' \u00b7 '+STV.thick[v.h][0]; },
+      get extra(){ const v=st.sv; return STV.orient[v.o][1]+STV.glass[v.g][1]+STV.metal[v.m][1]+STV.thick[v.h][1]; } },
+    {id:'el9', n:'Electric 9 kW', extra:250, electric:true} ],
   woods:    [{n:'Spruce',c:'#c9a46c'},{n:'Thermowood',c:'#6d4b34'},{n:'Larch',c:'#b8733b'},{n:'Natural pine',c:'#dcbc8a'},{n:'Red cedar',c:'#a4512f'},{n:'Walnut',c:'#4f3526'},{n:'Grey wash',c:'#8d918e'},{n:'Black stain',c:'#2c2b29'}],
   acrylics: [{n:'Ice blue',c:'#bfe3ee'},{n:'Pearl white',c:'#f1f3f2'},{n:'Graphite',c:'#4b555a'},{n:'Mocha brown',c:'#9a7058'},{n:'Sky blue',c:'#7cc2e3'},{n:'Deep blue',c:'#2f6f9f'},{n:'Sand beige',c:'#d9c9a8'},{n:'Sage green',c:'#8fb09f'}],
   // ids are used by the 3D scene: hydro, air, thermo, shelf, stove, guard, led, cover, sound, ladder, filter
@@ -536,7 +556,7 @@ const SITE = {
     {id:'thermo', name:'Water thermometer',          price:25,  desc:'Floating thermometer'},
     {id:'shelf',  name:'Drink shelf',                price:80, desc:'Wooden or metal shelf on the rim'},
     {id:'stove',  name:'External stove',             price:0, desc:'Wood-fired stove with chimney'},
-    {id:'guard',  name:'Chimney guard',              price:90,  desc:'Perforated stainless guard around the chimney (needs a stove)'},
+    {id:'guard',  name:'Chimney',                    price:0,   desc:'Chimney options: guard, spark arrestor (needs a stove)'},
     {id:'led',    name:'LED lighting',               price:140, desc:'Colour lighting under the rim'},
     {id:'cover',  name:'Thermal cover',              price:0,   desc:'Insulated lid that keeps the heat in'},
     {id:'sound',  name:'Sound system',               price:290, desc:'Waterproof speaker'},
@@ -581,7 +601,9 @@ S.models.forEach(m=>['price','priceSquare','priceRect'].forEach(f=>{const v=PRIC
 S.stoveTypes.forEach(t=>{const v=PRICE_OV['st:'+t.id]; if(v!=null) t.extra=v;});
 S.stovePlaces.forEach(t=>{const v=PRICE_OV['sp:'+t.id]; if(v!=null) t.extra=v;});
 S.accessories.forEach(a=>{const v=PRICE_OV['a:'+a.id]; if(v!=null&&!['stove','ladder','hydro','thermo','shelf'].includes(a.id)) a.price=v;});
-const st = { po:{}, transport:0, terms:'', pick:'', del:null, m:0, s:0, w:5, a:2, fib:0, coverC:0, stepOpen:1, p:0, t:0, fire:true, acc:{ladder:true}, pend:{hydro:false,thermo:true,shelf:true,led:true,air:true,filter:true} };   // fire is always on
+const ACR_PRICE = (PRICE_OV['fin:acr']!=null?PRICE_OV['fin:acr']:400);   // acrylic liner surcharge over fiberglass (EUR), any colour
+const WPC_PRICE = (PRICE_OV['fin:wpc']!=null?PRICE_OV['fin:wpc']:200);   // WPC finish surcharge (EUR), any colour
+const st = { po:{}, transport:0, terms:'', pick:'', del:null, sv:{o:0,g:1,m:0,h:0}, m:0, s:0, w:5, wpc:0, a:2, fib:1, coverC:0, stepOpen:1, p:0, t:0, fire:true, acc:{ladder:true}, chim:{g:false,k:false}, pend:{hydro:false,thermo:true,shelf:true,led:true,air:true,filter:true,cover:true} };   // fire is always on
 S.defaultAccessories.forEach(i => st.acc[i] = true);
 const fmt = n => n===0?'':new Intl.NumberFormat('en-IE',{maximumFractionDigits:0}).format(n)+'€';   // number first, then the euro sign: 25€
 const plus = n => n ? '+'+fmt(n) : '';   // price shown in the option menus, e.g. +€120
@@ -594,6 +616,8 @@ const kB=()=>'base:'+S.models[st.m].id+':'+S.shapes[st.s].id, kS=()=>'stove:'+S.
 const ovp=(k,v)=>(st.po&&st.po[k]!=null)?st.po[k]:v;
 function priceLines(){   // every priced line of the current order with its standard (price list) price
   const m=S.models[st.m], sh=S.shapes[st.s], A=[{k:kB(),label:m.name+' · '+sh.n+' (base price)',price:mp(m,st.s)+sh.extra}];
+  if(st.wpc) A.push({k:'fin:wpc',label:'WPC finish',price:WPC_PRICE});
+  if(!st.fib) A.push({k:'fin:acr',label:'Acrylic liner',price:ACR_PRICE});
   if(st.acc.stove){ const t=S.stoveTypes[st.t]; A.push({k:kS(),label:'Stove: '+t.n,price:t.extra});
     if(!t.electric){ const p=S.stovePlaces[st.p]; A.push({k:kP(),label:'Stove position: '+p.n,price:p.extra}); } }
   S.accessories.filter(x=>x.id!=='stove'&&st.acc[x.id]&&!st.pend[x.id]).forEach(x=>A.push({k:kA(x),label:x.name,price:x.price}));
@@ -604,7 +628,7 @@ const total = () => priceLines().reduce((t,p)=>t+ovp(p.k,p.price),0);
 /* ---------- Text ---------- */
 /* ---------- Text ---------- */
 (function(){
-  $('lModel').textContent=S.ui.model; $('lShape').textContent=S.ui.shape; $('lWood').textContent=S.ui.wood; $('lAcr').textContent=S.ui.acr; $('lFib').textContent=S.ui.fib; const ap=id=>(S.accessories.find(a=>a.id===id)||{price:0}).price;
+  $('lModel').textContent='Tube size'; $('lShape').textContent='Tube shape'; $('lWood').textContent='Tube finish Thermo wood'; $('lWpc').textContent='Tube finish WPC'+(st.wpc?' '+plus(WPC_PRICE):''); $('lAcr').textContent='Tube inner Acrylic'+(st.fib?'':' '+plus(ACR_PRICE)); $('lFib').textContent='Tube inner Fiberglass'; const ap=id=>(S.accessories.find(a=>a.id===id)||{price:0}).price;
   $('lPos').textContent=S.ui.stovePos+(ap('stove')?' '+plus(ap('stove')):''); $('lSteps').textContent=S.ui.steps; $('lStove').textContent=S.ui.stoveType;
   $('hint').textContent=S.ui.hint;
 })();
@@ -614,11 +638,13 @@ function press(box,i){ [...box.children].forEach((b,j)=>b.setAttribute('aria-pre
 function btn(box,label,fn,css){ const b=document.createElement('button'); if(css)b.style.background=css; b.textContent=css?'':label; b.title=b.ariaLabel=label; b.onclick=fn; box.appendChild(b); return b; }
 S.models.forEach((m,i)=>btn($('oModel'),m.name,()=>{st.m=i;press($('oModel'),i);build();readout();}).textContent=m.id);
 S.shapes.forEach((s,i)=>btn($('oShape'),s.n+(s.extra?' '+plus(s.extra):''),()=>{st.s=i;press($('oShape'),i);build();readout();}));
-S.woods.forEach((w,i)=>btn($('oWood'),w.n,()=>{st.w=i;press($('oWood'),i);build();},w.c));
-function pressMat(){ press($('oAcr'),st.fib?-1:st.a); press($('oFib'),st.fib?st.a:-1); }
-S.acrylics.forEach((a,i)=>btn($('oAcr'),a.n,()=>{st.a=i;st.fib=0;pressMat();build();},a.c));
+function pressWood(){ press($('oWood'),st.wpc?-1:st.w); press($('oWpc'),st.wpc?st.w:-1); $('lWpc').textContent='Tube finish WPC'+(st.wpc?' '+plus(WPC_PRICE):''); }   // thermo wood and WPC are alternatives, same colours
+S.woods.forEach((w,i)=>btn($('oWood'),w.n,()=>{st.w=i;st.wpc=0;pressWood();build();},w.c));
+S.woods.forEach((w,i)=>btn($('oWpc'),w.n,()=>{ if(st.wpc&&st.w===i){ st.wpc=0; } else { st.w=i; st.wpc=1; } pressWood();build(); },w.c));   // click the selected WPC colour again = remove WPC (and its price)
+function pressMat(){ press($('oAcr'),st.fib?-1:st.a); press($('oFib'),st.fib?st.a:-1); $('lAcr').textContent='Tube inner Acrylic'+(st.fib?'':' '+plus(ACR_PRICE)); }
+S.acrylics.forEach((a,i)=>btn($('oAcr'),a.n,()=>{ if(!st.fib&&st.a===i){ st.fib=1; } else { st.a=i; st.fib=0; } pressMat();build(); },a.c));   // click the selected acrylic colour again = remove acrylic (and its price)
 S.acrylics.forEach((a,i)=>btn($('oFib'),a.n,()=>{st.a=i;st.fib=1;pressMat();build();},a.c));   // Fiberglass: same colours as acrylic
-press($('oModel'),st.m); press($('oShape'),st.s); press($('oWood'),st.w); pressMat();
+press($('oModel'),st.m); press($('oShape'),st.s); pressWood(); pressMat();
 const chipEls={}; var COVC=[['Black','#1c1e20'],['Brown','#6b4430'],['Grey','#8a9094']];   // thermal cover colours
 function syncUI(){ const v=!!st.acc.stove;
   const el=!!S.stoveTypes[st.t].electric;
@@ -710,7 +736,7 @@ let hydroBeamM=null, popRings=null; const popP=particles(36*5*3,.1,1);   // bubb
   g.strokeStyle='rgba(255,255,255,.95)'; g.lineWidth=5; g.lineCap='round'; g.beginPath(); g.arc(32,32,17,Math.PI*1.1,Math.PI*1.45); g.stroke();
   const BT=new THREE.CanvasTexture(c); airB.p.material.map=BT; airB.p.material.size=.17; airB.p.material.needsUpdate=true; popP.p.material.map=BT; popP.p.material.needsUpdate=true; } bubbles.p.visible=false;
 
-let coverHinge=null, coverAng=0, coverStart=0, coverWas=false; const COVER_OPEN=Math.PI*148/180;
+var lidG=null, lidAng=0, lidAnim=null, lidTimer=null;   // thermal cover hinge state
 let tub, fireDoor, R=1, HW=1, HX=1, HZ=1, sq=false, H=.95, bound=.8, bx=.8, bz=.8;
 function build(){
   if(tub) scene.remove(tub);
@@ -721,7 +747,7 @@ function build(){
   const ss=new THREE.MeshPhongMaterial({color:0xaeb8bc,specular:0xffffff,shininess:80});
   const blk=new THREE.MeshPhongMaterial({color:0x1b2124,specular:0x555555,shininess:40});
   const am=new THREE.MeshPhongMaterial({color:acr,shininess:90,side:THREE.DoubleSide});
-  const wm=()=>new THREE.MeshStandardMaterial({color:wood.clone().offsetHSL(0,0,(Math.random()-.5)*.07),roughness:.85});
+  const wm=()=>new THREE.MeshStandardMaterial({color:wood.clone().offsetHSL(0,0,(Math.random()-.5)*(st.wpc?.02:.07)),roughness:st.wpc?.5:.85});
   const add=(geo,mat,x,y,z,ry)=>{ const o=new THREE.Mesh(geo,mat); o.position.set(x,y,z); if(ry)o.rotation.y=ry; o.castShadow=true; o.receiveShadow=true; tub.add(o); return o; };
 
   function loopMesh(y,off,mat,th){ const g=new THREE.Group();
@@ -782,22 +808,28 @@ function build(){
 
   // accessories
   fireDoor=null;
-  if(A.stove){ const inside=S.stovePlaces[st.p].id==='in'; const g=new THREE.Group(); const e=edge(0);
+  if(A.stove){ const ss=new THREE.MeshPhongMaterial({color:(!S.stoveTypes[st.t].electric&&st.sv.m)?0x93a5ae:0xaeb8bc,specular:0xffffff,shininess:80}); const inside=S.stovePlaces[st.p].id==='in'; const g=new THREE.Group(); const e=edge(0);
     g.position.copy(e.p); g.rotation.y=-Math.atan2(e.n.z,e.n.x);   // local +x = away from the tub
     const mk=(geo,mat,x,y,z)=>{ const o=new THREE.Mesh(geo,mat); o.position.set(x,y,z); o.castShadow=true; o.receiveShadow=true; g.add(o); return o; };
     const bx=(w,h,d)=>new THREE.BoxGeometry(w,h,d), cy=(a,b,h,n)=>new THREE.CylinderGeometry(a,b,h,n||20);
     const dark=new THREE.MeshPhongMaterial({color:0x14100d});
     // door with glass window and flame; built facing +z, then turned
-    function door(x,y,z,ry){ const d=new THREE.Group(); d.position.set(x,y,z); d.rotation.y=ry||0; g.add(d);
+    function door(x,y,z,ry,sx,sy){ const d=new THREE.Group(); d.position.set(x,y,z); d.rotation.y=ry||0; d.scale.set(sx||1,sy||1,1); g.add(d);
       const add=(geo,mat,px,py,pz)=>{ const o=new THREE.Mesh(geo,mat); o.position.set(px,py,pz); o.castShadow=true; d.add(o); return o; };
-      add(bx(.3,.34,.03),ss,0,0,.015); add(bx(.2,.2,.02),dark,0,.02,.03);
-      fireDoor=add(bx(.17,.17,.012),flameMat,0,.02,.044);
+      add(bx(.3,.34,.03),ss,0,0,.015);
+      if(st.sv.g){ add(bx(.2,.2,.02),dark,0,.02,.03); fireDoor=add(bx(.17,.17,.012),flameMat,0,.02,.044); }   // with glass: window + flame
+      else add(bx(.24,.26,.012),ss,0,.02,.036);                                                              // without glass: solid door
       [-.14,-.115].forEach(py=>add(bx(.2,.012,.012),dark,0,py,.034)); add(bx(.02,.1,.025),blk,.12,0,.04); }
     // stainless chimney, optional perforated guard
-    function chimney(x,y0,z){ const top=2.4;
+    function chimney(x,y0,z){ const top=2.25+(st.chim.e?CHX:0);   // optional extra chimney section (shown only slightly longer)
       mk(cy(.05,.05,top-y0,16),ss,x,(y0+top)/2,z);
-      if(A.guard){ const h=1.7-y0, gm=guardTube(.1,h); mk(cy(.075,.075,h,16),blk,x,y0+h/2,z); gm.position.set(x,y0+h/2,z); gm.castShadow=true; g.add(gm); [y0+.015,1.7].forEach(y=>mk(cy(.105,.105,.03,24),ss,x,y,z)); }
-      mk(new THREE.ConeGeometry(.11,.13,16),ss,x,top+.06,z); }
+      if(A.guard&&st.chim.g){ const h=1.62-y0, gm=guardTube(.1,h); mk(cy(.075,.075,h,16),blk,x,y0+h/2,z); gm.position.set(x,y0+h/2,z); gm.castShadow=true; g.add(gm); [y0+.015,1.62].forEach(y=>mk(cy(.105,.105,.03,24),ss,x,y,z)); }
+      if(st.chim.k){   // spark arrestor (optional): collar ring + three struts + wide shallow conical rain/spark cap
+        mk(cy(.058,.058,.07,24),ss,x,top-.035,z);                       // collar band on the pipe
+        const sh=.16;
+        [.0,2.094,4.189].forEach(an=>{ const m=mk(cy(.007,.007,sh,8),ss,x+Math.cos(an)*.04,top+sh/2,z+Math.sin(an)*.04); });
+        mk(new THREE.ConeGeometry(.17,.07,40),ss,x,top+sh+.03,z); }    // umbrella cap
+      /* standard chimney: open stainless pipe, no cap */ }
     const electric=!!S.stoveTypes[st.t].electric;
     if(electric){
       // electric 9 kW heater: compact stainless unit next to the tub, joined by two pipes, control panel, no chimney / no fire
@@ -812,20 +844,30 @@ function build(){
       // stove built into the tub wall: stainless panel with door, chimney beside it
       const zc=.45, xw=sq?0:Math.sqrt(R*R-zc*zc)-R;
       mk(bx(.15,H,.62),ss,.005,.06+H/2,0);
-      door(.08,.46,0,Math.PI/2);
+      door(.08,.46,0,Math.PI/2,st.sv.o?1.5:1,st.sv.o?.7:1);
       const pp=mk(cy(.04,.04,.2,12),ss,xw+.17,.55,.38); pp.rotation.x=Math.PI/2;
       chimney(xw+.17,.1,zc);
       fireLight.position.set(e.p.x+e.n.x*.45,.5,e.p.z+e.n.z*.45);
     } else {
       // free-standing stainless stove next to the tub, joined by two pipes
       const cx=.5, bw=.42, bd=.48;
+      if(st.sv.o===1){   // horizontal stove: cylinder lying on its side, door on the front end, chimney at the rear
+        const L=.62, rr=.2, cyY=.33;
+        mk(cy(rr,rr,L,32),ss,cx,cyY,0).rotation.x=Math.PI/2;
+        mk(cy(rr+.012,rr+.012,.03,32),ss,cx,cyY,L/2).rotation.x=Math.PI/2;
+        mk(cy(rr+.012,rr+.012,.03,32),ss,cx,cyY,-L/2).rotation.x=Math.PI/2;
+        [[1,1],[1,-1],[-1,1],[-1,-1]].forEach(([a,b])=>mk(bx(.05,.13,.05),blk,cx+a*.13,.065,b*.22));
+        door(cx,cyY,L/2+.015,0,.8,.8);
+        [.24,.40].forEach(y=>{ const q=mk(cy(.028,.028,.3,12),blk,.15,y,0); q.rotation.z=Math.PI/2; });
+        chimney(cx,cyY+rr-.02,-.2);
+      } else {
       mk(bx(bw,.5,bd),ss,cx,.35,0);
       const rg=new THREE.CylinderGeometry(.1,.297,.14,4); rg.rotateY(Math.PI/4); const rf=mk(rg,ss,cx,.67,0); rf.scale.z=bd/bw;
       [[1,1],[1,-1],[-1,1],[-1,-1]].forEach(([a,b])=>mk(bx(.06,.1,.06),blk,cx+a*.16,.05,b*.2));
       door(cx,.4,bd/2);
       mk(bx(.22,.08,.03),ss,cx,.2,bd/2+.015); mk(bx(.1,.012,.02),blk,cx,.2,bd/2+.04);
       [.3,.52].forEach(y=>{ const q=mk(cy(.028,.028,.3,12),blk,.15,y,0); q.rotation.z=Math.PI/2; });
-      chimney(cx,.72,0);
+      chimney(cx,.72,0); }
       fireLight.position.set(e.p.x+e.n.x*.5,.4,e.p.z+e.n.z*.5);
     }
     tub.add(g); }
@@ -871,6 +913,45 @@ function build(){
   if(A.sound){ const g=new THREE.Group(); const b=new THREE.Mesh(new THREE.BoxGeometry(.1,.24,.16),new THREE.MeshStandardMaterial({color:0x15191b})); g.add(b);
     const s=new THREE.Mesh(new THREE.CylinderGeometry(.05,.05,.02,16),new THREE.MeshStandardMaterial({color:0x6b767a})); s.rotation.z=Math.PI/2; s.position.x=.055; g.add(s);
     place(g,-Math.PI/2,.62); g.translateX(.09); }
+  if(A.filter&&st.filter===0){   // filter box: thermo-wood cabinet hugging the tub wall (square 740x740x840 mm or round 910x690x720 mm, slatted lid)
+    const g=new THREE.Group(), rd=st.fbox===1, hh=rd?.72:.84, lt=.03;
+    const bw=()=>new THREE.MeshStandardMaterial({color:wood.clone().offsetHSL(0,0,(Math.random()-.5)*.05),roughness:.85});
+    const dk=new THREE.MeshStandardMaterial({color:0x2a1a0c});
+    const hw=rd?.455:.37, hd=rd?.345:.37;   // half width (along the wall) and half depth (away from the tub)
+    const inside=(x,z)=>rd?(x*x)/(hd*hd)+(z*z)/(hw*hw)<=1:(Math.abs(x)<=hd&&Math.abs(z)<=hw);   // x = away from tub, z = along the wall
+    const bm=(sx,sy,sz,px,py,pz,ry)=>{ const o=new THREE.Mesh(new THREE.BoxGeometry(sx,sy,sz),bw()); o.position.set(px,py,pz); if(ry)o.rotation.y=ry; o.castShadow=o.receiveShadow=true; g.add(o); return o; };
+    let cxo, poly=null;
+    if(!sq){   // round tub: the side facing the tub follows the tub circle
+      const Rc=R+.07, D=Rc+hd-.05;      // tub centre sits at local x = -D; box overlaps the clip circle a little so it is cut to the curve
+      cxo=D-R;   // place() already puts the group on the wall (distance R from the tub centre)
+      const N=240, pts=[];
+      for(let k=0;k<N;k++){ const u=k/N; let x,z;
+        if(rd){ const t=u*Math.PI*2; x=hd*Math.cos(t); z=hw*Math.sin(t); }
+        else { const q=u*4, f=q%1, e=Math.floor(q); const c=[[hd,-hw],[hd,hw],[-hd,hw],[-hd,-hw],[hd,-hw]]; x=c[e][0]+(c[e+1][0]-c[e][0])*f; z=c[e][1]+(c[e+1][1]-c[e][1])*f; }
+        let vx=x+D, vz=z, r=Math.hypot(vx,vz); if(r<Rc){ vx*=Rc/r; vz*=Rc/r; x=vx-D; z=vz; }
+        pts.push([x,z]); }
+      poly=pts;
+      // walls: boards of ~7.5 cm placed along the clipped outline
+      const L=[0]; for(let k=1;k<=N;k++){ const a=pts[k-1],b=pts[k%N]; L.push(L[k-1]+Math.hypot(b[0]-a[0],b[1]-a[1])); }
+      const tot=L[N], nb=Math.round(tot/.075), at=d=>{ let k=1; while(k<N&&L[k]<d)k++; const a=pts[k-1],b=pts[k%N], f=(d-L[k-1])/Math.max(1e-6,L[k]-L[k-1]); return [a[0]+(b[0]-a[0])*f,a[1]+(b[1]-a[1])*f]; };
+      for(let k=0;k<nb;k++){ const a=at(tot*k/nb), b=at(tot*(k+1)/nb), len=Math.hypot(b[0]-a[0],b[1]-a[1]);
+        bm(len*1.02,hh,.02,(a[0]+b[0])/2,hh/2,(a[1]+b[1])/2,-Math.atan2(b[1]-a[1],b[0]-a[0])); }
+      // lid: one piece with exactly the same outline as the box, slat grooves drawn on top
+      const sh=new THREE.Shape(); pts.forEach((q,k)=>k?sh.lineTo(q[0],-q[1]):sh.moveTo(q[0],-q[1])); sh.closePath();
+      const lg=new THREE.ExtrudeGeometry(sh,{depth:lt,bevelEnabled:false}); lg.rotateX(-Math.PI/2);
+      const lidM=new THREE.Mesh(lg,bw()); lidM.position.y=hh; lidM.castShadow=lidM.receiveShadow=true; g.add(lidM);
+      const sw=.1;
+      for(let zl=-hw+sw;zl<hw-.01;zl+=sw){ let x0=1e9,x1=-1e9;
+        for(let k=0;k<N;k++){ const a=pts[k],b=pts[(k+1)%N]; if((a[1]-zl)*(b[1]-zl)<=0&&a[1]!==b[1]){ const x=a[0]+(b[0]-a[0])*(zl-a[1])/(b[1]-a[1]); x0=Math.min(x0,x); x1=Math.max(x1,x); } }
+        if(x1>x0){ const l=new THREE.Mesh(new THREE.BoxGeometry(x1-x0,.004,.006),dk); l.position.set((x0+x1)/2,hh+lt+.0005,zl); g.add(l); } }
+    } else {   // square tub: flat wall, plain cabinet
+      cxo=hd+.09;
+      const n=10, w=2*hw/n;
+      for(const sx of [1,-1]) for(let i=0;i<n;i++){ const wd=rd?0:1; bm(.02,hh,w*.97,sx*(hd-.01),hh/2,-hw+w*i+w/2); }
+      for(const sz of [1,-1]) for(let i=0;i<n;i++) bm(w*.97,hh,.02,-hd+w*i+w/2,hh/2,sz*(hw-.01));
+      const sw=.1; for(let zc=-hw+sw/2;zc<hw;zc+=sw) bm(2*hd+.03,lt,sw-.006,0,hh+lt/2,zc);
+    }
+    place(g,2.35,0); g.translateX(cxo); }   // 2.35 rad = other side of the steps (steps are at pi), clear of the jet control knobs
   if(A.ladder){ const g=new THREE.Group();   // two boxy wooden steps against the tub wall; local x = outward, z = sideways
     const lt=new THREE.MeshStandardMaterial({color:wood.clone().offsetHSL(0,0,.06),roughness:.8});
     const core=new THREE.MeshStandardMaterial({color:0x1b130c,roughness:1});
@@ -948,22 +1029,18 @@ function build(){
       const halo=new THREE.Mesh(new THREE.PlaneGeometry(.2,.2),haloM); halo.rotation.y=-Math.PI/2; halo.position.x=-.016; g.add(halo);
       const beam=new THREE.Mesh(bg,beamM); beam.rotation.z=-Math.PI/2; beam.position.x=-.012; g.add(beam);
       tub.add(g); } }
-  if(A.cover&&!coverWas){ coverAng=0; coverStart=performance.now()+5000; }   /* cover appears closed, opens after 5 s */
-  coverWas=!!A.cover; if(!A.cover) coverHinge=null;
-  if(A.cover){ const lm=new THREE.MeshStandardMaterial({color:new THREE.Color(COVC[st.coverC||0][1]),roughness:.7,side:THREE.DoubleSide});
-    /* half-open cover (as in the photo): the -x half lies on the tub, the +x half is folded back over it, hinged on the middle line */
-    const cy0=H+.17, th=.09, hinge=new THREE.Group();
-    const half=(flat)=>{ let geo;
-      if(sq){ const w=HX+.12; geo=new THREE.BoxGeometry(w,th,2*HZ+.24); geo.translate(flat?w/2:-w/2,0,0); }
-      else { /* solid half-disc: extruded, so the cut edge along the fold is closed (no hollow gap) and the rim is softly bevelled */
-        const r=R+.06, bt=.012, sh=new THREE.Shape(); sh.moveTo(0,-r); sh.absarc(0,0,r,-Math.PI/2,Math.PI/2,false); sh.closePath();
-        geo=new THREE.ExtrudeGeometry(sh,{depth:th-2*bt,bevelEnabled:true,bevelThickness:bt,bevelSize:.012,bevelSegments:2,curveSegments:48});
-        geo.rotateX(-Math.PI/2); geo.translate(0,bt-th/2,0); if(!flat) geo.rotateY(Math.PI); }
-      const o=new THREE.Mesh(geo,lm); o.castShadow=true; o.receiveShadow=true; return o; };
-    const flatHalf=half(true); flatHalf.position.y=cy0; tub.add(flatHalf);
-    const upHalf=half(false); upHalf.position.y=-th/2; hinge.add(upHalf); hinge.position.set(0,cy0+th/2,0); hinge.rotation.z=-coverAng; coverHinge=hinge; tub.add(hinge);   /* closed at angle 0, opens in the render loop */
-    const strap=new THREE.Mesh(new THREE.BoxGeometry(.05,.012,.16),new THREE.MeshStandardMaterial({color:0x2a2d30,roughness:.8}));   // carry strap on the lifted half
-    strap.position.set(-(sq?HX:R)*.55,-th-.008,0); hinge.add(strap); }
+  if(A.cover){ const lm=new THREE.MeshStandardMaterial({color:new THREE.Color(COVC[st.coverC||0][1]),roughness:.7});
+    const um=lm, TH=.09, LY=H+.17;   // underside is the same chosen colour; lid folds in half along the middle
+    const mk=(side)=>{   // side=+1 -> half over +x (stove side, stays fixed), side=-1 -> half over -x (folds up and over onto the stove side)
+      let m;
+      if(sq){ const w=HX+.12; m=new THREE.Mesh(new THREE.BoxGeometry(w,TH,2*HZ+.24),[lm,lm,lm,um,lm,lm]); m.position.x=side*w/2; }
+      else { m=new THREE.Mesh(new THREE.CylinderGeometry(R+.06,R+.06,TH,48,1,false,side>0?0:Math.PI,Math.PI),[lm,lm,um]); }
+      m.castShadow=true;
+      const cut=new THREE.Mesh(new THREE.PlaneGeometry(sq?2*HZ+.24:2*(R+.06),TH),lm); cut.material=lm.clone(); cut.material.side=THREE.DoubleSide; cut.rotation.y=Math.PI/2;
+      const g=new THREE.Group(); g.add(m); g.add(cut); return g; };
+    const fixedH=mk(1); fixedH.position.set(0,LY,0); tub.add(fixedH);
+    const movH=mk(-1); movH.position.y=-.045;   // top face of the half sits on the hinge axis
+    lidG=new THREE.Group(); lidG.position.set(0,LY+.05,0); lidG.rotation.z=-lidAng; lidG.add(movH); tub.add(lidG); } else lidG=null;
   scene.add(tub); ledLight.position.set(0,H-.25,0); poolLight.position.set(0,.8,0); poolLight.color.set(0xffffff);
 }
 build();
@@ -976,7 +1053,9 @@ canvas.addEventListener('pointermove',e=>{ if(!dragging)return; theta-=(e.client
 ['pointerup','pointercancel'].forEach(t=>canvas.addEventListener(t,()=>dragging=false));
 const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
 const VIEW_SCALE=1;   // 1 = tub fills the free area, higher = smaller tub, lower = bigger
-let distT=6.4, fitR=0;
+let distT=6.4, fitR=0, fitE=0;
+const CHX=.15;   // visual length of the extra chimney section in the 3D view (m); the price / label still say +1 m
+const chE=()=>(st.chim&&st.chim.e)?CHX:0;
 function resize(){ const p=canvas.parentElement,w=p.clientWidth,h=p.clientHeight,pn=p.querySelector('.panel');
   renderer.setSize(w,h,false); camera.aspect=w/h;
   let fw=w, fh=h, ox=0, oy=0;                              // free area not covered by the options panel
@@ -984,7 +1063,7 @@ function resize(){ const p=canvas.parentElement,w=p.clientWidth,h=p.clientHeight
   else { const ph=pn.offsetHeight+64, top=80; fh=Math.max(200,h-ph-top); oy=(ph-top)/2; } // mobile: panel at the bottom, tub moves up
   camera.setViewOffset(w,h,ox,oy,w,h); camera.updateProjectionMatrix();
   const k=2*Math.tan(17*Math.PI/180);
-  distT=VIEW_SCALE*Math.max(4,(2*R+1.9)*(w/fw)/(k*camera.aspect),3.1*(h/fh)/k); }
+  distT=VIEW_SCALE*Math.max(4,(2*R+1.9)*(w/fw)/(k*camera.aspect),(3.1+.75*chE())*(h/fh)/k); }
 addEventListener('resize',resize); resize();
 if(window.ResizeObserver) new ResizeObserver(()=>resize()).observe(canvas.parentElement.querySelector('.panel'));
 
@@ -1008,24 +1087,26 @@ const moonCol=new THREE.Color(0x8fa8ff), sunCol=new THREE.Color(0xffffff), hSkyD
 const clock=new THREE.Clock();
 (function loop(){
   const t=clock.getElapsedTime(), A=visAcc(), f=st.fire&&A.stove&&!!fireDoor;
-  if(!dragging){ if(autoRot&&!reduce) theta+=.0025;
+  if(!dragging){ if(autoRot&&!reduce) theta+=.000625;
     if(thetaT!==null){ let d=thetaT-theta; d=Math.atan2(Math.sin(d),Math.cos(d)); theta+=d*.1; if(Math.abs(d)<.002) thetaT=null; }
     phi+=(phiT-phi)*.1; }
-  viewMul+=(viewMulT-viewMul)*.1; lookY+=(lookYT-lookY)*.1;
+  viewMul+=(viewMulT-viewMul)*.1; lookY+=((lookYT+(viewMulT>=1?.4*chE():0))-lookY)*.1;
   night+=(nightT-night)*.06; if(Math.abs(nightT-night)<.002) night=nightT;
   hemi.color.copy(hSkyD).lerp(hSkyN,night); hemi.groundColor.copy(hGrD).lerp(hGrN,night); hemi.intensity=.85-night*.5;
   sun.color.copy(sunCol).lerp(moonCol,night); sun.intensity=.8-night*.45; sun.position.set(3-night*6,5,2.5-night*5);
   ground.material.color.copy(gD).lerp(gN,night);
-  dist+=(distT*viewMul-dist)*.08; if(fitR!==R){ fitR=R; resize(); }
+  dist+=(distT*viewMul-dist)*.08; if(fitR!==R||fitE!==chE()){ fitR=R; fitE=chE(); resize(); }
   camera.position.set(Math.sin(theta)*Math.cos(phi)*dist, Math.sin(phi)*dist+.8, Math.cos(theta)*Math.cos(phi)*dist);
   camera.lookAt(0,lookY,0);
   fireLight.intensity=f?(1.1+Math.sin(t*14)*.25+Math.sin(t*23)*.15)*(1+night*1.5):0; fireLight.distance=5+night*3;
   if(fireDoor){ fireDoor.visible=f; if(f){ fireDoor.scale.y=1+Math.sin(t*13)*.07; fireDoor.scale.x=1+Math.sin(t*9+1)*.05; } }
-  ledLight.intensity=A.led&&!A.cover?1.1+night*1.4:0;
-  const covClosed=!!A.cover&&coverAng<.35;   /* no steam / bubbles while the cover is closed */
-  steam.p.visible=!covClosed; steam.p.material.opacity=f?.38:.12;
+  if(lidAnim){ const k=Math.min(1,(performance.now()-lidAnim.t0)/lidAnim.d), e=k<.5?2*k*k:1-Math.pow(-2*k+2,2)/2; lidAng=lidAnim.a+(lidAnim.b-lidAnim.a)*e; if(k>=1) lidAnim=null; }
+  if(lidG) lidG.rotation.z=-lidAng;
+  const lidOpen=lidAng>.35;
+  ledLight.intensity=A.led&&(!A.cover||lidOpen)?1.1+night*1.4:0;
+  steam.p.visible=!A.cover||lidOpen; steam.p.material.opacity=f?.38:.12;
   bubbles.p.visible=false;
-  { const show=!covClosed; if(popRings) popRings.visible=show; spray.p.visible=!!A.hydro&&show; airB.p.visible=!!A.air&&show;
+  { const show=!A.cover||lidOpen; if(popRings) popRings.visible=show; spray.p.visible=!!A.hydro&&show; airB.p.visible=!!A.air&&show;
     if(hydroBeamM) hydroBeamM.opacity=.5+.12*Math.sin(t*9);
     if(A.hydro){ let c=0; hydroSrc.forEach((j,i)=>{ for(let k=0;k<12;k++){ const life=(t*.9+k/12+i*.137)%1, d=.04+life*.7, w=Math.sin(i*12.9+k*7.7)*.06*life;
         spray.pos[c*3]=j.x-j.nx*d-j.nz*w; spray.pos[c*3+1]=j.y+Math.sin(life*Math.PI)*.07+Math.cos(i*3.1+k*5.3)*.025*life; spray.pos[c*3+2]=j.z-j.nz*d+j.nx*w; c++; } });
@@ -1041,12 +1122,10 @@ const clock=new THREE.Clock();
       airB.g.setDrawRange(0,c); airB.g.attributes.position.needsUpdate=true;
       popP.g.setDrawRange(0,c2); popP.g.attributes.position.needsUpdate=true; if(popRings) popRings.instanceMatrix.needsUpdate=true; } }
   steam.seed.forEach((s,i)=>{ const life=(t*(f?.18:.08)+s.a)%1, a=s.a*60, rr=Math.sqrt(s.r)*bound;
-    let sx=sq?s.x*bx:Math.cos(a)*rr; if(A.cover) sx=-(Math.abs(sx)*.9+.06);   /* cover on: steam only rises through the open (-x, steps side) half */
-    steam.pos[i*3]=sx+Math.sin(t+i)*.05*life; steam.pos[i*3+1]=H+.05+life*1.3; steam.pos[i*3+2]=(sq?s.z*bz:Math.sin(a)*rr)+Math.cos(t*.8+i)*.08*life; });
+    { let sx=(sq?s.x*bx:Math.cos(a)*rr)+Math.sin(t+i)*.08*life; if(A.cover) sx=-Math.min(Math.abs(sx)+.12,sq?bx:bound);   /* open cover: steam only over the open half */ steam.pos[i*3]=sx; } steam.pos[i*3+1]=H+.05+life*1.3; steam.pos[i*3+2]=(sq?s.z*bz:Math.sin(a)*rr)+Math.cos(t*.8+i)*.08*life; });
   bubbles.seed.forEach((s,i)=>{ const life=(t*.45+s.a)%1, a=s.a*60, rr=Math.sqrt(s.r)*bound*.9;
     bubbles.pos[i*3]=sq?s.x*bx*.9:Math.cos(a)*rr; bubbles.pos[i*3+1]=.2+life*(H-.35); bubbles.pos[i*3+2]=sq?s.z*bz*.9:Math.sin(a)*rr; });
   steam.g.attributes.position.needsUpdate=true; bubbles.g.attributes.position.needsUpdate=true;
-  if(coverHinge&&performance.now()>coverStart){ coverAng+=(COVER_OPEN-coverAng)*.05; coverHinge.rotation.z=-coverAng; }
   renderer.render(scene,camera);
   requestAnimationFrame(loop);
 })();
@@ -1057,17 +1136,18 @@ const clock=new THREE.Clock();
 <script>
 function readout(){const m=S.models[st.m],sh=S.shapes[st.s],sv=S.accessories.find(x=>x.id==='stove');$('rName').textContent=m.name+' · '+sh.n;
  const tv=f=>window.techVal?window.techVal(m,sh.id,f):m[f];
- const L=[[m.name,tv('size'),1],['Size: '+tv('people'),''],['Shape: '+sh.n,sh.extra?'+'+fmt(sh.extra):''],['Wood: '+S.woods[st.w].n,''],[(st.fib?S.ui.fib:S.ui.acr)+': '+S.acrylics[st.a].n,''],
-  st.acc.stove?['Stove: '+S.stoveTypes[st.t].n,fmt(ovp(kS(),sv.price+S.stoveTypes[st.t].extra))]:['Stove: None','']];
+ const L=[[m.name,tv('size'),1],['Size: '+tv('people'),''],['Shape: '+sh.n,sh.extra?'+'+fmt(sh.extra):''],[(st.wpc?'WPC: ':'Wood: ')+S.woods[st.w].n,st.wpc?fmt(ovp('fin:wpc',WPC_PRICE)):''],[(st.fib?S.ui.fib:S.ui.acr)+': '+S.acrylics[st.a].n,st.fib?'':fmt(ovp('fin:acr',ACR_PRICE))]];
+ const ED=window.eqDone||[false,false,false];   // equipment rows appear only after the item was picked in the Equipment tab
+ if(ED[0]&&st.acc.stove){ const sp=ovp(kS(),sv.price+S.stoveTypes[st.t].extra); L.push(['Stove: '+S.stoveTypes[st.t].n,sp?fmt(sp):'included']); }
  if(st.po[kB()]!=null) L.splice(1,0,['Hot tub price',fmt(st.po[kB()])]);   // base price is listed only when it was edited for this order
- if(st.acc.stove&&!S.stoveTypes[st.t].electric) L.push(['Stove position: '+S.stovePlaces[st.p].n,fmt(ovp(kP(),S.stovePlaces[st.p].extra))]);
- S.accessories.filter(x=>x.id!=='stove'&&st.acc[x.id]&&!st.pend[x.id]).forEach(x=>L.push([x.name,fmt(ovp(kA(x),x.price))]));
+ if(ED[1]&&st.acc.stove&&!S.stoveTypes[st.t].electric) L.push(['Stove position: '+S.stovePlaces[st.p].n,fmt(ovp(kP(),S.stovePlaces[st.p].extra))]);
+ S.accessories.filter(x=>x.id!=='stove'&&st.acc[x.id]&&!st.pend[x.id]&&(x.id!=='ladder'||ED[2])&&(x.id!=='guard'||x.price>0)).forEach(x=>L.push([x.name,fmt(ovp(kA(x),x.price))]));
  if(st.transport>0) L.push(['Transportation cost'+(((st.del?st.del.country:(window.CUST&&window.CUST.country)))?' ('+(st.del?st.del.country:window.CUST.country)+')':''),fmt(ovp(kT(),st.transport))]);
  if(st.terms&&window.INCO&&window.INCO[st.terms]) L.push(['Delivery terms: '+st.terms+' - '+window.INCO[st.terms],'']);
  if(st.mf&&window.mfName&&window.mfName(st.mf)) L.push(['Manufacturer: '+window.mfName(st.mf),'']);
  if(st.lead>0) L.push(['Delivery lead time: '+st.lead+(st.lead==1?' week':' weeks'),'']);
  $('rList').innerHTML=L.map(([k,v,n])=>'<div class="rr'+(/^(Delivery terms|Manufacturer):/.test(k)?' hid':'')+'"><span'+(n?' style="flex:none"':'')+'>'+k+'</span><b'+(n?' style="font-weight:400;white-space:normal;text-align:right"':'')+'>'+v+'</b></div>').join('')+'<div class="rr rt"><span>Total</span><b>'+fmt(total())+'</b></div>';}
-[...$('oWood').children,...$('oAcr').children,...$('oFib').children].forEach(b=>b.addEventListener('click',readout));
+[...$('oWood').children,...$('oWpc').children,...$('oAcr').children,...$('oFib').children].forEach(b=>b.addEventListener('click',readout));
 readout();
 </script>
 <script>
@@ -1147,16 +1227,19 @@ function setAir(i){st.air=i;AD.price=AO[i][1];AD.name='Air massage system \u00b7
  [...subZ.children].forEach(b=>b.setAttribute('aria-pressed',+b.dataset.i===i));aOpen=false;avis();readout();}
 const _sA=syncUI;syncUI=function(){if(!st.acc.air){aOpen=true;st.air=0;AD.name='Air massage system';AD.price=AO[0][1];[...subZ.children].forEach(b=>b.setAttribute('aria-pressed',false));chipEls.air.querySelector('small').textContent=plus(AD.price);}_sA();avis();};
 [...subZ.children].forEach(b=>b.setAttribute('aria-pressed',false));
-const FD=S.accessories.find(x=>x.id==='filter'),FO=[['Filter box',120],['Sand filter',250]];
-let fOpen=true;st.filter=0;
+const FD=S.accessories.find(x=>x.id==='filter'),FO=[['Filter box',120],['Sand filter',250]],FB=['Square box','Round box'],FBP=[120,120];   // FB: filter box shapes (prices: edit FO / FBP)
+let fOpen=true;st.filter=0;st.fbox=0;let fStep=0;   // fStep 1 = Filter box chosen, shape not chosen yet
 const subF=document.createElement('div');subF.className='sub';
-FO.forEach(([n,p],i)=>{const b=document.createElement('button');b.type='button';b.textContent=n+(p?' '+plus(p):'');b.dataset.i=i;b.onclick=()=>setFilter(i);subF.appendChild(b);});
+FO.forEach(([n,p],i)=>{const b=document.createElement('button');b.type='button';b.textContent=n+(p&&i>0?' '+plus(p):'');b.dataset.i=i;b.onclick=e=>{ if(i===0){ e.stopPropagation(); fStep=1; fOpen=true; fvis(); } else { fStep=0; setFilter(i); } };subF.appendChild(b);});
+const subB=document.createElement('div');subB.className='sub';
+FB.forEach((n,k)=>{const b=document.createElement('button');b.type='button';b.textContent=n+' '+plus(FBP[k]);b.dataset.k=k;b.onclick=()=>{fStep=0;setFilter(0,k);};subB.appendChild(b);});
 const chgF=document.createElement('button');chgF.type='button';chgF.className='chg';chgF.onclick=()=>{fOpen=true;syncUI();};
-chipEls.filter.after(subF);subF.after(chgF);
-function fvis(){subF.hidden=!st.acc.filter||!fOpen;chgF.hidden=!st.acc.filter||fOpen;chgF.innerHTML=FO[st.filter][0]+' \u00b7 <b class="cw">change</b>';}
-function setFilter(i){st.filter=i;FD.price=FO[i][1];FD.name='Filtration system \u00b7 '+FO[i][0];chipEls.filter.querySelector('small').textContent='';
- [...subF.children].forEach(b=>b.setAttribute('aria-pressed',+b.dataset.i===i));fOpen=false;fvis();readout();}
-const _sF=syncUI;syncUI=function(){if(!st.acc.filter){fOpen=true;st.filter=0;FD.name='Filtration system';FD.price=0;[...subF.children].forEach(b=>b.setAttribute('aria-pressed',false));chipEls.filter.querySelector('small').textContent='';}_sF();fvis();};
+chipEls.filter.after(subF);subF.after(subB);subB.after(chgF);
+function fvis(){subF.hidden=!st.acc.filter||!fOpen;subB.hidden=!st.acc.filter||!fOpen||fStep!==1;chgF.hidden=!st.acc.filter||fOpen;chgF.innerHTML=(st.filter===0?FB[st.fbox]:FO[st.filter][0])+' \u00b7 <b class="cw">change</b>';
+ [...subF.children].forEach(b=>b.setAttribute('aria-pressed',fStep===1?+b.dataset.i===0:false));[...subB.children].forEach(b=>b.setAttribute('aria-pressed',false));}
+function setFilter(i,k){st.filter=i;if(i===0)st.fbox=k||0;FD.price=i===0?FBP[st.fbox]:FO[i][1];FD.name='Filtration system \u00b7 '+(i===0?'Filter box \u00b7 '+FB[st.fbox]:FO[i][0]);chipEls.filter.querySelector('small').textContent='';
+ [...subF.children].forEach(b=>b.setAttribute('aria-pressed',+b.dataset.i===i));fOpen=false;fStep=0;fvis();readout();build();}
+const _sF=syncUI;syncUI=function(){if(!st.acc.filter){fOpen=true;fStep=0;st.filter=0;st.fbox=0;FD.name='Filtration system';FD.price=0;[...subF.children].forEach(b=>b.setAttribute('aria-pressed',false));chipEls.filter.querySelector('small').textContent='';}_sF();fvis();};
 [...subF.children].forEach(b=>b.setAttribute('aria-pressed',false));
 syncUI();readout();
 </script>
@@ -1168,8 +1251,9 @@ chipEls.cover.after(swc);
 let cOpen=true;   // swatches collapse into "<colour> \u00b7 change" after picking, like the other submenus
 const chgC=document.createElement('button');chgC.type='button';chgC.className='chg';chgC.onclick=()=>{cOpen=true;syncUI();};swc.after(chgC);
 function cvis(){swc.hidden=!st.acc.cover||!cOpen;chgC.hidden=!st.acc.cover||cOpen;chgC.innerHTML=COVC[st.coverC||0][0]+' \u00b7 <b class="cw">change</b>';}
-function setCover(i){cOpen=false;st.coverC=i;CVA.name='Thermal cover \u00b7 '+COVC[i][0];[...swc.children].forEach(b=>b.setAttribute('aria-pressed',+b.dataset.i===i));cvis();build();readout();}
-const _s5=syncUI;syncUI=function(){if(!st.acc.cover){cOpen=true;st.coverC=0;CVA.name='Thermal cover \u00b7 '+COVC[0][0];}_s5();cvis();[...swc.children].forEach(b=>b.setAttribute('aria-pressed',+b.dataset.i===st.coverC));};
+function setCover(i){cOpen=false;st.coverC=i;CVA.name='Thermal cover \u00b7 '+COVC[i][0];[...swc.children].forEach(b=>b.setAttribute('aria-pressed',+b.dataset.i===i));cvis();lidAng=0;lidAnim=null;clearTimeout(lidTimer);build();readout();
+ lidTimer=setTimeout(()=>{ if(!st.acc.cover) return; lidAnim={a:lidAng,b:Math.PI,t0:performance.now(),d:(typeof reduce!=='undefined'&&reduce)?1:1400}; },2000);}
+const _s5=syncUI;syncUI=function(){if(!st.acc.cover){cOpen=true;st.coverC=0;CVA.name='Thermal cover \u00b7 '+COVC[0][0];lidAng=0;lidAnim=null;clearTimeout(lidTimer);}_s5();cvis();[...swc.children].forEach(b=>b.setAttribute('aria-pressed',+b.dataset.i===st.coverC));};
 syncUI();readout();
 </script>
 <script>
@@ -1179,9 +1263,90 @@ syncUI();readout();
 /* price is counted only after a choice in the sub-menu */
 (function(){
  const mark=(id,f,rb)=>{const o=window[f];window[f]=function(){st.pend[id]=false;const r=o.apply(this,arguments);if(rb)build();return r;};};
- mark('hydro','setJets');mark('thermo','setTh',1);mark('shelf','setShelf');mark('led','setLed',1);mark('air','setAir',1);mark('filter','setFilter');
- const o=syncUI;syncUI=function(){['hydro','thermo','shelf','led','air','filter'].forEach(id=>{if(!st.acc[id])st.pend[id]=true;});return o.apply(this,arguments);};
+ mark('hydro','setJets');mark('thermo','setTh',1);mark('shelf','setShelf');mark('led','setLed',1);mark('air','setAir',1);mark('filter','setFilter');mark('cover','setCover');
+ const o=syncUI;syncUI=function(){['hydro','thermo','shelf','led','air','filter','cover'].forEach(id=>{if(!st.acc[id])st.pend[id]=true;});return o.apply(this,arguments);};
  syncUI();readout();
+})();
+</script>
+<script>
+/* Chimney: one menu item with paid sub-options (guard, spark arrestor) */
+(function(){
+ const GD=S.accessories.find(x=>x.id==='guard');
+ const GO=[['g','Chimney guard',90],['k','Spark arrestor',45],['e','Extra chimney +1 m',50]]; GO.forEach(o=>{const v=PRICE_OV['ch:'+o[0]]; if(v!=null)o[2]=v;}); window.CHGO=GO;   // placeholder prices (EUR), edit here
+ const none=()=>({g:false,k:false,e:false}); st.chim=none();
+ Object.defineProperty(GD,'price',{get:()=>GO.reduce((t,o)=>t+(st.chim[o[0]]?o[2]:0),0),configurable:true});
+ Object.defineProperty(GD,'name',{get:()=>{const l=GO.filter(o=>st.chim[o[0]]).map(o=>o[1]);return 'Chimney'+(l.length?' \u00b7 '+l.join(', '):'');},configurable:true});
+ chipEls.guard.querySelector('small').textContent='';
+ const sub=document.createElement('div'); sub.className='sub';
+ GO.forEach(o=>{ const b=document.createElement('button'); b.type='button'; b.textContent=o[0]==='e'?'Extra 1 m '+plus(o[2]):o[1]+' '+plus(o[2]); b.dataset.k=o[0]; b.title=o[1];
+  b.onclick=()=>{ st.chim[o[0]]=!st.chim[o[0]]; gvis(); build(); readout(); }; sub.appendChild(b); });
+ chipEls.guard.after(sub);
+ function gvis(){ sub.hidden=!st.acc.guard; [...sub.children].forEach(b=>b.setAttribute('aria-pressed',!!st.chim[b.dataset.k])); }
+ const _o=syncUI; syncUI=function(){ if(!st.acc.guard) st.chim=none(); _o.apply(this,arguments); gvis(); };
+ syncUI(); readout(); build();
+})();
+</script>
+<script>
+/* Equipment tab: same menu + sub-menu pattern as Accessories (stove type, stove position, steps) */
+(function(){
+ ['lStove','lPos','lSteps'].forEach(id=>$(id).hidden=true);
+ // stove type buttons: show the price in the text (.sub hides <small>)
+ [...$('oStove').children].forEach((b,i)=>{ const t=S.stoveTypes[i]; b.textContent=t.n+(t.extra?' '+plus(t.extra):''); });
+ const acc=document.createElement('div'); acc.className='acc'; $('pane1').appendChild(acc);
+ const gsub=chipEls.guard.nextElementSibling;   // chimney sub-menu (guard, spark arrestor)
+ const G=[
+  {name:()=>S.ui.stoveType, box:$('oStove'), val:()=>S.stoveTypes[st.t].n, price:()=>S.stoveTypes[st.t].extra?plus(S.stoveTypes[st.t].extra):'free', reset:()=>{st.t=0;setAcc('stove',true);}},
+  {name:()=>S.ui.stovePos, box:$('oPos'), val:()=>S.stovePlaces[st.p].n, price:()=>S.stovePlaces[st.p].extra?plus(S.stovePlaces[st.p].extra):'free', reset:()=>{st.p=0;setAcc('stove',true);}, na:()=>!!S.stoveTypes[st.t].electric},
+  {name:()=>S.ui.steps, box:$('oSteps'), val:()=>st.stepOpen?'Open':'Closed', price:()=>st.stepOpen?'free':plus(LAD_CLOSED), reset:()=>{st.stepOpen=1;setAcc('ladder',true);}}
+ ];
+ G.forEach(g=>{
+  g.open=false; g.done=false;
+  g.chip=document.createElement('button'); g.chip.type='button'; g.chip.innerHTML='<span></span><small></small>'; 
+  g.chg=document.createElement('button'); g.chg.type='button'; g.chg.className='chg';
+  g.box.className='sub';
+  acc.append(g.chip,g.box,g.chg);
+  g.chip.onclick=()=>{ if(!g.done){ g.done=true; g.open=true; } else { g.done=false; g.open=false; g.reset(); } eqsync(); };
+  g.chg.onclick=()=>{ g.open=true; eqsync(); };
+  g.box.addEventListener('click',e=>{ const b=e.target.closest('button'); if(b&&!b.disabled){ g.open=false; eqsync(); } });
+ });
+ if(gsub&&gsub.classList.contains('sub')) G[2].chip.before(chipEls.guard,gsub); else G[2].chip.before(chipEls.guard);   // Chimney: after Stove position, before Steps
+ window.eqStd=()=>G.forEach(g=>{ g.done=true; g.open=false; });   // Standard setup: stove type, stove position and steps become selected (defaults)
+ Object.defineProperty(window,'eqDone',{get:()=>G.map(g=>g.done),configurable:true});
+ const GDI=S.accessories.find(x=>x.id==='guard');
+ if(gsub) gsub.addEventListener('click',()=>eqsync());
+ function eqsync(){ G.forEach(g=>{ const na=!!(g.na&&g.na());
+  g.chip.firstChild.textContent=g.name(); const pr=g.price(); g.chip.lastChild.textContent=na?'n/a':(g.done&&pr!=='free'?pr:''); g.chip.setAttribute('aria-pressed',String(g.done&&!na)); g.chip.disabled=na;
+  g.box.hidden=na||!g.open; g.chg.hidden=na||g.open||!g.done;
+  g.chg.innerHTML=g.val()+' \u00b7 <b class="cw">change</b>'; }); 
+  readout();
+  const gs=chipEls.guard.querySelector('small'); if(gs) gs.textContent=(st.acc.guard&&GDI.price)?plus(GDI.price):''; }
+ const _e=syncUI; syncUI=function(){ _e.apply(this,arguments); eqsync(); };
+ syncUI();
+})();
+</script>
+<script>
+/* Stove type menu: Wood-fired / Electric > Orientation > Glass > Metal (AISI 304 / 316) > Thickness (1.5 / 2 mm); each choice unlocks the next row */
+(function(){
+ const box=$('oStove'); box.innerHTML='';
+ const groups=[['Orientation','o',STV.orient],['Glass','g',STV.glass],['Metal','m',STV.metal],['Thickness','h',STV.thick]], gb=[], rws=[]; let stp=0; const KS=['o','g','m','h']; let pk={f:null,o:null,g:null,m:null,h:null};   // pk = choices made while this menu is open (nothing is pre-selected)
+ const mkRow=t=>{ const r=document.createElement('div'); r.className='rw'; if(t) r.title=t; box.appendChild(r); rws.push(r); return r; };
+ const top=mkRow('Fuel');
+ const wb=document.createElement('button'); wb.type='button'; wb.textContent='Wood-fired';
+ wb.onclick=e=>{ st.t=0; stp=1; pk={f:'w',o:null,g:null,m:null,h:null}; e.stopPropagation(); setAcc('stove',true); };
+ const eb=document.createElement('button'); eb.type='button'; eb.textContent=S.stoveTypes[1].n+' '+plus(S.stoveTypes[1].extra);
+ eb.onclick=()=>{ stp=0; st.t=1; st.acc.guard=false; setAcc('stove',true); pk={f:null,o:null,g:null,m:null,h:null}; pr(); };   // electric closes the menu
+ top.append(wb,eb);
+ groups.forEach(([lab,key,arr],gi)=>{
+  const rw=mkRow(lab);
+  if(key==='m'||key==='h'){ const sl=document.createElement('div'); sl.className='sl'; sl.textContent=key==='m'?'Stove metal':'Stove metal thickness'; rw.appendChild(sl); }
+  const row=[]; arr.forEach(([n,p],i)=>{ const b=document.createElement('button'); b.type='button'; b.textContent=n+(p?' '+plus(p):'');
+   b.onclick=e=>{ st.sv[key]=i; st.t=0; const last=gi===groups.length-1; stp=last?0:gi+2; pk.f='w'; pk[key]=i; KS.slice(gi+1).forEach(k=>pk[k]=null); if(!last) e.stopPropagation(); setAcc('stove',true); if(last){ pk={f:null,o:null,g:null,m:null,h:null}; pr(); } };
+   rw.appendChild(b); row.push(b); });
+  gb.push([key,row]); });
+ function pr(){ gb.forEach(([key,row])=>row.forEach((b,i)=>b.setAttribute('aria-pressed',String(pk[key]===i)))); wb.setAttribute('aria-pressed',String(pk.f==='w')); eb.setAttribute('aria-pressed',String(pk.f==='e')); rws.forEach((r,k)=>r.hidden=k>stp); }
+ const _p=syncUI; syncUI=function(){ _p.apply(this,arguments); pr(); };
+ window.stvReset=()=>{ stp=0; pk={f:null,o:null,g:null,m:null,h:null}; pr(); };
+ syncUI(); readout();
 })();
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
@@ -1282,13 +1447,16 @@ window.makePdf=(producer,confirmation,transport,prodOrder)=>{ const tr=!!transpo
     const out=[];
     const fld=['price','priceSquare','priceRect'];
     out.push(sec('Hot tub (base price)',S.models.flatMap(m=>S.shapes.map((sh,i)=>row(m.name+' - '+sh.n+' ('+m.size+')',e(mp(m,i)+sh.extra),'m:'+m.id+':'+(sh.id==='round'?'price':sh.id==='square'?'priceSquare':'priceRect'),sh.extra)))));
-    out.push(sec('Stove type',S.stoveTypes.map(t=>row(t.n,ex(t.extra),'st:'+t.id))));
+    out.push(sec('Finish',[row('WPC finish',e(WPC_PRICE),'fin:wpc'),row('Acrylic liner',e(ACR_PRICE),'fin:acr')]));
+    out.push(sec('Stove type',S.stoveTypes.filter(t=>t.electric).map(t=>row(t.n,ex(t.extra),'st:'+t.id))));
+    out.push(sec('Wood stove options',Object.keys(STV).flatMap(k=>STV[k].map((o,i)=>row(({orient:'Orientation',glass:'Glass',metal:'Metal',thick:'Thickness'})[k]+': '+o[0],ex(o[1]),'stv:'+k+':'+i)))));
     out.push(sec('Stove position',S.stovePlaces.map(p=>row(p.n,ex(p.extra),'sp:'+p.id))));
     out.push(sec('Steps',[row('Open',e(0)),row('Closed',ex(LAD_CLOSED),'steps')]));
     out.push(sec('Hydro massage',JT.map(([n,x])=>row(n+' jets',ex(x+HB),'jet:'+n))));
     out.push(sec('Thermometer',TO.map(([n,x],i)=>row(n,e(x),'th:'+i))));
     out.push(sec('Drink shelf',SHC.map(([n,c,x],i)=>row(n,e(x),'sh:'+i))));
-    const skip=['stove','ladder','hydro','thermo','shelf'];
+    const skip=['stove','ladder','hydro','thermo','shelf','guard'];
+    out.push(sec('Chimney',(window.CHGO||[]).map(o=>row(o[1],ex(o[2]),'ch:'+o[0]))));
     out.push(sec('Accessories',S.accessories.filter(a=>!skip.includes(a.id)).map(a=>row(a.id==='cover'?'Thermal cover':a.name,ex(a.price),'a:'+a.id))));
     body.innerHTML=out.join('');
   }
@@ -1444,14 +1612,16 @@ render();
     if(!c.state){ alert('The configuration for this order was not saved; only the customer details were loaded. Choose a configuration and save again.'); return; }
     const state=JSON.parse(JSON.stringify(c.state));
     Object.assign(st,state); if(state.transport==null) st.transport=0; if(state.terms==null) st.terms=''; if(state.carrier==null) st.carrier=''; if(state.pick==null) st.pick=''; if(state.del==null) st.del=null; if(state.mf==null) st.mf=''; if(state.lead==null) st.lead=''; if(state.po==null) st.po={};
-    press($('oModel'),st.m); press($('oShape'),st.s); press($('oWood'),st.w); pressMat();
+    if(state.wpc==null) st.wpc=0; if(state.sv==null) st.sv={o:0,g:1,m:0,h:0}; if(state.chim==null) st.chim={g:!!(state.acc&&state.acc.guard),k:false}; if(state.pend&&state.pend.cover==null) st.pend.cover=!(state.acc&&state.acc.cover);
+    press($('oModel'),st.m); press($('oShape'),st.s); pressWood(); pressMat();
+    if(window.eqStd)window.eqStd(); if(window.stvReset)window.stvReset();
     const on=k=>st.acc[k]&&!state.pend[k];
     if(on('hydro')&&state.jets!=null) setJets(state.jets);
     if(on('thermo')&&state.th!=null) setTh(state.th);
     if(on('shelf')&&state.shelfC!=null) setShelf(state.shelfC);
     if(on('led')&&state.led!=null) setLed(state.led);
     if(on('air')&&state.air!=null) setAir(state.air);
-    if(on('filter')&&state.filter!=null) setFilter(state.filter);
+    if(on('filter')&&state.filter!=null) setFilter(state.filter,state.fbox||0);
     if(st.acc.cover) setCover(state.coverC||0);
     Object.assign(st.pend,state.pend);
     syncUI(); build(); readout(); showTab(0); if(window.refreshTransport)window.refreshTransport();
@@ -1494,11 +1664,14 @@ render();
     const el=!!S.stoveTypes[st.t].electric, shp=S.shapes[st.s].id, G=[];
     G.push({title:'Shape & finish',items:[
       ...S.shapes.map(x=>({key:'shape:'+x.id,label:'Shape: '+x.n,sel:x.id===shp})),
-      ...S.woods.map((x,i)=>({key:'wood:'+x.n,label:'Wood: '+x.n,sel:i===st.w})),
+      ...S.woods.map((x,i)=>({key:'wood:'+x.n,label:'Wood: '+x.n,sel:!st.wpc&&i===st.w})),
+      ...S.woods.map((x,i)=>({key:'wpc:'+x.n,label:'WPC: '+x.n,sel:!!st.wpc&&i===st.w})),
       ...S.acrylics.map((x,i)=>({key:'acr:'+x.n,label:'Acrylic: '+x.n,sel:!st.fib&&i===st.a})),
       ...S.acrylics.map((x,i)=>({key:'fib:'+x.n,label:'Fiberglass: '+x.n,sel:!!st.fib&&i===st.a}))]});
     G.push({title:'Equipment',items:[
-      ...S.stoveTypes.map((x,i)=>({key:'stove:'+x.id,label:'Stove type: '+x.n,sel:!!st.acc.stove&&i===st.t})),
+      {key:'stove:wood',label:'Stove type: Wood-fired',sel:!!st.acc.stove&&!el},
+      ...S.stoveTypes.filter(x=>x.electric).map(x=>({key:'stove:'+x.id,label:'Stove type: '+x.n,sel:!!st.acc.stove&&el})),
+      ...[['o','Orientation',STV.orient],['g','Glass',STV.glass],['m','Metal',STV.metal],['h','Thickness',STV.thick]].flatMap(([k,l,arr])=>arr.map((x,i)=>({key:'stv:'+k+':'+i,label:'Stove '+l.toLowerCase()+': '+x[0],sel:!!st.acc.stove&&!el&&st.sv[k]===i}))),
       ...S.stovePlaces.map((x,i)=>({key:'pos:'+x.id,label:'Stove position: '+x.n,sel:!!st.acc.stove&&!el&&i===st.p})),
       {key:'steps:open',label:'Steps: Open',sel:!!st.acc.ladder&&!!st.stepOpen},
       {key:'steps:closed',label:'Steps: Closed',sel:!!st.acc.ladder&&!st.stepOpen}]});
@@ -1507,11 +1680,12 @@ render();
     AO.forEach(([n],i)=>A.push({key:'air:'+i,label:IN.air+' - '+n,sel:on('air')&&st.air===i}));
     TO.forEach(([n],i)=>A.push({key:'thermo:'+i,label:IN.thermo+' - '+n,sel:on('thermo')&&st.th===i}));
     SHC.forEach(([n],i)=>A.push({key:'shelf:'+i,label:IN.shelf+' - '+n,sel:on('shelf')&&st.shelfC===i}));
-    A.push({key:'acc:guard',label:IN.guard,sel:on('guard')});
+    [['g','Chimney guard'],['k','Spark arrestor'],['e','Extra chimney +1 m']].forEach(([k,l])=>A.push({key:'chim:'+k,label:'Chimney - '+l,sel:on('guard')&&!!st.chim[k]}));
     LO.forEach(([n],i)=>A.push({key:'led:'+i,label:n,sel:on('led')&&st.led===i}));
     COVC.forEach(([n],i)=>A.push({key:'cover:'+i,label:IN.cover+' - '+n,sel:!!st.acc.cover&&(st.coverC||0)===i}));
     A.push({key:'acc:sound',label:IN.sound,sel:on('sound')});
-    FO.forEach(([n],i)=>A.push({key:'filter:'+i,label:IN.filter+' - '+n,sel:on('filter')&&st.filter===i}));
+    FO.forEach(([n],i)=>A.push({key:'filter:'+i,label:IN.filter+' - '+n,sel:on('filter')&&st.filter===i&&(i>0||true)}));
+    FB.forEach((n,k)=>A.push({key:'fbox:'+k,label:IN.filter+' - Filter box - '+n,sel:on('filter')&&st.filter===0&&st.fbox===k}));
     A.push({key:'acc:wifi',label:IN.wifi,sel:on('wifi')});
     G.push({title:'Accessories',items:A});
     return G;
@@ -1625,7 +1799,7 @@ render();
     room(30); doc.setDrawColor(150); doc.line(M,y-2,W-M,y-2); y+=3;
     doc.setFont('helvetica','bold');doc.setFontSize(9);doc.setTextColor(110);doc.text('NO.',M,y);doc.text('DESCRIPTION OF GOODS',M+14,y);doc.text('QTY',W-M,y,{align:'right'});doc.setTextColor(0);y+=2;doc.line(M,y,W-M,y);y+=6;
     const G=[];
-    G.push(['Wood-fired hot tub '+m.name+', '+sh.n, ['Wood: '+S.woods[st.w].n, (st.fib?S.ui.fib:S.ui.acr)+': '+S.acrylics[st.a].n]]);
+    G.push(['Wood-fired hot tub '+m.name+', '+sh.n, [(st.wpc?'WPC: ':'Wood: ')+S.woods[st.w].n, (st.fib?S.ui.fib:S.ui.acr)+': '+S.acrylics[st.a].n]]);
     if(st.acc.stove){ const sv=['Stove: '+S.stoveTypes[st.t].n]; if(!S.stoveTypes[st.t].electric) sv.push('Stove position: '+S.stovePlaces[st.p].n); G.push(['Stove',sv]); }
     S.accessories.filter(x=>x.id!=='stove'&&st.acc[x.id]&&!st.pend[x.id]).forEach(x=>G.push([x.name,[]]));
     G.forEach(([t,sub],i)=>{
@@ -2015,6 +2189,76 @@ render();
     try{localStorage.setItem(KEY,JSON.stringify(a));}catch(e){alert('Could not save in this browser.');return;}
     dlg.close();
     if(listWin&&!listWin.closed){ try{ listWin.render(); }catch(e){} }
+  };
+})();
+</script>
+<script>
+/* Download documents: "Customer" (Offer / Order confirmation) and "Custom" (Packing list) open a small choice window, like Transportation */
+(function(){
+  const $=id=>document.getElementById(id), src=$('pdfBtn');
+  [['dlCust','dcDlg','dcX',{dlOffer:'pdfBtn',dlConf:'pdfBtn3'}],['dlCus','dxDlg','dxX',{dlPack:'pdfBtn5'}]].forEach(([btn,dlg,x,map])=>{
+    const b=$(btn), d=$(dlg);
+    const sync=()=>{ b.hidden=src.hidden; };
+    new MutationObserver(sync).observe(src,{attributes:true,attributeFilter:['hidden']}); sync();
+    b.onclick=()=>{ if(!d.open) d.showModal(); };
+    $(x).onclick=()=>d.close();
+    d.addEventListener('click',e=>{ if(e.target===d) d.close(); });
+    Object.keys(map).forEach(k=>{ $(k).onclick=()=>{ d.close(); $(map[k]).click(); }; });
+  });
+})();
+</script>
+<script>
+/* Import order: a file (made with "Export order") creates the customer in the Customer list and the order in the Order list, then opens the order */
+(function(){
+  const $=id=>document.getElementById(id), src=$('pdfBtn');
+  const CF=['name','phone','mail','country','zip','addr','note'];
+  const load=k=>{try{return JSON.parse(localStorage.getItem(k)||'[]')}catch(e){return []}};
+  const put=(k,a)=>{try{localStorage.setItem(k,JSON.stringify(a));return true}catch(e){alert('Could not save in this browser.');return false}};
+  const sync=()=>{ $('dlExp').hidden=src.hidden; };
+  new MutationObserver(sync).observe(src,{attributes:true,attributeFilter:['hidden']}); sync();
+
+  /* ---- export the order that is open now ---- */
+  $('dlExp').onclick=()=>{
+    if(window.syncCust) window.syncCust();
+    const c=window.CUST||{}, cu={offerNo:c.offerNo||''}; CF.forEach(k=>cu[k]=c[k]||'');
+    const data={format:'order_v1',exported:new Date().toISOString(),customer:cu,state:JSON.parse(JSON.stringify(st))};
+    const nm=(c.offerNo||'order')+(c.name?'-'+String(c.name).replace(/[^A-Za-z0-9]+/g,'-').replace(/^-|-$/g,''):'');
+    const a=document.createElement('a'); a.href=URL.createObjectURL(new Blob([JSON.stringify(data,null,1)],{type:'application/json'})); a.download=nm+'.json';
+    document.body.appendChild(a); a.click(); setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove();},500);
+  };
+
+  /* ---- import ---- */
+  const valid=o=>o&&typeof o==='object'&&o.customer&&typeof o.customer==='object'&&String(o.customer.name||'').trim()&&o.state&&typeof o.state==='object'&&o.state.acc&&typeof o.state.acc==='object'&&Number.isInteger(o.state.m)&&o.state.m>=0&&o.state.m<S.models.length&&Number.isInteger(o.state.s)&&o.state.s>=0&&o.state.s<S.shapes.length;
+  function importOne(o){
+    const cu=o.customer, now=Date.now();
+    // 1) customer in the Customer list (matched by e-mail, else by name + phone; created only if missing)
+    const norm=x=>String(x||'').trim().toLowerCase(), cl=load('customers_v1');
+    let found=cl.find(x=>norm(cu.mail)&&norm(x.mail)===norm(cu.mail))||cl.find(x=>norm(x.name)===norm(cu.name)&&norm(x.phone)===norm(cu.phone));
+    let created=false;
+    if(!found){ const r={id:now,date:new Date().toISOString(),type:'person'}; CF.forEach(k=>r[k]=String(cu[k]||'').trim()); cl.unshift(r); if(!put('customers_v1',cl)) return null; created=true; }
+    // 2) order in the Order list (always a new order; offer number only kept if it is not used already)
+    const ol=load('clients_v1'), oid=now+1;
+    const rec={id:oid,offerNo:(cu.offerNo&&!ol.some(x=>x.offerNo===cu.offerNo))?cu.offerNo:'',date:new Date().toISOString(),state:JSON.parse(JSON.stringify(o.state))};
+    CF.forEach(k=>rec[k]=String(cu[k]||'').trim());
+    ol.unshift(rec); if(!put('clients_v1',ol)) return null;
+    return {id:oid,created,name:rec.name};
+  }
+  $('impBtn').onclick=()=>{ $('impFile').value=''; $('impFile').click(); };
+  $('impFile').onchange=e=>{
+    const f=e.target.files[0]; if(!f) return;
+    const rd=new FileReader();
+    rd.onerror=()=>alert('Could not read the file.');
+    rd.onload=()=>{
+      let j; try{ j=JSON.parse(rd.result); }catch(x){ alert('This is not a valid order file (JSON expected).'); return; }
+      const list=Array.isArray(j)?j:[j], ok=list.filter(valid);
+      if(!ok.length){ alert('The file has no valid order. Use a file made with "Export order" (it needs customer name and configuration).'); return; }
+      let last=null, nCust=0; ok.forEach(o=>{ const r=importOne(o); if(r){ last=r; if(r.created) nCust++; } });
+      if(!last) return;
+      if(window.loadOrder) window.loadOrder(last.id);
+      if(window.syncCust) window.syncCust();
+      alert('Imported '+ok.length+' order'+(ok.length>1?'s':'')+(list.length>ok.length?' ('+(list.length-ok.length)+' skipped: invalid)':'')+'. '+(nCust?nCust+' new customer'+(nCust>1?'s':'')+' created in the Customer list.':'Customer already in the Customer list.')+(ok.length>1?' The last one is open; the others are in the Order list.':''));
+    };
+    rd.readAsText(f);
   };
 })();
 </script>
