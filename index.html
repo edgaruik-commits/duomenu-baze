@@ -460,7 +460,7 @@ button.b{font:700 16px system-ui,sans-serif;cursor:pointer}
 <dialog id="dcDlg" aria-labelledby="dcT"><button class="x" id="dcX" type="button" aria-label="Close">&times;</button><h3 id="dcT">Customer document</h3>
 <div class="pdl"><button class="b o" id="dlOffer" type="button">Offer</button><button class="b o" id="dlConf" type="button">Order confirmation</button></div></dialog>
 <dialog id="dxDlg" aria-labelledby="dxT"><button class="x" id="dxX" type="button" aria-label="Close">&times;</button><h3 id="dxT">Custom document</h3>
-<div class="pdl"><button class="b o" id="dlPack" type="button">Packing list</button></div></dialog>
+<div class="pdl"><button class="b o" id="dlPack" type="button">Packing list</button><button class="b o" id="dlInv" type="button">Invoice</button></div></dialog>
 
 <dialog id="ncDlg" aria-labelledby="ncT"><button class="x" id="ncX" type="button" aria-label="Close">&times;</button><h3 id="ncT">New customer</h3>
 <div class="ncTabs" role="tablist"><button type="button" class="nct" data-t="person" aria-pressed="true">Individual</button><button type="button" class="nct" data-t="company" aria-pressed="false">Legal entity</button></div>
@@ -1367,6 +1367,28 @@ window.makePdf=(producer,confirmation,transport,prodOrder)=>{ const tr=!!transpo
   const W=210,M=15; let y=20;
   doc.setFont('helvetica','bold');doc.setFontSize(18);doc.text(producer?(prodOrder?'Hot tub production order':'Hot tub production request'):tr?(prodOrder?'Transportation order':'Transportation request'):(confirmation?'Order confirmation to Offer No. '+no:'Hot tub quotation'),M,y);doc.setFontSize(11);if(!confirmation||producer)doc.text('Offer No. '+no,W-M,y,{align:'right'});y+=6;
   doc.setFont('helvetica','normal');doc.setFontSize(9);doc.setTextColor(110);doc.text(new Date().toLocaleDateString('en-GB'),M,y);doc.setTextColor(0);y+=6;
+  if(!producer&&!tr){   /* customer offer / order confirmation: covering letter at the top of page 1, everything else follows as before */
+    const cc=window.CUST||{}, first=String(cc.name||'').trim().split(/\s+/)[0]||'Customer', dt=new Date().toLocaleDateString('en-GB');
+    const P=confirmation?[
+      'Dear '+first+',',
+      'Thank you very much for your order. We are pleased to confirm that we have received and accepted it.',
+      'Please find attached the order confirmation to Offer No. '+no+' (dated '+dt+'), together with the related documents. The confirmation includes the full configuration of your hot tub as well as the order details.',
+      'We kindly ask you to review the documents carefully and let us know if you notice any inaccuracies or if you would like to change anything. We will be happy to help.',
+      'If you have any questions, please do not hesitate to contact us by phone or email. We will keep you informed about the next steps and the expected delivery time.',
+      'Thank you for your trust.',
+      'Kind regards,\nMB Europaletes team'
+    ]:[
+      'Dear '+first+',',
+      'Thank you very much for your interest in our hot tubs.',
+      'Please find attached our offer No. '+no+' (dated '+dt+'). It includes the configuration you selected as well as the prices.',
+      'We kindly ask you to review the offer carefully. If you would like to change anything or have any questions, please do not hesitate to contact us by phone or email. We will be happy to help.',
+      'Thank you for your trust.',
+      'Kind regards,\nMB Europaletes team'
+    ];
+    y+=3; doc.setFont('helvetica','normal'); doc.setFontSize(10);
+    P.forEach(par=>{ doc.splitTextToSize(clean(par),W-2*M).forEach(l=>{ if(y>280){doc.addPage();y=20;} doc.text(l,M,y); y+=4.8; }); y+=3.2; });
+    y+=1;
+  }
   if(producer){ y+=2; doc.setFontSize(8);doc.setTextColor(110);doc.text('ORDERED BY',M,y);doc.setTextColor(0);y+=5;doc.setFontSize(11);doc.setFont('helvetica','bold');doc.text(clean('Europaletės MB'),M,y);y+=5;doc.setFont('helvetica','normal');doc.setFontSize(10);   /* the ordering party of every production order */
     ['Vytauto g. 9, Meškučių k., LT-68129 Marijampolė, Lithuania','Company code: 304924983  |  VAT no.: LT100012395710','Bank: Swedbank, AB  |  IBAN: LT21 7300 0101 5643 0123'].forEach(t=>{doc.splitTextToSize(clean(t),W-2*M).forEach(l=>{doc.text(l,M,y);y+=4.6;});}); y+=3; }
   if(producer&&window.CUST){ y+=2; doc.setFontSize(8);doc.setTextColor(110);doc.text('CUSTOMER',M,y);doc.setTextColor(0);y+=5;doc.setFontSize(11);doc.setFont('helvetica','bold');doc.text('Order No. '+no,M,y);y+=5;doc.setFont('helvetica','normal');doc.setFontSize(10);y+=3; }   /* production copy: no customer data, only the order number linked to the customer's order */
@@ -1378,15 +1400,15 @@ window.makePdf=(producer,confirmation,transport,prodOrder)=>{ const tr=!!transpo
     doc.setFont('helvetica','normal');doc.setFontSize(10);
     if(pkOk&&pk[2]){ doc.splitTextToSize(clean('Contact person: '+pk[2]),W-2*M).forEach(l=>{doc.text(l,M,y);y+=4.6;}); }
     y+=3; }   /* the full company details are printed at the bottom of the form */
-  if(!producer&&window.CUST){const c=window.CUST, dv=(tr&&st.del)?st.del:c;y+=2;doc.setFontSize(8);doc.setTextColor(110);doc.text(tr?'DELIVERY TO':'CUSTOMER',M,y);doc.setTextColor(0);y+=5;doc.setFontSize(11);doc.setFont('helvetica','bold');doc.text(clean(c.name),M,y);y+=5;doc.setFont('helvetica','normal');doc.setFontSize(10);
+  if(!producer&&tr&&window.CUST){const c=window.CUST, dv=(tr&&st.del)?st.del:c;y+=2;doc.setFontSize(8);doc.setTextColor(110);doc.text(tr?'DELIVERY TO':'CUSTOMER',M,y);doc.setTextColor(0);y+=5;doc.setFontSize(11);doc.setFont('helvetica','bold');doc.text(clean(c.name),M,y);y+=5;doc.setFont('helvetica','normal');doc.setFontSize(10);
     [[c.phone,c.mail].filter(Boolean).join('  |  '),[dv.addr,[dv.zip,dv.country].filter(Boolean).join(' ')].filter(Boolean).join(', '),c.note].filter(Boolean).forEach(t=>{doc.splitTextToSize(clean(t),W-2*M).forEach(l=>{doc.text(l,M,y);y+=4.6;});});y+=3;}
   if(tr){ const incoTxt=(st.terms&&window.INCO&&window.INCO[st.terms])?(st.terms+' - '+window.INCO[st.terms]):'Not specified'; doc.setFontSize(8);doc.setTextColor(110);doc.text('INCOTERMS 2020',M,y);doc.setTextColor(0);y+=5;doc.setFontSize(11);doc.setFont('helvetica','bold');doc.text(clean(incoTxt),M,y);y+=5;doc.setFont('helvetica','normal');doc.setFontSize(10);y+=3; }   /* transportation request: Incoterms directly under DELIVERY TO */
   if(producer){ let mf=null; try{ mf=JSON.parse(localStorage.getItem('manufacturers_v1')||'[]').find(x=>String(x.id)===String(st.mf)); }catch(e){}
     if(mf){ doc.setFontSize(8);doc.setTextColor(110);doc.text('MANUFACTURER',M,y);doc.setTextColor(0);y+=5;doc.setFontSize(11);doc.setFont('helvetica','bold');doc.text(clean(mf.name),M,y);y+=5;doc.setFont('helvetica','normal');doc.setFontSize(10);
       [[mf.contact,mf.phone,mf.mail].filter(Boolean).join('  |  '),[mf.addr,[mf.zip,mf.country].filter(Boolean).join(' ')].filter(Boolean).join(', '),(!tr&&(mf.waddr||mf.whours||mf.wcontact))?'Warehouse: '+[mf.waddr,mf.whours,mf.wcontact].filter(Boolean).join('  |  '):'',(!tr&&(mf.waddr2||mf.whours2||mf.wcontact2))?'Warehouse 2: '+[mf.waddr2,mf.whours2,mf.wcontact2].filter(Boolean).join('  |  '):''].filter(Boolean).forEach(t=>{doc.splitTextToSize(clean(t),W-2*M).forEach(l=>{doc.text(l,M,y);y+=4.6;});});y+=3; } }
   const iw=W-2*M, ih=iw*canvas.height/canvas.width, mh=105, h=Math.min(ih,mh), w=h*canvas.width/canvas.height;
-  if(!tr){ doc.addImage(img,'PNG',M+(iw-w)/2,y,w,h);y+=h+8; }   /* transportation request: no picture of the tub */
-  if(!tr){ doc.setFontSize(8);doc.setTextColor(110);doc.text('CONFIGURATION',M,y);doc.setTextColor(0);y+=6; }   /* transportation request: no configuration list, only the delivery terms */
+  if(!tr){ if(y+h>285){doc.addPage();y=20;} doc.addImage(img,'PNG',M+(iw-w)/2,y,w,h);y+=h+8; if(!producer){doc.addPage();y=20;} }   /* transportation request: no picture of the tub */
+  if(!tr){ doc.setFont('helvetica','bold');doc.setFontSize(18);doc.setTextColor(0);doc.text('Hot tub configuration',M,y);doc.setFont('helvetica','normal');y+=9; }   /* transportation request: no configuration list, only the delivery terms */
   doc.setFontSize(11);
   [...document.querySelectorAll('#rList .rr')].filter(r=>!tr).forEach(r=>{
     const tot=r.classList.contains('rt'), lab=r.children[0].textContent;
@@ -2347,6 +2369,69 @@ render();
     rd.onload=()=>{ const l=findOrders(String(rd.result)); if(!l.length){ msg('This is not a valid order file (JSON expected).'); return; } runImport(l); };
     rd.readAsText(f);
   };
+})();
+</script>
+<script>
+/* Custom > Invoice: seller, buyer, priced lines of the open order, total, payment details */
+(function(){
+  const $=id=>document.getElementById(id);
+  const clean=t=>String(t==null?'':t).replace(/\u20ac/g,' EUR').replace(/[\u00b7\u2013]/g,'-').replace(/\u00d7/g,'x').normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+  const money=n=>new Intl.NumberFormat('en-IE',{minimumFractionDigits:2,maximumFractionDigits:2}).format(n)+' EUR';
+  window.makeInvoice=function(){
+    if(!window.jspdf){ alert('PDF library not loaded (check internet connection).'); return; }
+    const no=(window.CUST&&window.CUST.offerNo)||nextOfferNo(); if(window.CUST&&!window.CUST.offerNo){ window.CUST.offerNo=no; if(window.syncCust)window.syncCust(); }
+    const inv='INV-'+String(no).replace(/^OF-/,'');
+    const doc=new window.jspdf.jsPDF({unit:'mm',format:'a4'}), W=210, M=15, iw=W-2*M; let y=20;
+    const c=window.CUST||{}, dt=new Date().toLocaleDateString('en-GB');
+    const room=n=>{ if(y+n>280){ doc.addPage(); y=20; } };
+    const label=t=>{ doc.setFont('helvetica','normal');doc.setFontSize(8);doc.setTextColor(110);doc.text(t,M,y);doc.setTextColor(0);y+=5; };
+    const lines=(arr,sz)=>{ doc.setFont('helvetica','normal');doc.setFontSize(sz||10); arr.filter(Boolean).forEach(t=>doc.splitTextToSize(clean(t),iw).forEach(l=>{ room(5); doc.text(l,M,y); y+=4.6; })); };
+
+    /* title */
+    doc.setFont('helvetica','bold');doc.setFontSize(18);doc.text('Invoice',M,y);doc.setFontSize(11);doc.text('No. '+inv,W-M,y,{align:'right'});y+=6;
+    doc.setFont('helvetica','normal');doc.setFontSize(9);doc.setTextColor(110);doc.text('Date: '+dt+'   |   Order: Offer No. '+no,M,y);doc.setTextColor(0);y+=10;
+
+    /* seller */
+    label('SELLER');
+    doc.setFont('helvetica','bold');doc.setFontSize(11);doc.text(clean('Europaletės MB'),M,y);y+=5;
+    lines(['Vytauto g. 9, Meškučių k., LT-68129 Marijampolė, Lithuania','Company code: 304924983  |  VAT no.: LT100012395710']);
+    y+=4;
+
+    /* buyer */
+    label('BUYER');
+    doc.setFont('helvetica','bold');doc.setFontSize(11);doc.text(clean(c.name||'-'),M,y);y+=5;
+    lines([c.code?'Company code: '+c.code+(c.vat?'  |  VAT no.: '+c.vat:''):(c.vat?'VAT no.: '+c.vat:''),[c.addr,[c.zip,c.country].filter(Boolean).join(' ')].filter(Boolean).join(', '),[c.phone,c.mail].filter(Boolean).join('  |  ')]);
+    y+=6;
+
+    /* lines */
+    const m=S.models[st.m], sh=S.shapes[st.s];
+    doc.setFont('helvetica','bold');doc.setFontSize(10);doc.text('Description',M,y);doc.text('Amount',W-M,y,{align:'right'});y+=2;
+    doc.setDrawColor(150);doc.line(M,y,W-M,y);y+=6;
+    doc.setFont('helvetica','normal');doc.setFontSize(10);
+    let sum=0;
+    priceLines().forEach(p=>{
+      const v=ovp(p.k,p.price); sum+=v;
+      room(8);
+      const d=clean(p.label.replace(/ \(base price\)$/,'')); 
+      const wrapped=doc.splitTextToSize(d,iw-40);
+      wrapped.forEach((l,i)=>{ doc.text(l,M,y); if(i===0) doc.text(v>0?clean(money(v)):'included',W-M,y,{align:'right'}); y+=5; });
+      y+=1;
+    });
+    room(20);
+    doc.line(M,y-2,W-M,y-2); y+=4;
+    doc.setFont('helvetica','bold');doc.setFontSize(12);doc.text('Total to pay',M,y);doc.text(clean(money(sum)),W-M,y,{align:'right'});y+=10;
+
+    /* payment */
+    room(30);
+    label('PAYMENT DETAILS');
+    lines(['Bank: Swedbank, AB','IBAN: LT21 7300 0101 5643 0123','Payment reference: '+inv]);
+    y+=6;
+    lines(['Thank you for your trust.'],10);
+
+    if(window.syncCust)window.syncCust();
+    doc.save(inv+(c.name?'-'+clean(c.name).replace(/[^A-Za-z0-9]+/g,'-').replace(/^-|-$/g,''):'')+'.pdf');
+  };
+  const b=$('dlInv'); if(b) b.onclick=()=>{ const d=$('dxDlg'); if(d&&d.open) d.close(); window.makeInvoice(); };
 })();
 </script>
 </body>
