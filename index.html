@@ -278,13 +278,13 @@ button.b{font:700 16px system-ui,sans-serif;cursor:pointer}
 #mfDlg label{display:grid;gap:4px;font-size:.85rem;color:#4d6169}
 #mfDlg input,#mfDlg textarea{font:inherit;color:#10282f;padding:8px 10px;border:1px solid #b9c6c2;border-radius:6px}
 #pdDlg,#trqDlg{position:fixed;inset:0;margin:auto;border:0;border-radius:14px;padding:22px 26px;max-width:380px;width:calc(100% - 28px);color:#10282f;box-shadow:0 20px 60px rgba(0,0,0,.35)}
-#dcDlg,#dxDlg{position:fixed;inset:0;margin:auto;border:0;border-radius:14px;padding:22px 26px;max-width:380px;width:calc(100% - 28px);color:#10282f;box-shadow:0 20px 60px rgba(0,0,0,.35)}
-#dcDlg::backdrop,#dxDlg::backdrop{background:rgba(16,40,47,.65)}
-#dcDlg h3,#dxDlg h3{font:700 22px Georgia,serif;margin:0 0 14px}
-#dcDlg .x,#dxDlg .x{float:right;background:none;border:0;font-size:1.6rem;cursor:pointer;line-height:1;color:#10282f}
-#dcDlg .pdl,#dxDlg .pdl{display:grid;gap:10px}
-#dcDlg .pdl .b,#dxDlg .pdl .b{margin:0;padding:11px 18px;cursor:pointer;font:inherit;font-weight:700;text-align:left}
-#dcDlg .pdl .b:hover,#dxDlg .pdl .b:hover{background:#10282f;color:#fff}
+#dcDlg,#coDlg{position:fixed;inset:0;margin:auto;border:0;border-radius:14px;padding:22px 26px;max-width:380px;width:calc(100% - 28px);color:#10282f;box-shadow:0 20px 60px rgba(0,0,0,.35)}
+#dcDlg::backdrop,#coDlg::backdrop{background:rgba(16,40,47,.65)}
+#dcDlg h3,#coDlg h3{font:700 22px Georgia,serif;margin:0 0 14px}
+#dcDlg .x,#coDlg .x{float:right;background:none;border:0;font-size:1.6rem;cursor:pointer;line-height:1;color:#10282f}
+#dcDlg .pdl,#coDlg .pdl{display:grid;gap:10px}
+#dcDlg .pdl .b,#coDlg .pdl .b{margin:0;padding:11px 18px;cursor:pointer;font:inherit;font-weight:700;text-align:left}
+#dcDlg .pdl .b:hover,#coDlg .pdl .b:hover{background:#10282f;color:#fff}
 #pdDlg::backdrop,#trqDlg::backdrop{background:rgba(16,40,47,.65)}
 #pdDlg h3,#trqDlg h3{font:700 22px Georgia,serif;margin:0 0 14px}
 #pdDlg .x,#trqDlg .x{float:right;background:none;border:0;font-size:1.6rem;cursor:pointer;line-height:1;color:#10282f}
@@ -411,6 +411,21 @@ button.b{font:700 16px system-ui,sans-serif;cursor:pointer}
 .dlbox .b{margin:0!important;padding:6px 14px!important;font-size:.82rem!important;border:1.5px solid #10282f;border-radius:8px;background:transparent;color:#10282f;cursor:pointer;white-space:nowrap}
 .dlbox .b:hover{background:#10282f;color:#fff}
 .dlbox .dlx{display:none!important}
+#scDlg{position:fixed;inset:0;margin:auto;border:0;border-radius:14px;padding:22px 26px;max-width:380px;width:calc(100% - 28px);color:#10282f;box-shadow:0 20px 60px rgba(0,0,0,.35)}
+#scDlg::backdrop{background:rgba(16,40,47,.65)}
+#scDlg h3{font:700 22px Georgia,serif;margin:0 0 14px}
+#scDlg .x{float:right;background:none;border:0;font-size:1.6rem;cursor:pointer;line-height:1;color:#10282f}
+#scDlg .pdl{display:grid;gap:10px}
+#scDlg .pdl .b{margin:0;padding:11px 18px;cursor:pointer;font:inherit;font-weight:700;text-align:left}
+#scDlg .pdl .b:hover{background:#10282f;color:#fff}
+#ordBox{align-items:flex-start}
+#ordBox>b.sec,#ordBox>#custBtn{height:32px;display:flex;align-items:center}
+#ordRows{flex:0 1 auto;display:flex;flex-direction:column;gap:6px;max-width:100%;overflow-x:auto}
+#ordRows .orow{display:flex;align-items:center;gap:6px;flex-wrap:nowrap}
+#ordRows .on{flex:none;width:9.6em;text-align:center;font-weight:700}
+#ordRows .orow.act .on{cursor:default;background:#10282f;color:#fff}
+#ordRows .obs{display:flex;flex-wrap:nowrap;align-items:center;gap:8px;padding:4px 8px;border-radius:12px;box-shadow:inset 0 0 0 2px transparent}
+#ordRows .orow.act .obs{box-shadow:inset 0 0 0 2px #10282f}
 /* desktop: price list scrolls inside the 3D view, the Total row stays visible */
 @media(min-width:901px){
  .readout{bottom:40px;display:flex;flex-direction:column}
@@ -456,11 +471,11 @@ button.b{font:700 16px system-ui,sans-serif;cursor:pointer}
 <div class="pdl"><button class="b o" id="pdReq" type="button">Production request</button><button class="b o" id="pdOrd" type="button">Production order</button></div></dialog>
 
 <dialog id="trqDlg" aria-labelledby="trqT"><button class="x" id="trqX" type="button" aria-label="Close">&times;</button><h3 id="trqT">Transportation document</h3>
-<div class="pdl"><button class="b o" id="trqReq" type="button">Transportation request</button><button class="b o" id="trqOrd" type="button">Transportation order</button></div></dialog>
+<div class="pdl"><button class="b o" id="trqReq" type="button">Transportation request</button><button class="b o" id="trqOrd" type="button">Transportation order</button><button class="b o" id="dlPack" type="button">Packing list</button></div></dialog>
+<dialog id="coDlg" aria-labelledby="coT"><button class="x" id="coX" type="button" aria-label="Close">&times;</button><h3 id="coT">Customer</h3>
+<div class="pdl"><button class="b o" id="coDet" type="button">Customer details</button><button class="b o" id="coNew" type="button">New order</button></div></dialog>
 <dialog id="dcDlg" aria-labelledby="dcT"><button class="x" id="dcX" type="button" aria-label="Close">&times;</button><h3 id="dcT">Customer document</h3>
-<div class="pdl"><button class="b o" id="dlOffer" type="button">Offer</button><button class="b o" id="dlConf" type="button">Order confirmation</button></div></dialog>
-<dialog id="dxDlg" aria-labelledby="dxT"><button class="x" id="dxX" type="button" aria-label="Close">&times;</button><h3 id="dxT">Custom document</h3>
-<div class="pdl"><button class="b o" id="dlPack" type="button">Packing list</button><button class="b o" id="dlInv" type="button">Invoice</button></div></dialog>
+<div class="pdl"><button class="b o" id="dlOffer" type="button">Offer</button><button class="b o" id="dlConf" type="button">Order confirmation</button><button class="b o" id="dlInv" type="button">Proforma invoice</button></div></dialog>
 
 <dialog id="ncDlg" aria-labelledby="ncT"><button class="x" id="ncX" type="button" aria-label="Close">&times;</button><h3 id="ncT">New customer</h3>
 <div class="ncTabs" role="tablist"><button type="button" class="nct" data-t="person" aria-pressed="true">Individual</button><button type="button" class="nct" data-t="company" aria-pressed="false">Legal entity</button></div>
@@ -517,7 +532,7 @@ button.b{font:700 16px system-ui,sans-serif;cursor:pointer}
 
       </div>
 <div class="dlbox" id="ordBox" hidden><b class="sec">Order information</b><button class="b o" id="custBtn" type="button">Customer details</button><button class="b o" id="mkBtn" type="button">Manufacturer</button><button class="b o" id="trBtn" type="button">Transportation cost</button><button class="b o" id="epBtn" type="button">Edit price</button></div>
-<div class="dlbox" id="dlBox" hidden><b class="sec" id="dlHead" hidden>Download documents</b><button class="b o" id="dlCust" type="button" hidden>Customer</button><button class="b o dlx" id="pdfBtn" type="button" hidden>Customer offer</button><button class="b o dlx" id="pdfBtn3" type="button" hidden>Order confirmation</button><button class="b o" id="pdfBtn2" type="button" hidden>Production</button><button class="b o" id="pdfBtn4" type="button" hidden>Transportation</button><button class="b o" id="dlCus" type="button" hidden>Custom</button><button class="b o dlx" id="pdfBtn5" type="button" hidden>Packing list</button><button class="b o" id="dlExp" type="button" hidden>Export order</button></div>
+<div class="dlbox" id="dlBox" hidden><b class="sec" id="dlHead" hidden>Download documents</b><button class="b o" id="dlCust" type="button" hidden>For customer</button><button class="b o dlx" id="pdfBtn" type="button" hidden>Customer offer</button><button class="b o dlx" id="pdfBtn3" type="button" hidden>Order confirmation</button><button class="b o" id="pdfBtn2" type="button" hidden>For production</button><button class="b o" id="pdfBtn4" type="button" hidden>For transportation</button><button class="b o dlx" id="pdfBtn5" type="button" hidden>Packing list</button><button class="b o dlx" id="dlExp" type="button" hidden>Export order</button></div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script>var PRICE_OV=(function(){try{return JSON.parse(localStorage.getItem('prices_v1')||'{}')}catch(e){return {}}})();</script>
 <script>
@@ -1448,15 +1463,31 @@ window.makePdf=(producer,confirmation,transport,prodOrder)=>{ const tr=!!transpo
       if(dAddr) para('Delivery address: '+dAddr);
       if(st.terms&&window.INCO&&window.INCO[st.terms]) para('Delivery terms: '+st.terms+' - '+window.INCO[st.terms]); }
   }
-  if(tr&&window.LDF){ let add={}; try{add=JSON.parse(localStorage.getItem('tech_add_v1')||'{}');}catch(e){}   /* transport order: loading dimensions of the chosen model + shape */
-    const rows=window.LDF.map(([f,l])=>[l,add['ld:'+S.models[st.m].id+':'+S.shapes[st.s].id+':'+f]]).filter(r=>r[1]);
-    if(rows.length){ if(y>235){doc.addPage();y=20;} y+=4; doc.setFont('helvetica','normal');doc.setFontSize(8);doc.setTextColor(110);doc.text('LOADING DIMENSIONS',M,y);doc.setTextColor(0);y+=6;doc.setFontSize(11);
-      rows.forEach(([l,v])=>{ if(y>280){doc.addPage();y=20;} doc.text(clean(l),M,y); doc.splitTextToSize(clean(v),iw-60).forEach(t=>{ if(y>285){doc.addPage();y=20;} doc.text(t,W-M,y,{align:'right'}); y+=6; }); }); } }
   if(tr){ if(y>240){doc.addPage();y=20;} y+=6; doc.setFont('helvetica','normal');doc.setFontSize(8);doc.setTextColor(110);doc.text('SHIPMENT DESCRIPTION',M,y);doc.setTextColor(0);y+=5;   /* transportation request: what is being shipped (no prices) */
     const _m=S.models[st.m], _sh=S.shapes[st.s];
     const _L=['Hot tub made of wood. The liner is made of acrylic or fiberglass.','Included in the set: metal stove, pump, electrical parts.','No dangerous goods.'];
     doc.setFontSize(11);doc.setFont('helvetica','bold');doc.text(clean('Wood-fired hot tub '+_m.name+', '+_sh.n),M,y);y+=5;doc.setFont('helvetica','normal');doc.setFontSize(10);
     _L.forEach(t=>{ doc.splitTextToSize(clean(t),iw).forEach(l=>{ if(y>282){doc.addPage();y=20;} doc.text(l,M,y);y+=4.6; }); }); y+=2; }
+  if(tr){ let add={}; try{add=JSON.parse(localStorage.getItem('tech_add_v1')||'{}');}catch(e){}   /* transportation request + order: shipment parameters (pieces, pallet, dimensions, volume, weights) of the chosen model + shape */
+    const g=f=>String(add['ld:'+S.models[st.m].id+':'+S.shapes[st.s].id+':'+f]||'').trim();
+    const nm=v=>{ const n=parseFloat(String(v).replace(',','.').replace(/[^0-9.\-]/g,'')); return isFinite(n)?n:null; };
+    const L=nm(g('len')),Wd=nm(g('wid')),H=nm(g('hei')),nw=nm(g('wgt')),pw=nm(g('palw'));
+    const r2=n=>String(Math.round(n*100)/100), tbc='to be confirmed';
+    const rows=[
+      ['Number of units','1 pc'],
+      ['Packed on pallet',g('pal')||tbc],
+      ['Dimensions L x W x H (cm)',(L!=null||Wd!=null||H!=null)?[L,Wd,H].map(v=>v!=null?r2(v):'?').join(' x '):tbc],
+      ['Volume (m3)',(L!=null&&Wd!=null&&H!=null)?r2(L*Wd*H/1000000):tbc],
+      ['Net weight (kg)',nw!=null?r2(nw):tbc],
+      ['Pallet weight (kg)',pw!=null?r2(pw):tbc],
+      ['Total gross weight (kg)',(nw!=null&&pw!=null)?r2(nw+pw):(nw!=null?r2(nw):tbc),true],
+      ['Dangerous goods','No'],
+      ['Notes',g('note')]
+    ].filter(r=>r[1]);
+    if(y>215){doc.addPage();y=20;} y+=4; doc.setFont('helvetica','normal');doc.setFontSize(8);doc.setTextColor(110);doc.text('SHIPMENT PARAMETERS',M,y);doc.setTextColor(0);y+=6;doc.setFontSize(11);
+    rows.forEach(([l,v,bold])=>{ if(y>280){doc.addPage();y=20;} doc.setFont('helvetica','normal'); doc.text(clean(l),M,y); doc.setFont('helvetica',bold?'bold':'normal');
+      doc.splitTextToSize(clean(v),iw-70).forEach(t=>{ if(y>285){doc.addPage();y=20;} doc.text(t,W-M,y,{align:'right'}); y+=6; }); });
+    doc.setFont('helvetica','normal'); y+=2; }
   if(!tr){ let add={}; try{add=JSON.parse(localStorage.getItem('tech_add_v1')||'{}');}catch(e){}   /* Technical tub information: model data + the "Additional data" notes */
     const m=S.models[st.m], FT=[['size','Size (inner / outer)'],['people','Seats'],['liters','Water volume'],['heat','Heat-up time']];
     doc.addPage(); y=20;   /* separate page, heading in the same style as the "Hot tub quotation" title */
@@ -1658,6 +1689,7 @@ render();
 (function(){
   const KEY='clients_v1', $=id=>document.getElementById(id), dlg=$('cuDlg');
   const F=[['name','cuName'],['phone','cuPhone'],['mail','cuMail'],['country','cuCountry'],['zip','cuZip'],['addr','cuAddr'],['note','cuNote']];
+  const DEF=JSON.parse(JSON.stringify(st));   /* pristine configuration: starting point of every additional order */
   const load=()=>{try{return JSON.parse(localStorage.getItem(KEY)||'[]')}catch(e){return []}};
   const store=a=>{try{localStorage.setItem(KEY,JSON.stringify(a));return true}catch(e){alert('Could not save in this browser.');return false}};
   function snapshot(){
@@ -1675,10 +1707,12 @@ render();
   window.refreshCust=id=>{ if(window.CUST&&String(window.CUST.id)===String(id)){ const c=load().find(x=>String(x.id)===String(id)); if(c){ F.forEach(([k])=>window.CUST[k]=c[k]||''); label(); } } };
   window.loadOrder=function(id){
     const c=load().find(x=>String(x.id)===String(id)); if(!c){ alert('Customer not found.'); return; }
-    const cu={id:c.id,offerNo:c.offerNo||''}; F.forEach(([k])=>cu[k]=c[k]||'');
+    const cu={id:c.id,cid:c.cid||c.id,offerNo:c.offerNo||''}; F.forEach(([k])=>cu[k]=c[k]||'');
     window.CUST=cu; label(); if(window.orderStart)window.orderStart(); $('pdfBtn').hidden=false; window.scrollTo(0,0);
     if(!c.state){ alert('The configuration for this order was not saved; only the customer details were loaded. Choose a configuration and save again.'); return; }
-    const state=JSON.parse(JSON.stringify(c.state));
+    applyState(JSON.parse(JSON.stringify(c.state))); ensureNo();
+  };
+  function applyState(state){
     Object.assign(st,state); if(state.transport==null) st.transport=0; if(state.terms==null) st.terms=''; if(state.carrier==null) st.carrier=''; if(state.pick==null) st.pick=''; if(state.del==null) st.del=null; if(state.mf==null) st.mf=''; if(state.lead==null) st.lead=''; if(state.po==null) st.po={};
     if(state.wpc==null) st.wpc=0; if(state.sv==null) st.sv={o:0,g:1,m:0,h:0}; if(state.chim==null) st.chim={g:!!(state.acc&&state.acc.guard),k:false}; if(state.pend&&state.pend.cover==null) st.pend.cover=!(state.acc&&state.acc.cover);
     press($('oModel'),st.m); press($('oShape'),st.s); pressWood(); pressMat();
@@ -1694,26 +1728,105 @@ render();
     Object.assign(st.pend,state.pend);
     syncUI(); build(); readout(); showTab(0); if(window.refreshTransport)window.refreshTransport();
     window.scrollTo(0,0);
-  };
-  function label(){ $('custBtn').textContent=window.CUST?'Customer: '+window.CUST.name:'Customer details'; }
-  $('custBtn').onclick=()=>{
+  }
+  function label(){ $('custBtn').textContent=window.CUST?'Customer: '+window.CUST.name:'Customer details'; renderOrders(); }
+  function openDetails(){
     const c=window.CUST||{}; F.forEach(([k,id])=>$(id).value=c[k]||'');
     toggle(); if(!dlg.open) dlg.showModal(); $('cuName').focus();
-  };
+  }
+  const co=$('coDlg');   /* click on the customer button (customer already entered): choose Customer details or New order */
+  $('custBtn').onclick=()=>{ if(window.CUST&&window.CUST.name){ if(!co.open) co.showModal(); } else openDetails(); };
+  $('coX').onclick=()=>co.close();
+  co.addEventListener('click',e=>{ if(e.target===co) co.close(); });
+  $('coDet').onclick=()=>{ co.close(); openDetails(); };
+  $('coNew').onclick=()=>{ co.close(); newOrder(); };
   const toggle=()=>{ const ok=$('cuName').value.trim()!==''; $('cuSave').hidden=!ok; };
   $('cuName').addEventListener('input',toggle);
   $('cuX').onclick=$('cuCancel').onclick=()=>dlg.close();
   dlg.addEventListener('click',e=>{if(e.target===dlg)dlg.close();});
   function commit(){
     const name=$('cuName').value.trim(); if(!name){ $('cuName').focus(); return false; }
-    const c={id:(window.CUST&&window.CUST.id)||Date.now(),offerNo:(window.CUST&&window.CUST.offerNo)||''};
+    const nid=(window.CUST&&window.CUST.id)||Date.now(), c={id:nid,cid:(window.CUST&&window.CUST.cid)||nid,offerNo:(window.CUST&&window.CUST.offerNo)||''};
     F.forEach(([k,id])=>c[k]=$(id).value.trim());
     window.CUST=c;
     if(!upsert()) return false;
+    ensureNo(); propagate();
     label(); $('pdfBtn').hidden=false; dlg.close(); return true;
   }
   $('cuSave').onclick=commit;
   $('pdfBtn').onclick=()=>window.makePdf();
+
+  /* several orders of one customer: every order is its own record in the Order list (same cid), shown as one row under "Order information" */
+  const cidOf=r=>String(r.cid||r.id);
+  function siblings(){
+    const c=window.CUST; if(!c) return [];
+    const k=cidOf(c), a=load().filter(r=>cidOf(r)===k);
+    if(!a.some(r=>String(r.id)===String(c.id))) a.push(Object.assign({},c,{state:JSON.parse(JSON.stringify(st))}));
+    return a.sort((x,y)=>Number(x.id)-Number(y.id));
+  }
+  function propagate(){   /* customer data edited: keep it the same in all orders of this customer */
+    const c=window.CUST; if(!c) return;
+    const a=load(), k=cidOf(c); let ch=false;
+    a.forEach(r=>{ if(cidOf(r)===k&&String(r.id)!==String(c.id)){ F.forEach(([f])=>r[f]=c[f]||''); ch=true; } });
+    if(ch) store(a);
+  }
+  function newOrder(){
+    const c=window.CUST; if(!c) return;
+    if(!upsert()) return;   /* the order that is open now is saved first */
+    const nid=Date.now(), cu={id:nid,cid:c.cid||c.id,offerNo:nextOfferNo()}; F.forEach(([k])=>cu[k]=c[k]||'');
+    window.CUST=cu;
+    const fresh=Object.assign(JSON.parse(JSON.stringify(DEF)),{transport:0,terms:'',carrier:'',pick:'',del:null,mf:'',lead:'',po:{}});
+    applyState(fresh);
+    upsert(); label(); $('pdfBtn').hidden=false;
+  }
+  function switchOrder(id){ if(!window.CUST||String(window.CUST.id)===String(id)) return true; if(!upsert()) return false; window.loadOrder(id); return true; }
+  const wk=n=>n+(n==1?' week':' weeks');
+  function ensureNo(){ const c=window.CUST; if(c&&!c.offerNo){ c.offerNo=nextOfferNo(); upsert(); } }   /* every order gets its number as soon as it exists */
+  function renderOrders(){
+    const box=$('ordBox'), real=[$('mkBtn'),$('trBtn'),$('epBtn')];
+    const old=$('ordRows'); if(old) old.remove();
+    real.forEach(b=>box.appendChild(b));   // default: buttons directly in the bar (no customer yet)
+    const a=window.CUST?siblings():[]; if(!a.length) return;
+    const rows=document.createElement('div'); rows.id='ordRows'; box.appendChild(rows);
+    a.forEach(r=>{
+      const act=String(r.id)===String(window.CUST.id);
+      const row=document.createElement('div'); row.className='orow'+(act?' act':'');
+      const on=document.createElement('button'); on.type='button'; on.className='b o on'; on.textContent=(act?window.CUST.offerNo:r.offerNo)||'-'; on.title='Order number';
+      const obs=document.createElement('div'); obs.className='obs';
+      row.appendChild(on); row.appendChild(obs); rows.appendChild(row);
+      if(act){ real.forEach(b=>obs.appendChild(b)); return; }
+      on.onclick=()=>switchOrder(r.id);
+      const stt=r.state||{}, mfn=stt.mf&&window.mfName?window.mfName(stt.mf):'';
+      [['mkBtn',(mfn?'Manufacturer: '+mfn:'Manufacturer')+(stt.lead>0?' \u00b7 '+wk(stt.lead):'')],['trBtn',stt.transport>0?'Transportation cost: '+fmt(stt.transport):'Transportation cost'],['epBtn','Edit price']].forEach(([rid,txt])=>{
+        const p=document.createElement('button'); p.type='button'; p.className='b o ordp'; p.textContent=txt;
+        p.onclick=()=>{ if(switchOrder(r.id)&&window.CUST&&String(window.CUST.id)===String(r.id)) $(rid).click(); };
+        obs.appendChild(p);
+      });
+    });
+  }
+  window.renderOrders=renderOrders;
+  window.orderCount=()=>window.CUST?siblings().length:0;
+  /* "All orders": run a document generator for every order of this customer into ONE pdf (orders follow each other, each starts on a new page) */
+  window.runAllOrders=function(run){
+    const c=window.CUST, ns=window.jspdf;
+    if(!c||!ns||siblings().length<2) return run();
+    if(!upsert()) return;
+    const ids=siblings().map(r=>r.id), origId=c.id, J=ns.jsPDF; let shared=null, name='';
+    const Shared=function(){ if(!shared){ shared=new J(...arguments); shared.__sv=shared.save; shared.save=function(f){ if(!name) name=f; return shared; }; } else shared.addPage(); return shared; };
+    ns.jsPDF=Shared;
+    try{
+      for(const id of ids){
+        if(String(window.CUST.id)!==String(id)){ upsert(); window.loadOrder(id); }
+        run();
+      }
+    } finally { ns.jsPDF=J; }
+    if(String(window.CUST.id)!==String(origId)){ upsert(); window.loadOrder(origId); }
+    if(shared){
+      let fn=name||'documents.pdf'; const re=/^[A-Za-z]+-\d{4}-\d{4}/;
+      fn=re.test(fn)?fn.replace(re,'ALL-ORDERS'):'ALL-ORDERS-'+fn;
+      shared.__sv.call(shared,fn);
+    }
+  };
 })();
 </script>
 <script>
@@ -1974,8 +2087,9 @@ render();
   p4.onclick=()=>{ if(!tq.open) tq.showModal(); };
   document.getElementById('trqX').onclick=()=>tq.close();
   tq.addEventListener('click',e=>{ if(e.target===tq) tq.close(); });
-  document.getElementById('trqReq').onclick=()=>{ tq.close(); window.makePdf(false,false,true,false); };
-  document.getElementById('trqOrd').onclick=()=>{ tq.close(); window.makePdf(false,false,true,true); };
+  document.getElementById('trqReq').onclick=()=>{ tq.close(); window.chooseScope(()=>window.makePdf(false,false,true,false)); };
+  document.getElementById('trqOrd').onclick=()=>{ tq.close(); window.chooseScope(()=>window.makePdf(false,false,true,true)); };
+  document.getElementById('dlPack').onclick=()=>{ tq.close(); window.chooseScope(()=>window.makePackingList()); };
   const pd=document.getElementById('pdDlg');   /* Production request button: choose Production request or Production order */
   p.onclick=()=>{ if(!pd.open) pd.showModal(); };
   document.getElementById('pdX').onclick=()=>pd.close();
@@ -2279,7 +2393,7 @@ render();
 /* Download documents: "Customer" (Offer / Order confirmation) and "Custom" (Packing list) open a small choice window, like Transportation */
 (function(){
   const $=id=>document.getElementById(id), src=$('pdfBtn');
-  [['dlCust','dcDlg','dcX',{dlOffer:'pdfBtn',dlConf:'pdfBtn3'}],['dlCus','dxDlg','dxX',{dlPack:'pdfBtn5'}]].forEach(([btn,dlg,x,map])=>{
+  [['dlCust','dcDlg','dcX',{dlOffer:'pdfBtn',dlConf:'pdfBtn3'}]].forEach(([btn,dlg,x,map])=>{
     const b=$(btn), d=$(dlg);
     const sync=()=>{ b.hidden=src.hidden; };
     new MutationObserver(sync).observe(src,{attributes:true,attributeFilter:['hidden']}); sync();
@@ -2380,7 +2494,7 @@ render();
   window.makeInvoice=function(){
     if(!window.jspdf){ alert('PDF library not loaded (check internet connection).'); return; }
     const no=(window.CUST&&window.CUST.offerNo)||nextOfferNo(); if(window.CUST&&!window.CUST.offerNo){ window.CUST.offerNo=no; if(window.syncCust)window.syncCust(); }
-    const inv='INV-'+String(no).replace(/^OF-/,'');
+    const inv='PI-'+String(no).replace(/^OF-/,'');
     const doc=new window.jspdf.jsPDF({unit:'mm',format:'a4'}), W=210, M=15, iw=W-2*M; let y=20;
     const c=window.CUST||{}, dt=new Date().toLocaleDateString('en-GB');
     const room=n=>{ if(y+n>280){ doc.addPage(); y=20; } };
@@ -2388,7 +2502,7 @@ render();
     const lines=(arr,sz)=>{ doc.setFont('helvetica','normal');doc.setFontSize(sz||10); arr.filter(Boolean).forEach(t=>doc.splitTextToSize(clean(t),iw).forEach(l=>{ room(5); doc.text(l,M,y); y+=4.6; })); };
 
     /* title */
-    doc.setFont('helvetica','bold');doc.setFontSize(18);doc.text('Invoice',M,y);doc.setFontSize(11);doc.text('No. '+inv,W-M,y,{align:'right'});y+=6;
+    doc.setFont('helvetica','bold');doc.setFontSize(18);doc.text('Proforma invoice',M,y);doc.setFontSize(11);doc.text('No. '+inv,W-M,y,{align:'right'});y+=6;
     doc.setFont('helvetica','normal');doc.setFontSize(9);doc.setTextColor(110);doc.text('Date: '+dt+'   |   Order: Offer No. '+no,M,y);doc.setTextColor(0);y+=10;
 
     /* seller */
@@ -2431,7 +2545,23 @@ render();
     if(window.syncCust)window.syncCust();
     doc.save(inv+(c.name?'-'+clean(c.name).replace(/[^A-Za-z0-9]+/g,'-').replace(/^-|-$/g,''):'')+'.pdf');
   };
-  const b=$('dlInv'); if(b) b.onclick=()=>{ const d=$('dxDlg'); if(d&&d.open) d.close(); window.makeInvoice(); };
+  const b=$('dlInv'); if(b) b.onclick=()=>{ const d=$('dcDlg'); if(d&&d.open) d.close(); window.makeInvoice(); };
+})();
+</script>
+<dialog id="scDlg" aria-labelledby="scT"><button class="x" id="scX" type="button" aria-label="Close">&times;</button><h3 id="scT">Create document for</h3>
+<div class="pdl"><button class="b o" id="scOne" type="button">Single document</button><button class="b o" id="scAll" type="button">All documents</button></div></dialog>
+<script>
+/* Transportation documents: after the click choose a single document (this order) or all documents (every order of the customer in one pdf) */
+(function(){
+  const d=document.getElementById('scDlg'); let pending=null;
+  window.chooseScope=fn=>{
+    if(!(window.orderCount&&window.orderCount()>1)) return fn();   // one order only: nothing to choose
+    pending=fn; if(!d.open) d.showModal(); };
+  const go=all=>{ const f=pending; pending=null; d.close(); if(!f) return; if(all&&window.runAllOrders) window.runAllOrders(f); else f(); };
+  document.getElementById('scOne').onclick=()=>go(false);
+  document.getElementById('scAll').onclick=()=>go(true);
+  document.getElementById('scX').onclick=()=>{ pending=null; d.close(); };
+  d.addEventListener('click',e=>{ if(e.target===d){ pending=null; d.close(); } });
 })();
 </script>
 </body>
