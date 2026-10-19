@@ -461,6 +461,67 @@ button.b{font:700 16px system-ui,sans-serif;cursor:pointer}
 /* panel buttons: text aligned to the left edge, same line for every button */
 .panel #custBtn,.panel #mkBtn,.panel #trBtn,.panel #epBtn,.panel #pdfBtn,.panel #pdfBtn2,.panel #pdfBtn3,.panel #pdfBtn4{text-align:left;padding-left:12px;padding-right:8px}
 </style>
+<style id="dbTheme">
+/* Database / admin-console look for the main page: square corners, data-grid price list, mono labels, dark toolbar */
+:root{--mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;--dbline:#b9c6c2;--dbink:#10282f;--dbamb:#d98a1c}
+body{background:#eef2f1}
+/* toolbar */
+.topbar{max-width:none!important;margin:0!important;padding:10px max(20px,calc((100% - 1100px)/2 + 20px))!important;background:#10282f;border-bottom:3px solid var(--dbamb);gap:6px!important;align-items:center}
+.topbar button.b{border-radius:4px!important;padding:7px 14px!important;font:600 .8rem var(--mono)!important;letter-spacing:.02em;margin:0!important;border:1px solid #3a5963!important;background:transparent!important;color:#e8eeec!important}
+.topbar button.b:hover{background:#1c4350!important;border-color:var(--dbamb)!important;color:#fff!important}
+.topbar #prBtn{background:var(--dbamb)!important;border-color:var(--dbamb)!important;color:#10282f!important}
+.topbar #prBtn:hover{background:#f0a23a!important;color:#10282f!important}
+.topbar #newCfg,.topbar #mfBtn,.topbar #ncBtn{margin-left:12px!important;position:relative}
+.topbar #newCfg::before,.topbar #mfBtn::before,.topbar #ncBtn::before{content:"";position:absolute;left:-10px;top:4px;bottom:4px;width:1px;background:#3a5963}
+/* 3D stage and side panel */
+.stage{border-radius:6px!important;border:1px solid var(--dbline);box-shadow:0 1px 3px rgba(16,40,47,.1)}
+.panel{border-radius:6px!important;border:1px solid var(--dbline);background:rgba(250,252,251,.95)!important}
+.tabs{border-radius:4px!important;background:#dfe7e4!important;padding:2px!important}
+.tabs button{border-radius:3px!important;font:600 .66rem var(--mono)!important;text-transform:uppercase;letter-spacing:.05em}
+.panel b{font:600 .66rem var(--mono)!important;text-transform:uppercase;letter-spacing:.06em;color:#6a7d83!important}
+.panel b.sec{color:var(--dbink)!important}
+.opts button,.acc button,.stv button,.acc .sub button,.acc .chg,.panel .b{border-radius:4px!important}
+.opts button,.acc button,.stv button{border-width:1px!important;background:#fff!important}
+.opts button[aria-pressed=true],.acc button[aria-pressed=true],.stv button[aria-pressed=true]{background:var(--dbink)!important}
+.acc .sub button[aria-pressed=true]{background:#e9eeed!important;border-color:var(--dbink)!important}
+.acc button small{font-family:var(--mono);font-size:.72rem}
+.vbar{border-radius:6px!important;background:#10282f!important}.vbar button{border-radius:4px!important}
+/* price list = data grid */
+.readout strong{font-family:Georgia,serif}
+.readout #rList{width:min(350px,100%)!important;background:#fff!important;border:1px solid var(--dbline);border-radius:6px!important;padding:0 12px 0!important;overflow:hidden;box-shadow:0 1px 3px rgba(16,40,47,.1);font-size:.82rem!important;line-height:1.4!important}
+.readout #rList::before{content:"ITEM \00a0\00b7\00a0 VALUE";display:block;margin:0 -12px 2px;padding:6px 12px;background:#10282f;color:#9fb3b3;font:600 .62rem var(--mono);letter-spacing:.1em}
+.readout #rList .rr{padding:5px 0!important;border-top:1px solid #e3e9e6!important}
+.readout #rList .rr:nth-child(even){background:linear-gradient(#f4f7f6,#f4f7f6);box-shadow:-12px 0 0 #f4f7f6,12px 0 0 #f4f7f6}
+.readout #rList .rr:first-child{border-top:0!important}
+.readout #rList .rr b{font:600 .78rem var(--mono)!important;text-transform:none!important;letter-spacing:0!important;color:#10282f!important;font-variant-numeric:tabular-nums}
+.readout #rList .rt{margin:6px -12px 0!important;padding:8px 12px!important;background:#10282f!important;border-top:0!important;box-shadow:none!important}
+.readout #rList .rt span,.readout #rList .rt b{color:#f6d9a0!important;font-weight:700!important}
+.readout #rList .rt b{font-size:.9rem!important}
+/* order information = record header bar */
+.dlbox{border-radius:6px!important;background:#fff!important;border:1px solid var(--dbline);border-left:4px solid var(--dbamb);padding:9px 14px!important;gap:6px!important}
+.dlbox b.sec{font:700 .68rem var(--mono)!important;text-transform:uppercase;letter-spacing:.1em;color:#6a7d83!important}
+.dlbox .b{border-radius:4px!important;border:1px solid var(--dbline)!important;background:#f4f7f6!important;font:600 .76rem var(--mono)!important;padding:6px 12px!important;color:var(--dbink)}
+.dlbox .b:hover{background:var(--dbink)!important;border-color:var(--dbink)!important;color:#fff!important}
+/* dialogs */
+dialog{border-radius:8px!important;border:1px solid var(--dbline)!important}
+dialog h3{font-family:Georgia,serif}
+dialog h4{font:700 .66rem var(--mono)!important;letter-spacing:.1em!important;padding:4px 8px;background:#eef2f1;border-left:3px solid var(--dbamb);margin-top:18px!important}
+dialog .pr{padding:5px 4px!important}dialog .pr:hover{background:#f4f7f6}
+dialog .pr b{font-family:var(--mono);font-size:.84rem;font-variant-numeric:tabular-nums}
+dialog input,dialog textarea,dialog select{border-radius:4px!important}
+dialog .b{border-radius:4px!important}
+/* order rows: numbers black, columns aligned across all orders */
+#ordRows .on,#ordRows .orow.act .on,#ordBox #ordRows .orow .on{color:#000!important;font-weight:700!important}
+#ordRows .orow.act .on{background:#fdf1dc!important;border-color:var(--dbamb)!important}
+#ordRows{max-width:100%;overflow-x:auto}
+@supports (grid-template-columns:subgrid){
+ #ordRows{display:grid!important;grid-template-columns:max-content max-content max-content max-content;column-gap:8px;row-gap:6px;align-items:stretch}
+ #ordRows .orow{display:grid!important;grid-column:1/-1;grid-template-columns:subgrid;column-gap:8px;align-items:center}
+ #ordRows .obs{display:grid!important;grid-column:2/-1;grid-template-columns:subgrid;column-gap:8px;align-items:center}
+ #ordRows .on{width:auto!important;min-width:9.6em}
+ #ordRows .obs>button{width:100%;text-align:left;white-space:nowrap}
+}
+</style>
 </head>
 <body>
 <div class="topbar"><button class="b" id="prBtn" type="button">Basic price</button><button class="b o" id="tdBtn" type="button">Technical data</button><button class="b o" id="newCfg" type="button">New order</button><button class="b o" id="clList" type="button">Order list</button><button class="b o" id="impBtn" type="button">Import order</button><input type="file" id="impFile" accept=".json,application/json" hidden><button class="b o" id="mfBtn" type="button">New manufacturer</button><button class="b o" id="mlBtn" type="button">Manufacturer list</button><button class="b o" id="ncBtn" type="button">New customer</button><button class="b o" id="cnList" type="button">Customer list</button></div>
@@ -1591,50 +1652,81 @@ window.makePdf=(producer,confirmation,transport,prodOrder)=>{ const tr=!!transpo
     if(panel.classList.contains('noorder')){ window.orderStart(); return; }   // first click: just show the order buttons
     if(confirm('Start a new order from scratch?')) location.reload(); };       // order already running: start over (buttons stay visible)
   const PAGE=`<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Order list</title>
-<style>*{box-sizing:border-box}body{margin:0;font:16px/1.5 system-ui,sans-serif;color:#10282f;background:#f4f7f6}
-.w{max-width:860px;margin:0 auto;padding:24px 20px 60px}h1{font:700 28px Georgia,serif;margin:0 0 6px}.sub{color:#4d6169;font-size:.9rem;margin-bottom:14px}
-#q{width:100%;font:inherit;padding:10px 12px;border:1px solid #b9c6c2;border-radius:8px;margin-bottom:6px}
-.cl{background:#fff;border:1px solid #d3dcd9;border-radius:10px;padding:14px 16px;margin-top:12px}
-.clh{display:flex;justify-content:space-between;gap:12px;align-items:baseline}.clh b{font-size:1.1rem}.clh span{font-weight:700;white-space:nowrap}
-.cls{font-size:.86rem;color:#4d6169;margin-top:2px}.cln{font-size:.9rem;margin-top:6px;font-style:italic}
-details{margin-top:8px}summary{font-size:.85rem;font-weight:600;cursor:pointer}
-.clr{display:flex;justify-content:space-between;gap:12px;font-size:.88rem;padding:3px 0;border-bottom:1px solid #eef1f0}
-.cle{margin-top:10px;margin-right:8px;background:#10282f;color:#fff;border:1px solid #10282f;border-radius:6px;padding:4px 12px;font:inherit;font-size:.82rem;cursor:pointer}
-.clc{margin-top:10px;margin-right:8px;background:none;border:1px solid #10282f;border-radius:6px;padding:4px 12px;font:inherit;font-size:.82rem;cursor:pointer;color:#10282f}
-.ef{display:grid;gap:8px;margin-top:6px}.ef label{display:grid;gap:3px;font-size:.8rem;color:#4d6169}
-.ef input,.ef textarea{font:inherit;color:#10282f;padding:7px 9px;border:1px solid #b9c6c2;border-radius:6px}
-.ef .efb{display:flex;gap:8px;margin-top:4px}.efs{background:#10282f;color:#fff;border:1px solid #10282f;border-radius:6px;padding:6px 14px;font:inherit;font-size:.85rem;cursor:pointer}.efc{background:none;border:1px solid #b9c6c2;border-radius:6px;padding:6px 14px;font:inherit;font-size:.85rem;cursor:pointer;color:#10282f}
-.cld{margin-top:10px;background:none;border:1px solid #b9c6c2;border-radius:6px;padding:4px 12px;font:inherit;font-size:.82rem;cursor:pointer;color:#a33}
-.empty{color:#4d6169;padding:14px 0}</style></head><body><div class="w"><h1>Order list</h1><div class="sub" id="cnt"></div>
-<input id="q" type="search" placeholder="Search by name, phone, address..." aria-label="Search"><div id="box"></div></div>
+<style>*{box-sizing:border-box}body{margin:0;font:15px/1.45 system-ui,sans-serif;color:#10282f;background:#f4f7f6}
+.w{max-width:1320px;margin:0 auto;padding:22px 20px 40px}
+.top{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-bottom:12px}
+h1{font:700 26px Georgia,serif;margin:0}
+#cnt{font:600 .75rem ui-monospace,Menlo,Consolas,monospace;background:#10282f;color:#f6d9a0;border-radius:4px;padding:3px 9px;letter-spacing:.03em}
+#q{flex:1 1 280px;max-width:460px;margin-left:auto;font:inherit;font-size:.9rem;padding:8px 12px;border:1px solid #b9c6c2;border-radius:6px;background:#fff}
+#q:focus{outline:2px solid #d98a1c;outline-offset:-1px}
+.tw{overflow:auto;border:1px solid #b9c6c2;border-radius:6px;background:#fff;max-height:calc(100vh - 150px);box-shadow:0 1px 3px rgba(16,40,47,.08)}
+table.g{width:100%;border-collapse:separate;border-spacing:0;font-size:.84rem}
+.g th{position:sticky;top:0;z-index:2;background:#10282f;color:#e8eeec;text-align:left;font:600 .68rem ui-monospace,Menlo,Consolas,monospace;text-transform:uppercase;letter-spacing:.07em;padding:9px 10px;white-space:nowrap;cursor:pointer;user-select:none;border-right:1px solid #24424b}
+.g th:hover{background:#1c4350}.g th i{font-style:normal;color:#d98a1c;margin-left:6px}
+.g th.n,.g td.n{width:46px;text-align:right;cursor:default;color:#7b8c92;background:#eef2f1;border-right:1px solid #d3dcd9;font:.74rem ui-monospace,Menlo,Consolas,monospace}
+.g th.n{background:#0b1d22;color:#8aa0a6}
+.g td{padding:7px 10px;border-bottom:1px solid #e3e9e6;border-right:1px solid #eef1f0;white-space:nowrap;max-width:260px;overflow:hidden;text-overflow:ellipsis}
+.g td.mono,.g td.num{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.8rem}
+.g td.num,.g th.num{text-align:right}.g td.num{font-weight:700}
+.g td.act{width:28px;text-align:center;color:#7b8c92;border-right:0;padding:7px 4px}.g th.act{cursor:default}
+.g tr.r{cursor:pointer}.g tr.r.z td:not(.n){background:#f8faf9}
+.g tr.r:hover td:not(.n){background:#e6f0ee}
+.g tr.r.on td:not(.n){background:#fdf1dc;border-bottom-color:#e8c98c}.g tr.r.on td.act{color:#d98a1c}
+.tag{font:700 .64rem ui-monospace,Menlo,Consolas,monospace;letter-spacing:.05em;text-transform:uppercase;color:#10282f;border:1px solid #b9c6c2;border-radius:3px;padding:1px 6px;background:#fff}
+.tag.co{background:#10282f;border-color:#10282f;color:#f6d9a0}
+.dt td,.erow td{white-space:normal;max-width:none;overflow:visible;background:#f4f7f6;padding:12px 14px 14px;border-bottom:2px solid #d98a1c}
+.rec{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:1px;background:#d3dcd9;border:1px solid #d3dcd9;border-radius:4px;overflow:hidden}
+.kv{background:#fff;padding:6px 10px;min-width:0}.kv span{display:block;font:600 .64rem ui-monospace,Menlo,Consolas,monospace;text-transform:uppercase;letter-spacing:.06em;color:#7b8c92}.kv b{font-weight:600;font-size:.86rem;word-break:break-word}
+.kv.wide{grid-column:1/-1}
+table.cf{width:100%;margin-top:10px;border-collapse:collapse;font-size:.82rem;background:#fff;border:1px solid #d3dcd9}
+.cf th{position:static;cursor:default;background:#e3ebe8;color:#10282f;border-right:0;padding:5px 10px}.cf td{padding:4px 10px;border-bottom:1px solid #eef1f0;white-space:normal;max-width:none}.cf td+td{text-align:right;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.78rem}
+.mla{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}.mla button,.cle,.clc,.cld{font:inherit;font-size:.8rem;padding:4px 12px;border-radius:4px;cursor:pointer;border:1px solid #10282f;background:#10282f;color:#fff}
+.clc{background:#fff;color:#10282f}.mla button.del,.cld{background:#fff;border-color:#b9c6c2;color:#a33}
+.foot{padding:7px 12px;border-top:1px solid #d3dcd9;background:#eef2f1;font:.72rem ui-monospace,Menlo,Consolas,monospace;color:#4d6169;position:sticky;bottom:0}
+.empty{color:#4d6169;padding:18px 12px}
+.eh{font-size:.85rem;margin-top:8px;display:block}
+.ef{display:grid;gap:8px;margin-top:2px;max-width:680px}.ef label{display:grid;gap:3px;font-size:.78rem;color:#4d6169}
+.ef input,.ef textarea{font:inherit;color:#10282f;padding:7px 9px;border:1px solid #b9c6c2;border-radius:4px;background:#fff}
+.efb{display:flex;gap:8px;margin-top:4px}.efs{background:#10282f;color:#fff;border:1px solid #10282f;border-radius:4px;padding:6px 14px;font:inherit;font-size:.85rem;cursor:pointer}.efc{background:none;border:1px solid #b9c6c2;border-radius:4px;padding:6px 14px;font:inherit;font-size:.85rem;cursor:pointer;color:#10282f}</style></head><body><div class="w"><div class="top"><h1>Order list</h1><span id="cnt"></span><input id="q" type="search" placeholder="Search by name, phone, address..." aria-label="Search"></div><div class="tw"><div id="box"></div></div></div>
 <script>
 const KEY='clients_v1';
-let editId=null;
+let editId=null, openId=null, sk='date', sd=-1;
 const load=()=>{try{return JSON.parse(localStorage.getItem(KEY)||'[]')}catch(e){return []}};
 const esc=t=>String(t==null?'':t).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+  const num=s=>{ s=String(s==null?'':s).replace(/[^0-9.,-]/g,''); if(s.indexOf(',')>-1&&s.indexOf('.')<0) s=s.replace(',','.'); else s=s.replace(/,/g,''); return parseFloat(s)||0; };
+  const COLS=[['no','Offer no.'],['date','Date'],['name','Customer'],['phone','Phone'],['mail','Email'],['country','Country'],['model','Model'],['total','Total','num']];
+  const KEYS={no:c=>c.offerNo||'',date:c=>c.date||'',name:c=>c.name||'',phone:c=>c.phone||'',mail:c=>c.mail||'',country:c=>c.country||'',model:c=>(c.cfg&&c.cfg.model)||'',total:c=>num((c.cfg&&c.cfg.total)||'')};
 function render(){
   const a=load(), q=document.getElementById('q').value.trim().toLowerCase();
-  document.getElementById('cnt').textContent='Total customers: '+a.length;
+  document.getElementById('cnt').textContent=a.length+' records';
   const list=a.filter(c=>!q||[c.name,c.phone,c.mail,c.country,c.zip,c.addr,c.note].join(' ').toLowerCase().includes(q));
   const box=document.getElementById('box');
   if(!list.length){box.innerHTML='<p class="empty">'+(a.length?'No results found.':'No customers yet.')+'</p>';return;}
+  const kv=(k,v,w)=>v?'<div class="kv'+(w?' wide':'')+'"><span>'+k+'</span><b>'+esc(v)+'</b></div>':'';
+  const fmt=d=>{ const x=new Date(d); return isNaN(x)?'':x.toLocaleString('en-GB',{dateStyle:'short',timeStyle:'short'}); };
+  const sortList=()=>{ const kf=KEYS[sk]; if(!kf) return; list.sort((a,b)=>{ const x=kf(a), y=kf(b); const r=(typeof x==='number'&&typeof y==='number')?x-y:String(x).localeCompare(String(y),undefined,{numeric:true,sensitivity:'base'}); return r*sd; }); };
+  const head='<table class="g"><thead><tr><th class="n">#</th>'+COLS.map(c=>'<th data-s="'+c[0]+'" class="'+(c[2]||'')+'">'+c[1]+'<i>'+(sk===c[0]?(sd>0?'&#9650;':'&#9660;'):'')+'</i></th>').join('')+'<th class="act"></th></tr></thead><tbody>';
+  const foot='</tbody></table><div class="foot">Showing '+list.length+' of '+a.length+' records &middot; click a column to sort &middot; click a row to open the record</div>';
+  const NC=COLS.length+2;
+  sortList();
   const fld=[['name','Full name *'],['phone','Phone'],['mail','Email'],['country','Country'],['zip','Postal code'],['addr','Delivery address']];
-  box.innerHTML=list.map(c=>{
-    if(String(c.id)===String(editId)) return '<div class="cl" data-id="'+c.id+'"><div class="clh"><b>Edit customer details</b></div><div class="ef">'+fld.map(([k,l])=>'<label>'+l+'<input data-f="'+k+'" value="'+esc(c[k]||'')+'"></label>').join('')+'<label>Notes<textarea data-f="note" rows="3">'+esc(c.note||'')+'</textarea></label><div class="efb"><button class="efs" type="button">Save</button><button class="efc" type="button">Cancel</button></div></div></div>';
-    const d=new Date(c.date).toLocaleString('en-GB',{dateStyle:'short',timeStyle:'short'});
-    const addr=[c.addr,[c.zip,c.country].filter(Boolean).join(' ')].filter(Boolean).join(', ');
-    const contact=[c.phone,c.mail].filter(Boolean).map(esc).join(' · ');
-    return '<div class="cl"><div class="clh"><b>'+esc(c.name)+'</b><span>'+esc(c.cfg.total)+'</span></div>'+
-      '<div class="cls">'+(c.offerNo?'<b>'+esc(c.offerNo)+'</b> · ':'')+esc(d)+(contact?' · '+contact:'')+'</div>'+
-      (addr?'<div class="cls">'+esc(addr)+'</div>':'')+
-      '<div class="cls">'+esc(c.cfg.model)+'</div>'+
-      (c.note?'<div class="cln">'+esc(c.note)+'</div>':'')+
-      '<details><summary>Configuration</summary>'+c.cfg.rows.map(r=>'<div class="clr"><span>'+esc(r[0])+'</span><span>'+esc(r[1])+'</span></div>').join('')+'</details>'+
-      '<button class="cle" type="button" data-id="'+c.id+'">Edit order</button><button class="clc" type="button" data-id="'+c.id+'">Edit customer details</button><button class="cld" type="button" data-id="'+c.id+'">Delete</button></div>';
-  }).join('');
+  box.innerHTML=head+list.map((c,i)=>{
+    const cfg=c.cfg||{rows:[]}, id=String(c.id), isOpen=String(openId)===id||String(editId)===id;
+    let out='<tr class="r'+(i%2?' z':'')+(isOpen?' on':'')+'" data-id="'+id+'"><td class="n">'+(i+1)+'</td><td class="mono">'+esc(c.offerNo||'')+'</td><td class="mono">'+esc(fmt(c.date))+'</td><td><b>'+esc(c.name)+'</b></td><td>'+esc(c.phone||'')+'</td><td>'+esc(c.mail||'')+'</td><td>'+esc(c.country||'')+'</td><td>'+esc(cfg.model||'')+'</td><td class="num">'+esc(cfg.total||'')+'</td><td class="act">'+(isOpen?'&#9662;':'&#9656;')+'</td></tr>';
+    if(String(editId)===id) return out+'<tr class="cl erow" data-id="'+id+'"><td colspan="'+NC+'"><div class="ef"><b class="eh">Edit customer details</b>'+fld.map(([k,l])=>'<label>'+l+'<input data-f="'+k+'" value="'+esc(c[k]||'')+'"></label>').join('')+'<label>Notes<textarea data-f="note" rows="3">'+esc(c.note||'')+'</textarea></label><div class="efb"><button class="efs" type="button">Save</button><button class="efc" type="button">Cancel</button></div></div></td></tr>';
+    if(String(openId)===id){
+      const addr=[c.addr,[c.zip,c.country].filter(Boolean).join(' ')].filter(Boolean).join(', ');
+      out+='<tr class="dt"><td colspan="'+NC+'"><div class="rec">'+kv('Offer no.',c.offerNo)+kv('Date',fmt(c.date))+kv('Customer',c.name)+kv('Phone',c.phone)+kv('Email',c.mail)+kv('Delivery address',addr)+kv('Model',cfg.model)+kv('Total',cfg.total)+kv('Notes',c.note,true)+'</div>'+
+        '<table class="cf"><thead><tr><th>Configuration item</th><th style="text-align:right">Value</th></tr></thead><tbody>'+(cfg.rows||[]).map(r=>'<tr><td>'+esc(r[0])+'</td><td>'+esc(r[1])+'</td></tr>').join('')+'</tbody></table>'+
+        '<div class="mla"><button class="cle" type="button" data-id="'+id+'">Edit order</button><button class="clc" type="button" data-id="'+id+'">Edit customer details</button><button class="cld" type="button" data-id="'+id+'">Delete</button></div></td></tr>';
+    }
+    return out;
+  }).join('')+foot;
 }
 document.getElementById('q').oninput=render;
 document.getElementById('box').onclick=e=>{
+  const th=e.target.closest('th[data-s]'); if(th){ if(sk===th.dataset.s) sd=-sd; else{ sk=th.dataset.s; sd=1; } render(); return; }
+  const rw=e.target.closest('tr.r'); if(rw&&!e.target.closest('button')){ openId=String(openId)===rw.dataset.id?null:rw.dataset.id; render(); return; }
   const cc=e.target.closest('.clc'); if(cc){ editId=cc.dataset.id; render(); return; }
   if(e.target.closest('.efc')){ editId=null; render(); return; }
   const sv=e.target.closest('.efs');
@@ -2161,50 +2253,82 @@ render();
   $('mfBtn').onclick=()=>openForm(null);
   /* Manufacturer list: opens in its own browser window, like Order list */
   const PAGE=`<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Manufacturer list</title>
-<style>*{box-sizing:border-box}body{margin:0;font:16px/1.5 system-ui,sans-serif;color:#10282f;background:#f4f7f6}
-.w{max-width:860px;margin:0 auto;padding:24px 20px 60px}h1{font:700 28px Georgia,serif;margin:0 0 6px}.sub{color:#4d6169;font-size:.9rem;margin-bottom:14px}
-#q{width:100%;font:inherit;padding:10px 12px;border:1px solid #b9c6c2;border-radius:8px;margin-bottom:6px}
-.ml{background:#fff;border:1px solid #d3dcd9;border-radius:10px;padding:14px 16px;margin-top:12px}
-.mlh{display:flex;justify-content:space-between;gap:12px;align-items:baseline}.mlh b{font-size:1.1rem}.mlh span{font-size:.82rem;color:#4d6169;white-space:nowrap}
-.mls{font-size:.86rem;color:#4d6169;margin-top:2px}.mln{font-size:.9rem;margin-top:6px;font-style:italic}
-.mla{display:flex;gap:8px;margin-top:10px}.mla button{font:inherit;font-size:.82rem;padding:4px 12px;border-radius:6px;cursor:pointer;border:1px solid #10282f;background:#10282f;color:#fff}
-.mla button.del{background:none;border-color:#b9c6c2;color:#a33}
-.empty{color:#4d6169;padding:14px 0}
-.eh{font-size:.85rem;margin-top:8px}
-.ef{display:grid;gap:8px;margin-top:6px}.ef label{display:grid;gap:3px;font-size:.8rem;color:#4d6169}
-.ef input,.ef textarea{font:inherit;color:#10282f;padding:7px 9px;border:1px solid #b9c6c2;border-radius:6px}
-.efb{display:flex;gap:8px;margin-top:4px}.efs{background:#10282f;color:#fff;border:1px solid #10282f;border-radius:6px;padding:6px 14px;font:inherit;font-size:.85rem;cursor:pointer}.efc{background:none;border:1px solid #b9c6c2;border-radius:6px;padding:6px 14px;font:inherit;font-size:.85rem;cursor:pointer;color:#10282f}</style></head><body><div class="w"><h1>Manufacturer list</h1><div class="sub" id="cnt"></div>
-<input id="q" type="search" placeholder="Search by name, contact, country, products..." aria-label="Search"><div id="box"></div></div>
+<style>*{box-sizing:border-box}body{margin:0;font:15px/1.45 system-ui,sans-serif;color:#10282f;background:#f4f7f6}
+.w{max-width:1320px;margin:0 auto;padding:22px 20px 40px}
+.top{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-bottom:12px}
+h1{font:700 26px Georgia,serif;margin:0}
+#cnt{font:600 .75rem ui-monospace,Menlo,Consolas,monospace;background:#10282f;color:#f6d9a0;border-radius:4px;padding:3px 9px;letter-spacing:.03em}
+#q{flex:1 1 280px;max-width:460px;margin-left:auto;font:inherit;font-size:.9rem;padding:8px 12px;border:1px solid #b9c6c2;border-radius:6px;background:#fff}
+#q:focus{outline:2px solid #d98a1c;outline-offset:-1px}
+.tw{overflow:auto;border:1px solid #b9c6c2;border-radius:6px;background:#fff;max-height:calc(100vh - 150px);box-shadow:0 1px 3px rgba(16,40,47,.08)}
+table.g{width:100%;border-collapse:separate;border-spacing:0;font-size:.84rem}
+.g th{position:sticky;top:0;z-index:2;background:#10282f;color:#e8eeec;text-align:left;font:600 .68rem ui-monospace,Menlo,Consolas,monospace;text-transform:uppercase;letter-spacing:.07em;padding:9px 10px;white-space:nowrap;cursor:pointer;user-select:none;border-right:1px solid #24424b}
+.g th:hover{background:#1c4350}.g th i{font-style:normal;color:#d98a1c;margin-left:6px}
+.g th.n,.g td.n{width:46px;text-align:right;cursor:default;color:#7b8c92;background:#eef2f1;border-right:1px solid #d3dcd9;font:.74rem ui-monospace,Menlo,Consolas,monospace}
+.g th.n{background:#0b1d22;color:#8aa0a6}
+.g td{padding:7px 10px;border-bottom:1px solid #e3e9e6;border-right:1px solid #eef1f0;white-space:nowrap;max-width:260px;overflow:hidden;text-overflow:ellipsis}
+.g td.mono,.g td.num{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.8rem}
+.g td.num,.g th.num{text-align:right}.g td.num{font-weight:700}
+.g td.act{width:28px;text-align:center;color:#7b8c92;border-right:0;padding:7px 4px}.g th.act{cursor:default}
+.g tr.r{cursor:pointer}.g tr.r.z td:not(.n){background:#f8faf9}
+.g tr.r:hover td:not(.n){background:#e6f0ee}
+.g tr.r.on td:not(.n){background:#fdf1dc;border-bottom-color:#e8c98c}.g tr.r.on td.act{color:#d98a1c}
+.tag{font:700 .64rem ui-monospace,Menlo,Consolas,monospace;letter-spacing:.05em;text-transform:uppercase;color:#10282f;border:1px solid #b9c6c2;border-radius:3px;padding:1px 6px;background:#fff}
+.tag.co{background:#10282f;border-color:#10282f;color:#f6d9a0}
+.dt td,.erow td{white-space:normal;max-width:none;overflow:visible;background:#f4f7f6;padding:12px 14px 14px;border-bottom:2px solid #d98a1c}
+.rec{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:1px;background:#d3dcd9;border:1px solid #d3dcd9;border-radius:4px;overflow:hidden}
+.kv{background:#fff;padding:6px 10px;min-width:0}.kv span{display:block;font:600 .64rem ui-monospace,Menlo,Consolas,monospace;text-transform:uppercase;letter-spacing:.06em;color:#7b8c92}.kv b{font-weight:600;font-size:.86rem;word-break:break-word}
+.kv.wide{grid-column:1/-1}
+table.cf{width:100%;margin-top:10px;border-collapse:collapse;font-size:.82rem;background:#fff;border:1px solid #d3dcd9}
+.cf th{position:static;cursor:default;background:#e3ebe8;color:#10282f;border-right:0;padding:5px 10px}.cf td{padding:4px 10px;border-bottom:1px solid #eef1f0;white-space:normal;max-width:none}.cf td+td{text-align:right;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.78rem}
+.mla{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}.mla button,.cle,.clc,.cld{font:inherit;font-size:.8rem;padding:4px 12px;border-radius:4px;cursor:pointer;border:1px solid #10282f;background:#10282f;color:#fff}
+.clc{background:#fff;color:#10282f}.mla button.del,.cld{background:#fff;border-color:#b9c6c2;color:#a33}
+.foot{padding:7px 12px;border-top:1px solid #d3dcd9;background:#eef2f1;font:.72rem ui-monospace,Menlo,Consolas,monospace;color:#4d6169;position:sticky;bottom:0}
+.empty{color:#4d6169;padding:18px 12px}
+.eh{font-size:.85rem;margin-top:8px;display:block}
+.ef{display:grid;gap:8px;margin-top:2px;max-width:680px}.ef label{display:grid;gap:3px;font-size:.78rem;color:#4d6169}
+.ef input,.ef textarea{font:inherit;color:#10282f;padding:7px 9px;border:1px solid #b9c6c2;border-radius:4px;background:#fff}
+.efb{display:flex;gap:8px;margin-top:4px}.efs{background:#10282f;color:#fff;border:1px solid #10282f;border-radius:4px;padding:6px 14px;font:inherit;font-size:.85rem;cursor:pointer}.efc{background:none;border:1px solid #b9c6c2;border-radius:4px;padding:6px 14px;font:inherit;font-size:.85rem;cursor:pointer;color:#10282f}</style></head><body><div class="w"><div class="top"><h1>Manufacturer list</h1><span id="cnt"></span><input id="q" type="search" placeholder="Search by name, contact, country, products..." aria-label="Search"></div><div class="tw"><div id="box"></div></div></div>
 <script>
 const KEY='manufacturers_v1';
-let editId=null;
+let editId=null, openId=null, sk='date', sd=-1;
 const LB=[['name','Company name *'],['contact','Contact person'],['phone','Phone'],['mail','Email'],['web','Website'],['country','Country'],['zip','Postal code'],['addr','Address'],['prod','Products / materials']];
 const FL=['name','contact','phone','mail','web','country','zip','addr','prod','note','waddr','whours','wcontact','waddr2','whours2','wcontact2'];
 const LW=[['waddr','Warehouse address'],['whours','Working hours'],['wcontact','Contact person (name, phone)']];
 const LW2=[['waddr2','Warehouse 2 address'],['whours2','Working hours'],['wcontact2','Contact person (name, phone)']];
 const load=()=>{try{return JSON.parse(localStorage.getItem(KEY)||'[]')}catch(e){return []}};
 const esc=t=>String(t==null?'':t).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+  const COLS=[['name','Company'],['contact','Contact'],['phone','Phone'],['mail','Email'],['country','Country'],['prod','Products / materials'],['date','Added']];
+  const KEYS={name:m=>m.name||'',contact:m=>m.contact||'',phone:m=>m.phone||'',mail:m=>m.mail||'',country:m=>m.country||'',prod:m=>m.prod||'',date:m=>m.date||''};
 function render(){
   const a=load(), q=document.getElementById('q').value.trim().toLowerCase();
-  document.getElementById('cnt').textContent='Total manufacturers: '+a.length;
+  document.getElementById('cnt').textContent=a.length+' records';
   const list=a.filter(m=>!q||FL.map(k=>m[k]||'').join(' ').toLowerCase().includes(q));
   const box=document.getElementById('box');
   if(!list.length){box.innerHTML='<p class="empty">'+(a.length?'No results found.':'No manufacturers yet.')+'</p>';return;}
-  box.innerHTML=list.map(m=>{
-    if(String(m.id)===String(editId)) return '<div class="ml" data-id="'+m.id+'"><div class="mlh"><b>Edit manufacturer</b></div><div class="ef"><b class="eh">Company information</b>'+LB.map(([k,l])=>'<label>'+l+'<input data-f="'+k+'" value="'+esc(m[k]||'')+'"></label>').join('')+'<label>Notes<textarea data-f="note" rows="3">'+esc(m.note||'')+'</textarea></label><b class="eh">Warehouse information</b>'+LW.map(([k,l])=>'<label>'+l+'<input data-f="'+k+'" value="'+esc(m[k]||'')+'"></label>').join('')+'<b class="eh">Warehouse 2 information</b>'+LW2.map(([k,l])=>'<label>'+l+'<input data-f="'+k+'" value="'+esc(m[k]||'')+'"></label>').join('')+'<div class="efb"><button class="efs" type="button">Save</button><button class="efc" type="button">Cancel</button></div></div></div>';
-    const addr=[m.addr,[m.zip,m.country].filter(Boolean).join(' ')].filter(Boolean).join(', ');
-    const contact=[m.contact,m.phone,m.mail].filter(Boolean).map(esc).join(' · ');
-    const wh=[m.waddr,m.whours,m.wcontact].filter(Boolean).join(' · '), wh2=[m.waddr2,m.whours2,m.wcontact2].filter(Boolean).join(' · ');
-    const d=new Date(m.date).toLocaleString('en-GB',{dateStyle:'short',timeStyle:'short'});
-    return '<div class="ml"><div class="mlh"><b>'+esc(m.name)+'</b><span>'+esc(d)+'</span></div>'+
-      (contact?'<div class="mls">'+contact+'</div>':'')+(addr?'<div class="mls">'+esc(addr)+'</div>':'')+(wh?'<div class="mls">Warehouse: '+esc(wh)+'</div>':'')+(wh2?'<div class="mls">Warehouse 2: '+esc(wh2)+'</div>':'')+
-      (m.web?'<div class="mls">'+esc(m.web)+'</div>':'')+(m.prod?'<div class="mls">Products: '+esc(m.prod)+'</div>':'')+
-      (m.note?'<div class="mln">'+esc(m.note)+'</div>':'')+
-      '<div class="mla"><button type="button" class="ed" data-id="'+m.id+'">Edit</button><button type="button" class="del" data-id="'+m.id+'">Delete</button></div></div>';
-  }).join('');
+  const kv=(k,v,w)=>v?'<div class="kv'+(w?' wide':'')+'"><span>'+k+'</span><b>'+esc(v)+'</b></div>':'';
+  const fmt=d=>{ const x=new Date(d); return isNaN(x)?'':x.toLocaleString('en-GB',{dateStyle:'short',timeStyle:'short'}); };
+  const sortList=()=>{ const kf=KEYS[sk]; if(!kf) return; list.sort((a,b)=>{ const x=kf(a), y=kf(b); const r=(typeof x==='number'&&typeof y==='number')?x-y:String(x).localeCompare(String(y),undefined,{numeric:true,sensitivity:'base'}); return r*sd; }); };
+  const head='<table class="g"><thead><tr><th class="n">#</th>'+COLS.map(c=>'<th data-s="'+c[0]+'" class="'+(c[2]||'')+'">'+c[1]+'<i>'+(sk===c[0]?(sd>0?'&#9650;':'&#9660;'):'')+'</i></th>').join('')+'<th class="act"></th></tr></thead><tbody>';
+  const foot='</tbody></table><div class="foot">Showing '+list.length+' of '+a.length+' records &middot; click a column to sort &middot; click a row to open the record</div>';
+  const NC=COLS.length+2;
+  sortList();
+  box.innerHTML=head+list.map((m,i)=>{
+    const id=String(m.id), isOpen=String(openId)===id||String(editId)===id;
+    let out='<tr class="r'+(i%2?' z':'')+(isOpen?' on':'')+'" data-id="'+id+'"><td class="n">'+(i+1)+'</td><td><b>'+esc(m.name)+'</b></td><td>'+esc(m.contact||'')+'</td><td>'+esc(m.phone||'')+'</td><td>'+esc(m.mail||'')+'</td><td>'+esc(m.country||'')+'</td><td>'+esc(m.prod||'')+'</td><td class="mono">'+esc(fmt(m.date))+'</td><td class="act">'+(isOpen?'&#9662;':'&#9656;')+'</td></tr>';
+    if(String(editId)===id) return out+'<tr class="ml erow" data-id="'+id+'"><td colspan="'+NC+'"><div class="ef"><b class="eh">Company information</b>'+LB.map(([k,l])=>'<label>'+l+'<input data-f="'+k+'" value="'+esc(m[k]||'')+'"></label>').join('')+'<label>Notes<textarea data-f="note" rows="3">'+esc(m.note||'')+'</textarea></label><b class="eh">Warehouse information</b>'+LW.map(([k,l])=>'<label>'+l+'<input data-f="'+k+'" value="'+esc(m[k]||'')+'"></label>').join('')+'<b class="eh">Warehouse 2 information</b>'+LW2.map(([k,l])=>'<label>'+l+'<input data-f="'+k+'" value="'+esc(m[k]||'')+'"></label>').join('')+'<div class="efb"><button class="efs" type="button">Save</button><button class="efc" type="button">Cancel</button></div></div></td></tr>';
+    if(String(openId)===id){
+      const addr=[m.addr,[m.zip,m.country].filter(Boolean).join(' ')].filter(Boolean).join(', ');
+      out+='<tr class="dt"><td colspan="'+NC+'"><div class="rec">'+kv('Company',m.name)+kv('Contact person',m.contact)+kv('Phone',m.phone)+kv('Email',m.mail)+kv('Website',m.web)+kv('Address',addr)+kv('Products / materials',m.prod)+kv('Added',fmt(m.date))+kv('Warehouse',[m.waddr,m.whours,m.wcontact].filter(Boolean).join(' · '),true)+kv('Warehouse 2',[m.waddr2,m.whours2,m.wcontact2].filter(Boolean).join(' · '),true)+kv('Notes',m.note,true)+'</div>'+
+        '<div class="mla"><button type="button" class="ed" data-id="'+id+'">Edit</button><button type="button" class="del" data-id="'+id+'">Delete</button></div></td></tr>';
+    }
+    return out;
+  }).join('')+foot;
 }
 document.getElementById('q').oninput=render;
 document.getElementById('box').onclick=e=>{
+  const th=e.target.closest('th[data-s]'); if(th){ if(sk===th.dataset.s) sd=-sd; else{ sk=th.dataset.s; sd=1; } render(); return; }
+  const rw=e.target.closest('tr.r'); if(rw&&!e.target.closest('button')){ openId=String(openId)===rw.dataset.id?null:rw.dataset.id; render(); return; }
   const ed=e.target.closest('.ed');
   if(ed){ editId=ed.dataset.id; render(); return; }
   if(e.target.closest('.efc')){ editId=null; render(); return; }
@@ -2281,24 +2405,45 @@ render();
   const showT=t=>{ showSub('info'); curType=t; $('ncPerson').hidden=t!=='person'; $('ncCompany').hidden=t!=='company'; dlg.querySelectorAll('.nct').forEach(b=>b.setAttribute('aria-pressed',b.dataset.t===t)); };
   dlg.querySelectorAll('.nct').forEach(b=>b.onclick=()=>{ showT(b.dataset.t); $(b.dataset.t==='person'?'ncName':'nkName').focus(); });
   const PAGE=`<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Customer list</title>
-<style>*{box-sizing:border-box}body{margin:0;font:16px/1.5 system-ui,sans-serif;color:#10282f;background:#f4f7f6}
-.w{max-width:860px;margin:0 auto;padding:24px 20px 60px}h1{font:700 28px Georgia,serif;margin:0 0 6px}.sub{color:#4d6169;font-size:.9rem;margin-bottom:14px}
-#q{width:100%;font:inherit;padding:10px 12px;border:1px solid #b9c6c2;border-radius:8px;margin-bottom:6px}
-.ml{background:#fff;border:1px solid #d3dcd9;border-radius:10px;padding:14px 16px;margin-top:12px}
-.mlh{display:flex;justify-content:space-between;gap:12px;align-items:baseline}.mlh b{font-size:1.1rem}.mlh span{font-size:.82rem;color:#4d6169;white-space:nowrap}
-.tag{font-size:.7rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:#4d6169;border:1px solid #b9c6c2;border-radius:999px;padding:1px 8px;margin-left:8px;vertical-align:middle}
-.mls{font-size:.86rem;color:#4d6169;margin-top:2px}.mln{font-size:.9rem;margin-top:6px;font-style:italic}
-.mla{display:flex;gap:8px;margin-top:10px}.mla button{font:inherit;font-size:.82rem;padding:4px 12px;border-radius:6px;cursor:pointer;border:1px solid #10282f;background:#10282f;color:#fff}
-.mla button.del{background:none;border-color:#b9c6c2;color:#a33}
-.empty{color:#4d6169;padding:14px 0}
-.eh{font-size:.85rem;margin-top:8px}
-.ef{display:grid;gap:8px;margin-top:6px}.ef label{display:grid;gap:3px;font-size:.8rem;color:#4d6169}
-.ef input,.ef textarea{font:inherit;color:#10282f;padding:7px 9px;border:1px solid #b9c6c2;border-radius:6px}
-.efb{display:flex;gap:8px;margin-top:4px}.efs{background:#10282f;color:#fff;border:1px solid #10282f;border-radius:6px;padding:6px 14px;font:inherit;font-size:.85rem;cursor:pointer}.efc{background:none;border:1px solid #b9c6c2;border-radius:6px;padding:6px 14px;font:inherit;font-size:.85rem;cursor:pointer;color:#10282f}</style></head><body><div class="w"><h1>Customer list</h1><div class="sub" id="cnt"></div>
-<input id="q" type="search" placeholder="Search by name, company code, phone, email, address..." aria-label="Search"><div id="box"></div></div>
+<style>*{box-sizing:border-box}body{margin:0;font:15px/1.45 system-ui,sans-serif;color:#10282f;background:#f4f7f6}
+.w{max-width:1320px;margin:0 auto;padding:22px 20px 40px}
+.top{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-bottom:12px}
+h1{font:700 26px Georgia,serif;margin:0}
+#cnt{font:600 .75rem ui-monospace,Menlo,Consolas,monospace;background:#10282f;color:#f6d9a0;border-radius:4px;padding:3px 9px;letter-spacing:.03em}
+#q{flex:1 1 280px;max-width:460px;margin-left:auto;font:inherit;font-size:.9rem;padding:8px 12px;border:1px solid #b9c6c2;border-radius:6px;background:#fff}
+#q:focus{outline:2px solid #d98a1c;outline-offset:-1px}
+.tw{overflow:auto;border:1px solid #b9c6c2;border-radius:6px;background:#fff;max-height:calc(100vh - 150px);box-shadow:0 1px 3px rgba(16,40,47,.08)}
+table.g{width:100%;border-collapse:separate;border-spacing:0;font-size:.84rem}
+.g th{position:sticky;top:0;z-index:2;background:#10282f;color:#e8eeec;text-align:left;font:600 .68rem ui-monospace,Menlo,Consolas,monospace;text-transform:uppercase;letter-spacing:.07em;padding:9px 10px;white-space:nowrap;cursor:pointer;user-select:none;border-right:1px solid #24424b}
+.g th:hover{background:#1c4350}.g th i{font-style:normal;color:#d98a1c;margin-left:6px}
+.g th.n,.g td.n{width:46px;text-align:right;cursor:default;color:#7b8c92;background:#eef2f1;border-right:1px solid #d3dcd9;font:.74rem ui-monospace,Menlo,Consolas,monospace}
+.g th.n{background:#0b1d22;color:#8aa0a6}
+.g td{padding:7px 10px;border-bottom:1px solid #e3e9e6;border-right:1px solid #eef1f0;white-space:nowrap;max-width:260px;overflow:hidden;text-overflow:ellipsis}
+.g td.mono,.g td.num{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.8rem}
+.g td.num,.g th.num{text-align:right}.g td.num{font-weight:700}
+.g td.act{width:28px;text-align:center;color:#7b8c92;border-right:0;padding:7px 4px}.g th.act{cursor:default}
+.g tr.r{cursor:pointer}.g tr.r.z td:not(.n){background:#f8faf9}
+.g tr.r:hover td:not(.n){background:#e6f0ee}
+.g tr.r.on td:not(.n){background:#fdf1dc;border-bottom-color:#e8c98c}.g tr.r.on td.act{color:#d98a1c}
+.tag{font:700 .64rem ui-monospace,Menlo,Consolas,monospace;letter-spacing:.05em;text-transform:uppercase;color:#10282f;border:1px solid #b9c6c2;border-radius:3px;padding:1px 6px;background:#fff}
+.tag.co{background:#10282f;border-color:#10282f;color:#f6d9a0}
+.dt td,.erow td{white-space:normal;max-width:none;overflow:visible;background:#f4f7f6;padding:12px 14px 14px;border-bottom:2px solid #d98a1c}
+.rec{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:1px;background:#d3dcd9;border:1px solid #d3dcd9;border-radius:4px;overflow:hidden}
+.kv{background:#fff;padding:6px 10px;min-width:0}.kv span{display:block;font:600 .64rem ui-monospace,Menlo,Consolas,monospace;text-transform:uppercase;letter-spacing:.06em;color:#7b8c92}.kv b{font-weight:600;font-size:.86rem;word-break:break-word}
+.kv.wide{grid-column:1/-1}
+table.cf{width:100%;margin-top:10px;border-collapse:collapse;font-size:.82rem;background:#fff;border:1px solid #d3dcd9}
+.cf th{position:static;cursor:default;background:#e3ebe8;color:#10282f;border-right:0;padding:5px 10px}.cf td{padding:4px 10px;border-bottom:1px solid #eef1f0;white-space:normal;max-width:none}.cf td+td{text-align:right;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.78rem}
+.mla{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}.mla button,.cle,.clc,.cld{font:inherit;font-size:.8rem;padding:4px 12px;border-radius:4px;cursor:pointer;border:1px solid #10282f;background:#10282f;color:#fff}
+.clc{background:#fff;color:#10282f}.mla button.del,.cld{background:#fff;border-color:#b9c6c2;color:#a33}
+.foot{padding:7px 12px;border-top:1px solid #d3dcd9;background:#eef2f1;font:.72rem ui-monospace,Menlo,Consolas,monospace;color:#4d6169;position:sticky;bottom:0}
+.empty{color:#4d6169;padding:18px 12px}
+.eh{font-size:.85rem;margin-top:8px;display:block}
+.ef{display:grid;gap:8px;margin-top:2px;max-width:680px}.ef label{display:grid;gap:3px;font-size:.78rem;color:#4d6169}
+.ef input,.ef textarea{font:inherit;color:#10282f;padding:7px 9px;border:1px solid #b9c6c2;border-radius:4px;background:#fff}
+.efb{display:flex;gap:8px;margin-top:4px}.efs{background:#10282f;color:#fff;border:1px solid #10282f;border-radius:4px;padding:6px 14px;font:inherit;font-size:.85rem;cursor:pointer}.efc{background:none;border:1px solid #b9c6c2;border-radius:4px;padding:6px 14px;font:inherit;font-size:.85rem;cursor:pointer;color:#10282f}</style></head><body><div class="w"><div class="top"><h1>Customer list</h1><span id="cnt"></span><input id="q" type="search" placeholder="Search by name, company code, phone, email, address..." aria-label="Search"></div><div class="tw"><div id="box"></div></div></div>
 <script>
 const KEY='customers_v1';
-let editId=null;
+let editId=null, openId=null, sk='date', sd=-1;
 const LBP=[['name','Full name *'],['phone','Phone'],['mail','Email'],['country','Country'],['zip','Postal code'],['addr','Delivery address']];
 const LBC=[['name','Company name *'],['code','Company code'],['vat','VAT no.'],['contact','Contact person'],['phone','Phone'],['mail','Email'],['country','Country'],['zip','Postal code'],['addr','Company address']];
 const FL=['name','code','vat','contact','phone','mail','country','zip','addr','note','waddr','whours','wcontact','waddr2','whours2','wcontact2'];
@@ -2307,27 +2452,37 @@ const LW2=[['waddr2','Warehouse 2 address'],['whours2','Working hours'],['wconta
 const isC=m=>m.type==='company';
 const load=()=>{try{return JSON.parse(localStorage.getItem(KEY)||'[]')}catch(e){return []}};
 const esc=t=>String(t==null?'':t).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+  const COLS=[['type','Type'],['name','Name'],['code','Company code'],['contact','Contact'],['phone','Phone'],['mail','Email'],['country','Country'],['date','Added']];
+  const KEYS={type:m=>isC(m)?'Legal entity':'Individual',name:m=>m.name||'',code:m=>m.code||'',contact:m=>(isC(m)?m.contact:'')||'',phone:m=>m.phone||'',mail:m=>m.mail||'',country:m=>m.country||'',date:m=>m.date||''};
 function render(){
   const a=load(), q=document.getElementById('q').value.trim().toLowerCase();
-  document.getElementById('cnt').textContent='Total customers: '+a.length;
+  document.getElementById('cnt').textContent=a.length+' records';
   const list=a.filter(m=>!q||FL.map(k=>m[k]||'').join(' ').toLowerCase().includes(q));
   const box=document.getElementById('box');
   if(!list.length){box.innerHTML='<p class="empty">'+(a.length?'No results found.':'No customers yet.')+'</p>';return;}
-  box.innerHTML=list.map(m=>{
-    if(String(m.id)===String(editId)) return '<div class="ml" data-id="'+m.id+'"><div class="mlh"><b>Edit customer</b></div><div class="ef">'+(isC(m)?LBC:LBP).map(([k,l])=>'<label>'+l+'<input data-f="'+k+'" value="'+esc(m[k]||'')+'"></label>').join('')+'<label>Notes<textarea data-f="note" rows="3">'+esc(m.note||'')+'</textarea></label>'+(isC(m)?'<b class="eh">Warehouse information</b>'+LW1.map(([k,l])=>'<label>'+l+'<input data-f="'+k+'" value="'+esc(m[k]||'')+'"></label>').join('')+'<b class="eh">Warehouse 2 information</b>'+LW2.map(([k,l])=>'<label>'+l+'<input data-f="'+k+'" value="'+esc(m[k]||'')+'"></label>').join(''):'')+'<div class="efb"><button class="efs" type="button">Save</button><button class="efc" type="button">Cancel</button></div></div></div>';
-    const addr=[m.addr,[m.zip,m.country].filter(Boolean).join(' ')].filter(Boolean).join(', ');
-    const contact=[isC(m)?m.contact:'',m.phone,m.mail].filter(Boolean).map(esc).join(' · ');
-    const ids=isC(m)?[m.code?'Company code: '+m.code:'',m.vat?'VAT no.: '+m.vat:''].filter(Boolean).join(' · '):'';
-    const w1=[m.waddr,m.whours,m.wcontact].filter(Boolean).join(' · '), w2=[m.waddr2,m.whours2,m.wcontact2].filter(Boolean).join(' · ');
-    const d=new Date(m.date).toLocaleString('en-GB',{dateStyle:'short',timeStyle:'short'});
-    return '<div class="ml"><div class="mlh"><div><b>'+esc(m.name)+'</b><span class="tag">'+(isC(m)?'Legal entity':'Individual')+'</span></div><span>'+esc(d)+'</span></div>'+
-      (ids?'<div class="mls">'+esc(ids)+'</div>':'')+(contact?'<div class="mls">'+contact+'</div>':'')+(addr?'<div class="mls">'+esc(addr)+'</div>':'')+(isC(m)&&w1?'<div class="mls">Warehouse: '+esc(w1)+'</div>':'')+(isC(m)&&w2?'<div class="mls">Warehouse 2: '+esc(w2)+'</div>':'')+
-      (m.note?'<div class="mln">'+esc(m.note)+'</div>':'')+
-      '<div class="mla"><button type="button" class="ed" data-id="'+m.id+'">Edit</button><button type="button" class="del" data-id="'+m.id+'">Delete</button></div></div>';
-  }).join('');
+  const kv=(k,v,w)=>v?'<div class="kv'+(w?' wide':'')+'"><span>'+k+'</span><b>'+esc(v)+'</b></div>':'';
+  const fmt=d=>{ const x=new Date(d); return isNaN(x)?'':x.toLocaleString('en-GB',{dateStyle:'short',timeStyle:'short'}); };
+  const sortList=()=>{ const kf=KEYS[sk]; if(!kf) return; list.sort((a,b)=>{ const x=kf(a), y=kf(b); const r=(typeof x==='number'&&typeof y==='number')?x-y:String(x).localeCompare(String(y),undefined,{numeric:true,sensitivity:'base'}); return r*sd; }); };
+  const head='<table class="g"><thead><tr><th class="n">#</th>'+COLS.map(c=>'<th data-s="'+c[0]+'" class="'+(c[2]||'')+'">'+c[1]+'<i>'+(sk===c[0]?(sd>0?'&#9650;':'&#9660;'):'')+'</i></th>').join('')+'<th class="act"></th></tr></thead><tbody>';
+  const foot='</tbody></table><div class="foot">Showing '+list.length+' of '+a.length+' records &middot; click a column to sort &middot; click a row to open the record</div>';
+  const NC=COLS.length+2;
+  sortList();
+  box.innerHTML=head+list.map((m,i)=>{
+    const id=String(m.id), isOpen=String(openId)===id||String(editId)===id;
+    let out='<tr class="r'+(i%2?' z':'')+(isOpen?' on':'')+'" data-id="'+id+'"><td class="n">'+(i+1)+'</td><td><span class="tag'+(isC(m)?' co':'')+'">'+(isC(m)?'Legal entity':'Individual')+'</span></td><td><b>'+esc(m.name)+'</b></td><td class="mono">'+esc(m.code||'')+'</td><td>'+esc((isC(m)?m.contact:'')||'')+'</td><td>'+esc(m.phone||'')+'</td><td>'+esc(m.mail||'')+'</td><td>'+esc(m.country||'')+'</td><td class="mono">'+esc(fmt(m.date))+'</td><td class="act">'+(isOpen?'&#9662;':'&#9656;')+'</td></tr>';
+    if(String(editId)===id) return out+'<tr class="ml erow" data-id="'+id+'"><td colspan="'+NC+'"><div class="ef"><b class="eh">Edit customer</b>'+(isC(m)?LBC:LBP).map(([k,l])=>'<label>'+l+'<input data-f="'+k+'" value="'+esc(m[k]||'')+'"></label>').join('')+'<label>Notes<textarea data-f="note" rows="3">'+esc(m.note||'')+'</textarea></label>'+(isC(m)?'<b class="eh">Warehouse information</b>'+LW1.map(([k,l])=>'<label>'+l+'<input data-f="'+k+'" value="'+esc(m[k]||'')+'"></label>').join('')+'<b class="eh">Warehouse 2 information</b>'+LW2.map(([k,l])=>'<label>'+l+'<input data-f="'+k+'" value="'+esc(m[k]||'')+'"></label>').join(''):'')+'<div class="efb"><button class="efs" type="button">Save</button><button class="efc" type="button">Cancel</button></div></div></td></tr>';
+    if(String(openId)===id){
+      const addr=[m.addr,[m.zip,m.country].filter(Boolean).join(' ')].filter(Boolean).join(', ');
+      out+='<tr class="dt"><td colspan="'+NC+'"><div class="rec">'+kv('Type',isC(m)?'Legal entity':'Individual')+kv('Name',m.name)+(isC(m)?kv('Company code',m.code)+kv('VAT no.',m.vat)+kv('Contact person',m.contact):'')+kv('Phone',m.phone)+kv('Email',m.mail)+kv('Address',addr)+kv('Added',fmt(m.date))+(isC(m)?kv('Warehouse',[m.waddr,m.whours,m.wcontact].filter(Boolean).join(' · '),true)+kv('Warehouse 2',[m.waddr2,m.whours2,m.wcontact2].filter(Boolean).join(' · '),true):'')+kv('Notes',m.note,true)+'</div>'+
+        '<div class="mla"><button type="button" class="ed" data-id="'+id+'">Edit</button><button type="button" class="del" data-id="'+id+'">Delete</button></div></td></tr>';
+    }
+    return out;
+  }).join('')+foot;
 }
 document.getElementById('q').oninput=render;
 document.getElementById('box').onclick=e=>{
+  const th=e.target.closest('th[data-s]'); if(th){ if(sk===th.dataset.s) sd=-sd; else{ sk=th.dataset.s; sd=1; } render(); return; }
+  const rw=e.target.closest('tr.r'); if(rw&&!e.target.closest('button')){ openId=String(openId)===rw.dataset.id?null:rw.dataset.id; render(); return; }
   const ed=e.target.closest('.ed');
   if(ed){ editId=ed.dataset.id; render(); return; }
   if(e.target.closest('.efc')){ editId=null; render(); return; }
