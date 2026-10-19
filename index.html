@@ -358,6 +358,18 @@ button.b{font:700 16px system-ui,sans-serif;cursor:pointer}
 #cuDlg .fg{display:grid;gap:10px}
 #trDlg .fg{display:grid;gap:10px}
 #trDlg .trh{font-size:1rem;font-weight:700;color:#10282f;margin-top:4px}
+#trDlg .fg.trg{grid-template-columns:1fr 1fr!important;gap:6px 16px!important;align-items:end}
+#trDlg .trh{margin:0!important;font-size:.95rem;align-self:end}
+#trDlg .trh.t2{margin-top:8px!important}
+#trDlg label{gap:2px!important;font-size:.6rem!important;min-width:0}
+#trDlg input:not([type=checkbox]),#trDlg select{padding:0 8px!important;height:30px;box-sizing:border-box;font-size:.85rem!important;min-width:0}
+#trDlg .trrow{display:flex;gap:10px}
+#trDlg .trrow label{flex:1;min-width:0}#trDlg .trrow label:first-child{flex:0 0 36%}
+#trDlg .trd:empty{display:none}#trDlg .trd{grid-column:1/-1}
+#trDlg .trn{grid-column:1/-1;font-size:.75rem;color:#4d6169;margin:0}
+#trDlg h3{margin-bottom:10px!important}
+#trDlg .pf{margin-top:10px!important}
+@media(max-width:620px){#trDlg .fg.trg{grid-template-columns:1fr!important}#trDlg .fg.trg>span{display:none}}
 #trDlg .trd{font-size:.85rem;color:#4d6169;line-height:1.5}
 #cuDlg label{display:grid;gap:4px;font-size:.85rem;color:#4d6169}
 #trDlg label{display:grid;gap:4px;font-size:.85rem;color:#4d6169}
@@ -593,7 +605,7 @@ dialog[id] .pdl .b:hover{background:#10282f!important;color:#f6d9a0!important}
 <dialog id="prDlg" aria-labelledby="prT"><button class="x" id="prX" type="button" aria-label="Close">&times;</button><h3 id="prT">Basic price</h3><div id="prBody"></div><div class="pf"><button class="b" id="prSave" type="button">Save</button><button class="b o" id="prReset" type="button">Reset prices</button></div></dialog>
 <dialog id="tdDlg" aria-labelledby="tdT"><button class="x" id="tdX" type="button" aria-label="Close">&times;</button><h3 id="tdT">Technical data</h3><div id="tdBody"></div><div class="pf"><button class="b" id="tdSave" type="button">Save</button><button class="b o" id="tdReset" type="button">Clear data</button></div></dialog>
 <dialog id="trDlg" aria-labelledby="trT"><button class="x" id="trX" type="button" aria-label="Close">&times;</button><h3 id="trT">Transportation cost</h3>
-<div class="fg"><b class="trh">Shipment delivery address</b><label>Customer<input id="trName" readonly></label><label>Delivery address<input id="trAddr" autocomplete="off"></label><label>Postal code<input id="trZip" autocomplete="off"></label><label>Country<input id="trCountry" list="cuCountries" autocomplete="off"></label><p style="font-size:.8rem;color:#4d6169;margin:0">Prefilled from Customer details. You can change the address for this shipment.</p><b class="trh">Shipment pick up address</b><label>Pick-up warehouse<select id="trPick"></select></label><div class="trd" id="trPickDet"></div><label>Carrier<input id="trCarrier" autocomplete="off" placeholder="Carrier name"></label><label>Delivery terms (Incoterms 2020)<select id="trTerms"></select></label><label>Transportation cost (EUR)<input id="trCost" type="number" min="0" step="1" placeholder="Enter price"></label></div>
+<div class="fg trg"><b class="trh">Shipment pick up address</b><span></span><label>Pick-up warehouse<select id="trPick"></select></label><label>Carrier<input id="trCarrier" autocomplete="off" placeholder="Carrier name"></label><div class="trd" id="trPickDet"></div><b class="trh t2">Shipment delivery address</b><span></span><label>Customer<input id="trName" readonly></label><label>Delivery terms (Incoterms 2020)<select id="trTerms"></select></label><label>Delivery address<input id="trAddr" autocomplete="off"></label><label>Transportation cost (EUR)<input id="trCost" type="number" min="0" step="1" placeholder="Enter price"></label><div class="trrow"><label>Postal code<input id="trZip" autocomplete="off"></label><label>Country<input id="trCountry" list="cuCountries" autocomplete="off"></label></div><span></span><p class="trn">Prefilled from Customer details. You can change the address for this shipment.</p></div>
 <div class="pf"><button class="b" id="trSave" type="button">Save</button><button class="b o" id="trClear" type="button">Remove</button><button class="b o" id="trCancel" type="button">Cancel</button></div></dialog>
 <dialog id="epDlg" aria-labelledby="epT"><button class="x" id="epX" type="button" aria-label="Close">&times;</button><h3 id="epT">Edit price</h3>
 <p style="font-size:.85rem;color:#4d6169;margin:0 0 6px">Prices changed here apply to this order only. The price list is not changed.</p><div id="epBody"></div>
