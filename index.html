@@ -141,13 +141,6 @@
   setInterval(sync,1500);
   window.addEventListener('pagehide',function(){sync(true);});
   document.addEventListener('visibilitychange',function(){if(document.visibilityState==='hidden')sync(true);});
-  /* atsijungimo nuoroda */
-  document.addEventListener('DOMContentLoaded',function(){
-    var a=document.createElement('a');a.textContent='Atsijungti';a.href='#';
-    a.style.cssText='position:fixed;right:12px;top:10px;z-index:99999;font:12px system-ui;padding:3px 9px;border-radius:99px;background:rgba(255,255,255,.85);color:#4d6169;text-decoration:none;border:1px solid #b9c6c2';
-    a.onclick=function(e){e.preventDefault();clearSess();location.reload();};
-    document.body.appendChild(a);
-  });
 })();
 </script>
 <style>
@@ -498,7 +491,7 @@ body{background:#eef2f1}
 .readout #rList .rt span,.readout #rList .rt b{color:#f6d9a0!important;font-weight:700!important}
 .readout #rList .rt b{font-size:.9rem!important}
 /* order information = record header bar */
-.dlbox{border-radius:6px!important;background:#fff!important;border:1px solid var(--dbline);border-left:4px solid var(--dbamb);padding:9px 14px!important;gap:6px!important}
+.dlbox{border-radius:6px!important;background:#fff!important;border:1px solid var(--dbline)!important;padding:9px 14px!important;gap:6px!important}
 .dlbox b.sec{font:700 .68rem var(--mono)!important;text-transform:uppercase;letter-spacing:.1em;color:#6a7d83!important}
 .dlbox .b{border-radius:4px!important;border:1px solid var(--dbline)!important;background:#f4f7f6!important;font:600 .76rem var(--mono)!important;padding:6px 12px!important;color:var(--dbink)}
 .dlbox .b:hover{background:var(--dbink)!important;border-color:var(--dbink)!important;color:#fff!important}
@@ -521,10 +514,16 @@ dialog .b{border-radius:4px!important}
  #ordRows .on{width:auto!important;min-width:9.6em}
  #ordRows .obs>button{width:100%;text-align:left;white-space:nowrap}
 }
+/* sign out: no longer floats over the toolbar */
+.topbar{position:relative}
+.topbar .signout{margin-left:auto;font:700 .7rem var(--mono);text-transform:uppercase;letter-spacing:.1em;padding:7px 14px;border:1px solid #c62828;border-radius:4px;background:#fff;color:#c62828;text-decoration:none;white-space:nowrap}
+.topbar .signout:hover{background:#c62828;color:#fff}
+@media(min-width:1340px){.topbar .signout{position:fixed;right:14px;top:66px;margin:0;z-index:30}}
 </style>
 </head>
 <body>
-<div class="topbar"><button class="b" id="prBtn" type="button">Basic price</button><button class="b o" id="tdBtn" type="button">Technical data</button><button class="b o" id="newCfg" type="button">New order</button><button class="b o" id="clList" type="button">Order list</button><button class="b o" id="impBtn" type="button">Import order</button><input type="file" id="impFile" accept=".json,application/json" hidden><button class="b o" id="mfBtn" type="button">New manufacturer</button><button class="b o" id="mlBtn" type="button">Manufacturer list</button><button class="b o" id="ncBtn" type="button">New customer</button><button class="b o" id="cnList" type="button">Customer list</button></div>
+<div class="topbar"><button class="b" id="prBtn" type="button">Basic price</button><button class="b o" id="tdBtn" type="button">Technical data</button><button class="b o" id="newCfg" type="button">New order</button><button class="b o" id="clList" type="button">Order list</button><button class="b o" id="impBtn" type="button">Import order</button><input type="file" id="impFile" accept=".json,application/json" hidden><button class="b o" id="mfBtn" type="button">New manufacturer</button><button class="b o" id="mlBtn" type="button">Manufacturer list</button><button class="b o" id="ncBtn" type="button">New customer</button><button class="b o" id="cnList" type="button">Customer list</button><a class="signout" id="soBtn" href="#">Sign out</a></div>
+<script>document.getElementById("soBtn").onclick=function(e){e.preventDefault();try{Storage.prototype.removeItem.call(localStorage,"sb_auth_v1");}catch(x){}location.reload();};</script>
 
 
 
