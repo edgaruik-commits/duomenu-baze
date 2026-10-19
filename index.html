@@ -244,6 +244,11 @@ button.b{font:700 16px system-ui,sans-serif;cursor:pointer}
 #tdDlg h4{font-size:.78rem;letter-spacing:.05em;text-transform:uppercase;color:#4d6169;margin:16px 0 4px}
 #prDlg .pr{display:flex;justify-content:space-between;gap:16px;padding:6px 0;border-bottom:1px solid #e3e8e6;font-size:.92rem}
 #tdDlg .pr{display:flex;justify-content:space-between;gap:16px;padding:6px 0;border-bottom:1px solid #e3e8e6;font-size:.92rem}
+#epDlg .epd{display:flex;align-items:center;gap:8px;padding:10px 0 4px;margin-top:6px;border-top:2px solid #10282f;font-size:.92rem}
+#epDlg .epd>span{flex:1}#epDlg .epd small{display:block;color:#4d6169;font-size:.74rem}
+#epDlg .epd select,#epDlg .epd input{font:inherit;padding:5px 8px;border:1px solid #b9c6c2;border-radius:6px}
+#epDlg .epd input{width:96px;text-align:right}
+#epDlg .epd2{font-size:.85rem;color:#4d6169;text-align:right;padding-bottom:6px;min-height:1.2em}
 #prDlg .pr b{white-space:nowrap}
 #tdDlg .pr b{white-space:nowrap}
 #prDlg .x{float:right;background:none;border:0;font-size:1.6rem;cursor:pointer;line-height:1;color:#10282f}
@@ -592,6 +597,8 @@ dialog[id] .pdl .b:hover{background:#10282f!important;color:#f6d9a0!important}
 <div class="pf"><button class="b" id="trSave" type="button">Save</button><button class="b o" id="trClear" type="button">Remove</button><button class="b o" id="trCancel" type="button">Cancel</button></div></dialog>
 <dialog id="epDlg" aria-labelledby="epT"><button class="x" id="epX" type="button" aria-label="Close">&times;</button><h3 id="epT">Edit price</h3>
 <p style="font-size:.85rem;color:#4d6169;margin:0 0 6px">Prices changed here apply to this order only. The price list is not changed.</p><div id="epBody"></div>
+<div class="epd"><span>Discount<small>Applied to the hot tub price (transportation is not discounted)</small></span><select id="epDT" aria-label="Discount type"><option value="p">%</option><option value="e">EUR</option></select><input type="number" id="epDV" min="0" step="any" placeholder="0" aria-label="Discount value"></div>
+<div class="epd2" id="epDS"></div>
 <div class="pf"><button class="b" id="epSave" type="button">Save</button><button class="b o" id="epReset" type="button">Reset to standard</button><button class="b o" id="epCancel" type="button">Cancel</button></div></dialog>
 <dialog id="mkDlg" aria-labelledby="mkT"><button class="x" id="mkX" type="button" aria-label="Close">&times;</button><h3 id="mkT">Manufacturer</h3>
 <div class="fg"><label>Who will produce this order<select id="mkSel"></select></label><div class="mkd" id="mkDet"></div><label>Delivery lead time<select id="mkLead"></select></label></div>
@@ -714,7 +721,7 @@ S.stovePlaces.forEach(t=>{const v=PRICE_OV['sp:'+t.id]; if(v!=null) t.extra=v;})
 S.accessories.forEach(a=>{const v=PRICE_OV['a:'+a.id]; if(v!=null&&!['stove','ladder','hydro','thermo','shelf'].includes(a.id)) a.price=v;});
 const ACR_PRICE = (PRICE_OV['fin:acr']!=null?PRICE_OV['fin:acr']:400);   // acrylic liner surcharge over fiberglass (EUR), any colour
 const WPC_PRICE = (PRICE_OV['fin:wpc']!=null?PRICE_OV['fin:wpc']:200);   // WPC finish surcharge (EUR), any colour
-const st = { po:{}, transport:0, terms:'', pick:'', del:null, sv:{o:0,g:1,m:0,h:0}, m:0, s:0, w:5, wpc:0, a:2, fib:1, coverC:0, stepOpen:1, p:0, t:0, fire:true, acc:{ladder:true}, chim:{g:false,k:false}, pend:{hydro:false,thermo:true,shelf:true,led:true,air:true,filter:true,cover:true} };   // fire is always on
+const st = { po:{}, disc:null, transport:0, terms:'', pick:'', del:null, sv:{o:0,g:1,m:0,h:0}, m:0, s:0, w:5, wpc:0, a:2, fib:1, coverC:0, stepOpen:1, p:0, t:0, fire:true, acc:{ladder:true}, chim:{g:false,k:false}, pend:{hydro:false,thermo:true,shelf:true,led:true,air:true,filter:true,cover:true} };   // fire is always on
 S.defaultAccessories.forEach(i => st.acc[i] = true);
 const fmt = n => n===0?'':new Intl.NumberFormat('en-IE',{maximumFractionDigits:0}).format(n)+'€';   // number first, then the euro sign: 25€
 const plus = n => n ? '+'+fmt(n) : '';
@@ -736,7 +743,14 @@ function priceLines(){   // every priced line of the current order with its stan
   S.accessories.filter(x=>x.id!=='stove'&&st.acc[x.id]&&!st.pend[x.id]).forEach(x=>A.push({k:kA(x),label:x.name,price:x.price}));
   if(st.transport>0) A.push({k:kT(),label:'Transportation cost',price:st.transport});
   return A; }
-const total = () => priceLines().reduce((t,p)=>t+ovp(p.k,p.price),0);
+const subTotal = () => priceLines().reduce((t,p)=>t+ovp(p.k,p.price),0);
+/* Discount for THIS order: st.disc={t:'p'|'e',v:number}; applies to the hot tub lines only (transportation is not discounted) */
+const discAmt = () => { if(!st.disc||!(Number(st.disc.v)>0)) return 0;
+  const base=priceLines().filter(p=>p.k!==kT()||!(st.transport>0)).reduce((t,p)=>t+ovp(p.k,p.price),0);
+  const a=st.disc.t==='e'?Math.round(Number(st.disc.v)):Math.round(base*Math.min(Number(st.disc.v),100)/100);
+  return Math.max(0,Math.min(a,base)); };
+const discLabel = () => 'Discount'+((st.disc&&st.disc.t!=='e')?' ('+(Math.round(Number(st.disc.v)*100)/100)+'%)':'');
+const total = () => subTotal()-discAmt();
 
 /* ---------- Text ---------- */
 /* ---------- Text ---------- */
@@ -1259,6 +1273,7 @@ function readout(){const m=S.models[st.m],sh=S.shapes[st.s],sv=S.accessories.fin
  if(st.terms&&window.INCO&&window.INCO[st.terms]) L.push(['Delivery terms: '+st.terms+' - '+window.INCO[st.terms],'']);
  if(st.mf&&window.mfName&&window.mfName(st.mf)) L.push(['Manufacturer: '+window.mfName(st.mf),'']);
  if(st.lead>0) L.push(['Delivery lead time: '+st.lead+(st.lead==1?' week':' weeks'),'']);
+ if(discAmt()>0) L.push([discLabel(),'-'+fmt(discAmt())]);
  $('rList').innerHTML=L.map(([k,v,n])=>'<div class="rr'+(/^(Delivery terms|Manufacturer):/.test(k)?' hid':'')+'"><span'+(n?' style="flex:none"':'')+'>'+k+'</span><b'+(n?' style="font-weight:400;white-space:normal;text-align:right"':'')+'>'+v+'</b></div>').join('')+'<div class="rr rt"><span>Total</span><b>'+fmt(total())+'</b></div>';}
 [...$('oWood').children,...$('oWpc').children,...$('oAcr').children,...$('oFib').children].forEach(b=>b.addEventListener('click',readout));
 readout();
@@ -1521,7 +1536,7 @@ window.makePdf=(producer,confirmation,transport,prodOrder)=>{ const tr=!!transpo
   doc.setFontSize(11);
   [...document.querySelectorAll('#rList .rr')].filter(r=>!tr).forEach(r=>{
     const tot=r.classList.contains('rt'), lab=r.children[0].textContent;
-    if(hp&&(tot||/^(Transportation cost|Hot tub price)/.test(lab))) return;   /* production copy: no prices */
+    if(hp&&(tot||/^(Transportation cost|Hot tub price|Discount)/.test(lab))) return;   /* production copy: no prices */
     if(!producer&&/^Manufacturer:/.test(lab)) return;   /* customer quotation: manufacturer is not shown */
     const a=tot?clean('Total'):clean(lab), b=(hp&&r.parentNode.firstElementChild!==r)?'':clean(r.children[1].textContent);
     if(y>280){doc.addPage();y=20;}
@@ -1838,7 +1853,7 @@ render();
     applyState(JSON.parse(JSON.stringify(c.state))); ensureNo();
   };
   function applyState(state){
-    Object.assign(st,state); if(state.transport==null) st.transport=0; if(state.terms==null) st.terms=''; if(state.carrier==null) st.carrier=''; if(state.pick==null) st.pick=''; if(state.del==null) st.del=null; if(state.mf==null) st.mf=''; if(state.lead==null) st.lead=''; if(state.po==null) st.po={};
+    Object.assign(st,state); if(state.transport==null) st.transport=0; if(state.terms==null) st.terms=''; if(state.carrier==null) st.carrier=''; if(state.pick==null) st.pick=''; if(state.del==null) st.del=null; if(state.mf==null) st.mf=''; if(state.lead==null) st.lead=''; if(state.po==null) st.po={}; if(state.disc==null) st.disc=null;
     if(state.wpc==null) st.wpc=0; if(state.sv==null) st.sv={o:0,g:1,m:0,h:0}; if(state.chim==null) st.chim={g:!!(state.acc&&state.acc.guard),k:false}; if(state.pend&&state.pend.cover==null) st.pend.cover=!(state.acc&&state.acc.cover);
     press($('oModel'),st.m); press($('oShape'),st.s); pressWood(); pressMat();
     if(window.eqStd)window.eqStd(); if(window.stvReset)window.stvReset();
@@ -1900,7 +1915,7 @@ render();
     if(!upsert()) return;   /* the order that is open now is saved first */
     const nid=Date.now(), cu={id:nid,cid:c.cid||c.id,offerNo:nextOfferNo()}; F.forEach(([k])=>cu[k]=c[k]||'');
     window.CUST=cu;
-    const fresh=Object.assign(JSON.parse(JSON.stringify(DEF)),{transport:0,terms:'',carrier:'',pick:'',del:null,mf:'',lead:'',po:{}});
+    const fresh=Object.assign(JSON.parse(JSON.stringify(DEF)),{transport:0,terms:'',carrier:'',pick:'',del:null,mf:'',lead:'',po:{},disc:null});
     applyState(fresh);
     upsert(); label(); $('pdfBtn').hidden=false;
   }
@@ -2233,15 +2248,23 @@ render();
   $('epBtn').onclick=()=>{
     body.innerHTML=priceLines().map(p=>{ const o=st.po[p.k], edited=o!=null;
       return '<div class="pr"><span>'+esc(p.label)+'<small>Standard: '+(p.price?eur(p.price):'included')+(edited?' · edited':'')+'</small></span><input type="number" min="0" step="1" data-k="'+esc(p.k)+'" data-std="'+p.price+'" value="'+(edited?o:p.price)+'" aria-label="Price: '+esc(p.label)+'"></div>'; }).join('');
+    $('epDT').value=(st.disc&&st.disc.t==='e')?'e':'p'; $('epDV').value=(st.disc&&Number(st.disc.v)>0)?st.disc.v:''; preview();
     if(!dlg.open) dlg.showModal(); };
+  function preview(){ const v=Number($('epDV').value), t=$('epDT').value; const sv=st.disc, sp=Object.assign({},st.po);
+    /* live preview: temporary values, nothing is saved until Save */
+    body.querySelectorAll('input[data-k]').forEach(i=>{ const x=i.value.trim(); if(x===''||Number(x)===Number(i.dataset.std)) delete st.po[i.dataset.k]; else st.po[i.dataset.k]=Math.max(0,Math.round(Number(x))); });
+    st.disc=v>0?{t:t,v:v}:null; const a=discAmt(), tt=total(); st.disc=sv; st.po=sp;
+    $('epDS').textContent=a>0?('Discount: -'+eur(a)+'  |  Total: '+eur(tt)):('Total: '+eur(tt)); }
+  $('epDT').onchange=$('epDV').oninput=preview; body.addEventListener('input',preview);
   $('epX').onclick=$('epCancel').onclick=()=>dlg.close();
   dlg.addEventListener('click',e=>{if(e.target===dlg)dlg.close();});
   function done(){ readout(); if(window.syncCust)window.syncCust(); dlg.close(); }
   $('epSave').onclick=()=>{
     body.querySelectorAll('input[data-k]').forEach(i=>{ const k=i.dataset.k, v=i.value.trim();
       if(v===''||Number(v)===Number(i.dataset.std)) delete st.po[k]; else st.po[k]=Math.max(0,Math.round(Number(v))); });
+    const dv=Number($('epDV').value); st.disc=dv>0?{t:$('epDT').value,v:($('epDT').value==='p'?Math.min(dv,100):dv)}:null;
     done(); };
-  $('epReset').onclick=()=>{ if(!Object.keys(st.po).length){ dlg.close(); return; } if(!confirm('Restore the standard prices for this order?')) return; st.po={}; done(); };
+  $('epReset').onclick=()=>{ if(!Object.keys(st.po).length&&!st.disc){ dlg.close(); return; } if(!confirm('Restore the standard prices and remove the discount for this order?')) return; st.po={}; st.disc=null; done(); };
 })();
 </script>
 <script>
@@ -2719,6 +2742,8 @@ render();
       wrapped.forEach((l,i)=>{ doc.text(l,M,y); if(i===0) doc.text(v>0?clean(money(v)):'included',W-M,y,{align:'right'}); y+=5; });
       y+=1;
     });
+    const dsc=discAmt();
+    if(dsc>0){ room(8); doc.setFont('helvetica','normal');doc.setFontSize(10);doc.text(clean(discLabel()),M,y);doc.text('-'+clean(money(dsc)),W-M,y,{align:'right'});y+=6; sum-=dsc; }
     room(20);
     doc.line(M,y-2,W-M,y-2); y+=4;
     doc.setFont('helvetica','bold');doc.setFontSize(12);doc.text('Total to pay',M,y);doc.text(clean(money(sum)),W-M,y,{align:'right'});y+=10;
