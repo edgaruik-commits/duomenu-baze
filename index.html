@@ -775,6 +775,8 @@ dialog input,dialog textarea,dialog select{border-radius:4px!important}
 dialog .b{border-radius:4px!important}
 /* order rows: numbers black, columns aligned across all orders */
 #ordRows .on,#ordRows .orow.act .on,#ordBox #ordRows .orow .on{color:#000!important;font-weight:700!important}
+#ordBox #ordRows .orow .on:hover{color:#fff!important}   /* hover: dark background, so the number turns white */
+#ordBox #ordRows .orow.act .on:hover{background:#fdf1dc!important;color:#000!important}
 #ordRows .orow.act .on{background:#fdf1dc!important;border-color:var(--dbamb)!important}
 #ordRows{max-width:100%;overflow-x:auto}
 @supports (grid-template-columns:subgrid){
