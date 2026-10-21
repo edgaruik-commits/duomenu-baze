@@ -3322,7 +3322,7 @@ render();
     /* goods */
     room(30); doc.setDrawColor(150); doc.line(M,y-2,W-M,y-2); y+=3;
     doc.setFont('helvetica','bold');doc.setFontSize(9);doc.setTextColor(110);doc.text('NO.',M,y);doc.text('DESCRIPTION OF GOODS',M+14,y);doc.text('QTY',W-M,y,{align:'right'});doc.setTextColor(0);y+=2;doc.line(M,y,W-M,y);y+=6;
-    const off=st.packOff||[], G=window.packItems().filter(g=>sel?sel.has(g.key):!off.includes(g.key)).map(g=>[String(g.t).split(' \u00b7 ')[0],[],g.q||1]);   // short names only (text before the first ' · '), no extra description lines   // positions ticked in Edit packing list (saved per order)
+    const off=st.packOff||[], G=window.packItems().filter(g=>sel?sel.has(g.key):!off.includes(g.key)).map(g=>[String(g.t).split(' \u00b7 ')[0],(st.packDesc&&st.packDesc[g.key])?[st.packDesc[g.key]]:[],g.q||1]);   // short name + the short description typed in Edit packing list   // short names only (text before the first ' · '), no extra description lines   // positions ticked in Edit packing list (saved per order)
     G.forEach(([t,sub,q],i)=>{
       room(8+sub.length*5);
       doc.setFont('helvetica','normal');doc.setFontSize(11);doc.text(String(i+1),M,y);
@@ -3372,7 +3372,7 @@ render();
   document.getElementById('pdfBtn5').onclick=()=>window.makePackingList();
   document.getElementById('plBtn').onclick=()=>window.pickPacking();   // Order information > Edit packing list
   /* before the packing list pdf: tick the positions that go into it */
-  const css=document.createElement('style'); css.textContent='#plDlg{position:fixed;inset:0;margin:auto;height:fit-content;max-width:520px;width:calc(100% - 28px)}#plDlg label,#plDlg label span,#plDlg label small{font-family:system-ui,sans-serif!important;text-transform:none!important;letter-spacing:0!important;font-weight:400!important}#plDlg label span{font-size:.9rem!important;color:#10282f!important}#plDlg label small{font-size:.78rem!important;color:#6a7d83!important}#plDlg .pll{display:flex;flex-direction:column;gap:2px;margin:6px 0 4px;max-height:60vh;overflow:auto}#plDlg label{display:flex;gap:10px;align-items:flex-start;padding:6px 8px;border:1px solid #e3e9e6;border-radius:4px;cursor:pointer;font-size:.9rem;color:#10282f}#plDlg label input{margin-top:3px;width:16px;height:16px;flex:none}#plDlg label small{display:block;color:#6a7d83;font-size:.78rem}#plDlg .pla{display:flex;gap:14px;font-size:.8rem;margin:2px 0 8px}#plDlg .pla a{color:#10282f;cursor:pointer;text-decoration:underline}#plMsg{color:#b00020;font-size:.85rem;min-height:1em}';
+  const css=document.createElement('style'); css.textContent='#plDlg{position:fixed;inset:0;margin:auto;height:fit-content;max-width:520px;width:calc(100% - 28px)}#plDlg label,#plDlg label span,#plDlg label small{font-family:system-ui,sans-serif!important;text-transform:none!important;letter-spacing:0!important;font-weight:400!important}#plDlg label span{font-size:.9rem!important;color:#10282f!important}#plDlg label small{font-size:.78rem!important;color:#6a7d83!important}#plDlg .pll{display:flex;flex-direction:column;gap:2px;margin:6px 0 4px;max-height:60vh;overflow:auto}#plDlg .plr{border:1px solid #e3e9e6;border-radius:4px;padding:2px 0 8px}#plDlg .plr label{border:0!important}#plDlg .pld{display:block;width:calc(100% - 50px);margin:0 8px 0 34px;padding:5px 8px;font:400 .82rem system-ui,sans-serif;border:1px solid #c9d3d0;border-radius:4px;color:#10282f;box-sizing:border-box}#plDlg label{display:flex;gap:10px;align-items:flex-start;padding:6px 8px;border:1px solid #e3e9e6;border-radius:4px;cursor:pointer;font-size:.9rem;color:#10282f}#plDlg label input{margin-top:3px;width:16px;height:16px;flex:none}#plDlg label small{display:block;color:#6a7d83;font-size:.78rem}#plDlg .pla{display:flex;gap:14px;font-size:.8rem;margin:2px 0 8px}#plDlg .pla a{color:#10282f;cursor:pointer;text-decoration:underline}#plMsg{color:#b00020;font-size:.85rem;min-height:1em}';
   document.head.appendChild(css);
   const d=document.createElement('dialog'); d.id='plDlg'; d.setAttribute('aria-labelledby','plT');
   d.innerHTML='<button class="x" id="plX" type="button" aria-label="Close">&times;</button><h3 id="plT">Edit packing list</h3><p style="font-size:.85rem;color:#4d6169;margin:0 0 4px">Tick the positions to include in the packing list of this order.</p><div class="pla"><a id="plAll">Select all</a><a id="plNone">Clear all</a></div><div class="pll" id="plList"></div><div id="plMsg" role="alert"></div><div class="pf"><button class="b" id="plGo" type="button">Create PDF</button><button class="b o" id="plSave" type="button">Save</button><button class="b o" id="plCancel" type="button">Cancel</button></div>';
@@ -3381,7 +3381,8 @@ render();
   let done=null;
   window.pickPacking=function(cb){
     done=cb||null; document.getElementById('plMsg').textContent=''; document.getElementById('plGo').hidden=!cb;
-    document.getElementById('plList').innerHTML=window.packItems().map(g=>'<label><input type="checkbox"'+((st.packOff||[]).includes(g.key)?'':' checked')+' data-k="'+esc(g.key)+'"><span>'+esc(g.t)+(g.sub.length?'<small>'+esc(g.sub.join(' \u00b7 '))+'</small>':'')+'</span></label>').join('');
+    const PD=st.packDesc||{};
+    document.getElementById('plList').innerHTML=window.packItems().map(g=>'<div class="plr"><label><input type="checkbox"'+((st.packOff||[]).includes(g.key)?'':' checked')+' data-k="'+esc(g.key)+'"><span>'+esc(g.t)+(g.sub.length?'<small>'+esc(g.sub.join(' \u00b7 '))+'</small>':'')+'</span></label><input type="text" class="pld" data-d="'+esc(g.key)+'" maxlength="120" placeholder="Short description (optional, shown in the packing list)" value="'+esc(PD[g.key]||'')+'"></div>').join('');
     if(!d.open) d.showModal(); };
   const boxes=()=>[...d.querySelectorAll('input[data-k]')];
   document.getElementById('plAll').onclick=()=>boxes().forEach(b=>b.checked=true);
@@ -3390,7 +3391,7 @@ render();
     const sel=new Set(boxes().filter(b=>b.checked).map(b=>b.dataset.k)); keep();
     if(!sel.size){ document.getElementById('plMsg').textContent='Tick at least one position.'; return; }
     const f=done; done=null; d.close(); if(f) f(sel); };
-  function keep(){ st.packOff=boxes().filter(b=>!b.checked).map(b=>b.dataset.k); if(window.syncCust) window.syncCust(); }   // the choice is saved with the order
+  function keep(){ st.packOff=boxes().filter(b=>!b.checked).map(b=>b.dataset.k); const pd={}; d.querySelectorAll('input[data-d]').forEach(i=>{ const v=i.value.trim(); if(v) pd[i.dataset.d]=v; }); st.packDesc=pd; if(window.syncCust) window.syncCust(); }   // the choice is saved with the order
   document.getElementById('plSave').onclick=()=>{ if(!boxes().some(b=>b.checked)){ document.getElementById('plMsg').textContent='Tick at least one position.'; return; } keep(); done=null; d.close(); };
   document.getElementById('plX').onclick=document.getElementById('plCancel').onclick=()=>{ done=null; d.close(); };
   d.addEventListener('click',e=>{ if(e.target===d){ done=null; d.close(); } });
@@ -3999,6 +4000,49 @@ render();
   document.getElementById('scAll').onclick=()=>go(true);
   document.getElementById('scX').onclick=()=>{ pending=null; d.close(); };
   d.addEventListener('click',e=>{ if(e.target===d){ pending=null; d.close(); } });
+})();
+</script>
+<style>
+/* ===== Mobile version (phone) ===== */
+@media(max-width:700px){
+ /* top bar: buttons in two columns, nothing hidden off-screen */
+ .topbar{display:grid!important;grid-template-columns:1fr 1fr;gap:6px!important;padding:8px 10px!important;overflow:visible!important}
+ .topbar>button.b,.topbar .tdd>button.b{width:100%;margin:0!important;padding:9px 8px!important;font-size:.76rem!important;text-align:center}
+ .topbar #ordMenu,.topbar #mfMenu,.topbar #cuMenu{margin-left:0!important}
+ .topbar #ordMenu::before,.topbar #mfMenu::before,.topbar #cuMenu::before{display:none!important}
+ .topbar .tdd{width:100%}
+ .topbar .tddm{min-width:0}
+ .topbar .signout{position:static!important;margin:0!important;grid-column:auto;text-align:center;padding:9px 8px!important}
+ /* configuration list: full list under the options (not over the 3D view) */
+ .stage>.readout.mob{position:static!important;margin:12px 8px 8px!important;padding:0!important;max-width:none!important;width:auto!important;transform:none!important}
+ .stage>.readout.mob #rList{width:100%!important;display:block!important;max-height:none!important}
+ .stage>.readout.mob #rList .rr:not(.rt):not(.hid){display:flex!important}
+ .stage>.readout.mob strong{display:block;font-size:1.15rem}
+ /* order information: one order per block, buttons two per row */
+ #ordBox{display:flex!important;flex-direction:column;align-items:stretch!important;gap:8px}
+ #ordBox>#custBtn{width:100%}
+ #ordRows{display:flex!important;flex-direction:column;gap:12px;overflow:visible!important}
+ #ordRows .orow{display:flex!important;flex-direction:column;gap:6px}
+ #ordRows .on{width:100%!important;min-width:0!important;text-align:center}
+ #ordRows .obs{display:grid!important;grid-template-columns:1fr 1fr;gap:6px!important;padding:6px!important}
+ #ordRows .obs>button{width:100%!important;white-space:normal!important;text-align:center!important;margin:0!important;font-size:.74rem!important;padding:7px 6px!important}
+ #dlBox{display:flex!important;flex-wrap:wrap;gap:6px}
+ #dlBox>b.sec{flex:1 1 100%}
+ #dlBox>button{flex:1 1 calc(50% - 6px);margin:0!important}
+ main.w{padding-left:8px!important;padding-right:8px!important}
+ dialog{max-width:calc(100% - 16px)!important}
+ dialog .fg{grid-template-columns:1fr!important}
+}
+</style>
+<script>
+/* phone: the configuration list moves under the options; back over the 3D view on a wide screen */
+(function(){
+  const mq=matchMedia('(max-width:700px)'), ro=document.querySelector('.stage>.readout'), panel=document.querySelector('.stage>.panel'); if(!ro||!panel) return;
+  const home=ro.nextSibling;
+  function place(){ if(mq.matches){ if(ro.previousElementSibling!==panel) panel.after(ro); ro.classList.add('mob'); }
+    else { ro.classList.remove('mob'); if(home&&ro.nextSibling!==home) home.parentNode.insertBefore(ro,home); }
+    window.dispatchEvent(new Event('resize')); }
+  (mq.addEventListener?mq.addEventListener('change',place):mq.addListener(place)); place();
 })();
 </script>
 </body>
