@@ -316,7 +316,7 @@ button.b{font:700 16px system-ui,sans-serif;cursor:pointer}
 #mfDlg .pf .b{margin:0;padding:9px 18px;cursor:pointer;font:inherit;font-weight:700}
 .panel #mkBtn{margin:4px 0 0;width:100%;text-align:center;padding:10px 14px;border-color:#10282f;color:#10282f;flex:none}
 .panel #mkBtn:hover{background:#10282f;color:#fff}
-.panel.noorder #custBtn,.panel.noorder #mkBtn,.panel.noorder #trBtn,.panel.noorder #epBtn,.panel.noorder #pdfBtn,.panel.noorder #pdfBtn2{display:none!important}   /* order buttons appear only after "New order" */
+.panel.noorder #custBtn,.panel.noorder #mkBtn,.panel.noorder #trBtn,.panel.noorder #epBtn,.panel.noorder #plBtn,.panel.noorder #pdfBtn,.panel.noorder #pdfBtn2{display:none!important}   /* order buttons appear only after "New order" */
 .panel #pdfBtn3{margin:4px 0 0;width:100%;text-align:center;padding:10px 14px;border-color:#10282f;color:#10282f;flex:none}
 .panel #pdfBtn3:hover{background:#10282f;color:#fff}
 .panel.noorder #pdfBtn3{display:none!important}
@@ -778,7 +778,7 @@ dialog .b{border-radius:4px!important}
 #ordRows .orow.act .on{background:#fdf1dc!important;border-color:var(--dbamb)!important}
 #ordRows{max-width:100%;overflow-x:auto}
 @supports (grid-template-columns:subgrid){
- #ordRows{display:grid!important;grid-template-columns:max-content max-content max-content max-content;column-gap:8px;row-gap:6px;align-items:stretch}
+ #ordRows{display:grid!important;grid-template-columns:max-content max-content max-content max-content max-content;column-gap:8px;row-gap:6px;align-items:stretch}
  #ordRows .orow{display:grid!important;grid-column:1/-1;grid-template-columns:subgrid;column-gap:8px;align-items:center}
  #ordRows .obs{display:grid!important;grid-column:2/-1;grid-template-columns:subgrid;column-gap:8px;align-items:center}
  #ordRows .on{width:auto!important;min-width:9.6em}
@@ -923,7 +923,7 @@ dialog[id] .pdl .b:hover{background:#10282f!important;color:#f6d9a0!important}
 
       </div>
 <div hidden><span id="brand"></span><span id="nav"></span><span id="h1"></span><span id="lead"></span><span id="cta"></span><span id="fTitle"></span><span id="feat"></span><span id="mTitle"></span><table id="mTable"></table><span id="dTitle"></span><span id="markets"></span><span id="cTitle"></span><span id="cText"></span><span id="fName"></span><span id="fMail"></span><span id="fLand"></span><span id="fMsg"></span><span id="fSend"></span><select id="selLand"></select><span id="foot"></span><form id="form"></form></div>
-<div class="dlbox" id="ordBox" hidden><b class="sec">Order information</b><button class="b o" id="custBtn" type="button">Customer details</button><button class="b o" id="mkBtn" type="button">Manufacturer</button><button class="b o" id="trBtn" type="button">Transportation cost</button><button class="b o" id="epBtn" type="button">Edit price</button></div>
+<div class="dlbox" id="ordBox" hidden><b class="sec">Order information</b><button class="b o" id="custBtn" type="button">Customer details</button><button class="b o" id="mkBtn" type="button">Manufacturer</button><button class="b o" id="trBtn" type="button">Transportation cost</button><button class="b o" id="epBtn" type="button">Edit price</button><button class="b o" id="plBtn" type="button">Edit packing list</button></div>
 <div class="dlbox" id="dlBox" hidden><b class="sec" id="dlHead" hidden>Download documents</b><button class="b o" id="dlCust" type="button" hidden>For customer</button><button class="b o dlx" id="pdfBtn" type="button" hidden>Customer offer</button><button class="b o dlx" id="pdfBtn3" type="button" hidden>Order confirmation</button><button class="b o" id="pdfBtn2" type="button" hidden>For production</button><button class="b o" id="pdfBtn4" type="button" hidden>For transportation</button><button class="b o dlx" id="pdfBtn5" type="button" hidden>Packing list</button><button class="b o dlx" id="dlExp" type="button" hidden>Export order</button></div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script>var PRICE_OV=(function(){try{return JSON.parse(localStorage.getItem('prices_v1')||'{}')}catch(e){return {}}})();</script>
@@ -3092,7 +3092,7 @@ render();
   const wk=n=>n+(n==1?' week':' weeks');
   function ensureNo(){ const c=window.CUST; if(c&&!c.offerNo){ c.offerNo=nextOfferNo(); upsert(); } }   /* every order gets its number as soon as it exists */
   function renderOrders(){
-    const box=$('ordBox'), real=[$('mkBtn'),$('trBtn'),$('epBtn')];
+    const box=$('ordBox'), real=[$('mkBtn'),$('trBtn'),$('epBtn'),$('plBtn')];
     const old=$('ordRows'); if(old) old.remove();
     real.forEach(b=>box.appendChild(b));   // default: buttons directly in the bar (no customer yet)
     const a=window.CUST?siblings():[]; if(!a.length) return;
@@ -3106,7 +3106,7 @@ render();
       if(act){ real.forEach(b=>obs.appendChild(b)); return; }
       on.onclick=()=>switchOrder(r.id);
       const stt=r.state||{}, mfn=stt.mf&&window.mfName?window.mfName(stt.mf):'';
-      [['mkBtn',(mfn?'Manufacturer: '+mfn:'Manufacturer')+(stt.lead>0?' \u00b7 '+wk(stt.lead):'')],['trBtn',stt.transport>0?'Transportation cost: '+fmt(stt.transport):'Transportation cost'],['epBtn','Edit price']].forEach(([rid,txt])=>{
+      [['mkBtn',(mfn?'Manufacturer: '+mfn:'Manufacturer')+(stt.lead>0?' \u00b7 '+wk(stt.lead):'')],['trBtn',stt.transport>0?'Transportation cost: '+fmt(stt.transport):'Transportation cost'],['epBtn','Edit price'],['plBtn','Edit packing list']].forEach(([rid,txt])=>{
         const p=document.createElement('button'); p.type='button'; p.className='b o ordp'; p.textContent=txt;
         p.onclick=()=>{ if(switchOrder(r.id)&&window.CUST&&String(window.CUST.id)===String(r.id)) $(rid).click(); };
         obs.appendChild(p);
@@ -3318,7 +3318,7 @@ render();
     /* goods */
     room(30); doc.setDrawColor(150); doc.line(M,y-2,W-M,y-2); y+=3;
     doc.setFont('helvetica','bold');doc.setFontSize(9);doc.setTextColor(110);doc.text('NO.',M,y);doc.text('DESCRIPTION OF GOODS',M+14,y);doc.text('QTY',W-M,y,{align:'right'});doc.setTextColor(0);y+=2;doc.line(M,y,W-M,y);y+=6;
-    const G=window.packItems().filter(g=>!sel||sel.has(g.key)).map(g=>[g.t,g.sub,g.q||1]);
+    const off=st.packOff||[], G=window.packItems().filter(g=>sel?sel.has(g.key):!off.includes(g.key)).map(g=>[g.t,g.sub,g.q||1]);   // positions ticked in Edit packing list (saved per order)
     G.forEach(([t,sub,q],i)=>{
       room(8+sub.length*5);
       doc.setFont('helvetica','normal');doc.setFontSize(11);doc.text(String(i+1),M,y);
@@ -3365,17 +3365,18 @@ render();
     if(window.syncCust)window.syncCust();
     doc.save(no+(c.name?'-'+clean(c.name).replace(/[^A-Za-z0-9]+/g,'-').replace(/^-|-$/g,''):'')+'-packing-list.pdf');
   };
-  document.getElementById('pdfBtn5').onclick=()=>window.pickPacking(sel=>window.makePackingList(sel));
+  document.getElementById('pdfBtn5').onclick=()=>window.makePackingList();
+  document.getElementById('plBtn').onclick=()=>window.pickPacking();   // Order information > Edit packing list
   /* before the packing list pdf: tick the positions that go into it */
   const css=document.createElement('style'); css.textContent='#plDlg{position:fixed;inset:0;margin:auto;height:fit-content;max-width:520px;width:calc(100% - 28px)}#plDlg label,#plDlg label span,#plDlg label small{font-family:system-ui,sans-serif!important;text-transform:none!important;letter-spacing:0!important;font-weight:400!important}#plDlg label span{font-size:.9rem!important;color:#10282f!important}#plDlg label small{font-size:.78rem!important;color:#6a7d83!important}#plDlg .pll{display:flex;flex-direction:column;gap:2px;margin:6px 0 4px;max-height:60vh;overflow:auto}#plDlg label{display:flex;gap:10px;align-items:flex-start;padding:6px 8px;border:1px solid #e3e9e6;border-radius:4px;cursor:pointer;font-size:.9rem;color:#10282f}#plDlg label input{margin-top:3px;width:16px;height:16px;flex:none}#plDlg label small{display:block;color:#6a7d83;font-size:.78rem}#plDlg .pla{display:flex;gap:14px;font-size:.8rem;margin:2px 0 8px}#plDlg .pla a{color:#10282f;cursor:pointer;text-decoration:underline}#plMsg{color:#b00020;font-size:.85rem;min-height:1em}';
   document.head.appendChild(css);
   const d=document.createElement('dialog'); d.id='plDlg'; d.setAttribute('aria-labelledby','plT');
-  d.innerHTML='<button class="x" id="plX" type="button" aria-label="Close">&times;</button><h3 id="plT">Packing list</h3><p style="font-size:.85rem;color:#4d6169;margin:0 0 4px">Tick the positions to include in the packing list.</p><div class="pla"><a id="plAll">Select all</a><a id="plNone">Clear all</a></div><div class="pll" id="plList"></div><div id="plMsg" role="alert"></div><div class="pf"><button class="b" id="plGo" type="button">Create PDF</button><button class="b o" id="plSave" type="button">Save</button><button class="b o" id="plCancel" type="button">Cancel</button></div>';
+  d.innerHTML='<button class="x" id="plX" type="button" aria-label="Close">&times;</button><h3 id="plT">Edit packing list</h3><p style="font-size:.85rem;color:#4d6169;margin:0 0 4px">Tick the positions to include in the packing list of this order.</p><div class="pla"><a id="plAll">Select all</a><a id="plNone">Clear all</a></div><div class="pll" id="plList"></div><div id="plMsg" role="alert"></div><div class="pf"><button class="b" id="plGo" type="button">Create PDF</button><button class="b o" id="plSave" type="button">Save</button><button class="b o" id="plCancel" type="button">Cancel</button></div>';
   document.body.appendChild(d);
   const esc=t=>String(t).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
   let done=null;
   window.pickPacking=function(cb){
-    done=cb; document.getElementById('plMsg').textContent='';
+    done=cb||null; document.getElementById('plMsg').textContent=''; document.getElementById('plGo').hidden=!cb;
     document.getElementById('plList').innerHTML=window.packItems().map(g=>'<label><input type="checkbox"'+((st.packOff||[]).includes(g.key)?'':' checked')+' data-k="'+esc(g.key)+'"><span>'+esc(g.t)+(g.sub.length?'<small>'+esc(g.sub.join(' \u00b7 '))+'</small>':'')+'</span></label>').join('');
     if(!d.open) d.showModal(); };
   const boxes=()=>[...d.querySelectorAll('input[data-k]')];
@@ -3386,7 +3387,7 @@ render();
     if(!sel.size){ document.getElementById('plMsg').textContent='Tick at least one position.'; return; }
     const f=done; done=null; d.close(); if(f) f(sel); };
   function keep(){ st.packOff=boxes().filter(b=>!b.checked).map(b=>b.dataset.k); if(window.syncCust) window.syncCust(); }   // the choice is saved with the order
-  document.getElementById('plSave').onclick=()=>{ keep(); done=null; d.close(); };
+  document.getElementById('plSave').onclick=()=>{ if(!boxes().some(b=>b.checked)){ document.getElementById('plMsg').textContent='Tick at least one position.'; return; } keep(); done=null; d.close(); };
   document.getElementById('plX').onclick=document.getElementById('plCancel').onclick=()=>{ done=null; d.close(); };
   d.addEventListener('click',e=>{ if(e.target===d){ done=null; d.close(); } });
 })();
@@ -3433,7 +3434,7 @@ render();
   tq.addEventListener('click',e=>{ if(e.target===tq) tq.close(); });
   document.getElementById('trqReq').onclick=()=>{ tq.close(); window.chooseScope(()=>window.makePdf(false,false,true,false)); };
   document.getElementById('trqOrd').onclick=()=>{ tq.close(); window.chooseScope(()=>window.makePdf(false,false,true,true)); };
-  document.getElementById('dlPack').onclick=()=>{ tq.close(); window.pickPacking(sel=>window.chooseScope(()=>window.makePackingList(sel))); };   // tick positions first
+  document.getElementById('dlPack').onclick=()=>{ tq.close(); window.chooseScope(()=>window.makePackingList()); };   // positions: as saved in Edit packing list
   const pd=document.getElementById('pdDlg');   /* Production request button: choose Production request or Production order */
   p.onclick=()=>{ if(!pd.open) pd.showModal(); };
   document.getElementById('pdX').onclick=()=>pd.close();
