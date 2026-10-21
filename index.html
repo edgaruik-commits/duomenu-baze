@@ -3322,7 +3322,7 @@ render();
     /* goods */
     room(30); doc.setDrawColor(150); doc.line(M,y-2,W-M,y-2); y+=3;
     doc.setFont('helvetica','bold');doc.setFontSize(9);doc.setTextColor(110);doc.text('NO.',M,y);doc.text('DESCRIPTION OF GOODS',M+14,y);doc.text('QTY',W-M,y,{align:'right'});doc.setTextColor(0);y+=2;doc.line(M,y,W-M,y);y+=6;
-    const off=st.packOff||[], G=window.packItems().filter(g=>sel?sel.has(g.key):!off.includes(g.key)).map(g=>[g.t,g.sub,g.q||1]);   // positions ticked in Edit packing list (saved per order)
+    const off=st.packOff||[], G=window.packItems().filter(g=>sel?sel.has(g.key):!off.includes(g.key)).map(g=>[String(g.t).split(' \u00b7 ')[0],[],g.q||1]);   // short names only (text before the first ' · '), no extra description lines   // positions ticked in Edit packing list (saved per order)
     G.forEach(([t,sub,q],i)=>{
       room(8+sub.length*5);
       doc.setFont('helvetica','normal');doc.setFontSize(11);doc.text(String(i+1),M,y);
