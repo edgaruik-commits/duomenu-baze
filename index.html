@@ -890,7 +890,6 @@ dialog[id] .pdl .b:hover{background:#10282f!important;color:#f6d9a0!important}
           <div class="pane" id="pane2" hidden>
             <div class="acc" id="chips"></div>
           </div>
-          <div class="sets"><button class="b" id="lux" type="button">Luxury setup</button><button class="b o" id="std" type="button">Standard setup</button><button class="b o" id="prem" type="button">Premium setup</button></div>
         </div>
         <div class="hint" id="hint"></div>
 <div class="vbar" id="vbar" role="toolbar" aria-label="Camera view and ambiance"><span class="vl">VIEW:</span><button type="button" data-w="on" aria-pressed="true">Water on</button><button type="button" data-w="off" aria-pressed="false">Water off</button><button type="button" id="vauto" aria-pressed="true">Auto rotate</button><span class="vs" aria-hidden="true"></span><span class="vl">AMBIANCE:</span><button type="button" data-a="day" aria-pressed="true">Day</button><button type="button" data-a="night" aria-pressed="false">Night</button></div>
@@ -1847,11 +1846,7 @@ const clock=new THREE.Clock();
   requestAnimationFrame(loop);
 })();
 </script>
-<script>
-document.getElementById('std').onclick=()=>{if(window.eqStd)window.eqStd();st.m=0;st.s=0;st.lf=1;st.fo=0;st.w=5;st.wpc=0;st.plain=0;st.a=2;st.fib=1;st.p=0;st.t=0;st.sv={o:0,g:1,m:0,h:0};st.acc={stove:true,hydro:true,air:true,led:true,cover:true,ladder:true,thermo:true};st.stepOpen=0;st.stepInd=0;st.stepH=6;
- press($('oModel'),st.m);press($('oShape'),st.s);syncForm();pressWood();pressMat();
- setJets(8);setAir(0);setLed(0);setTh(0);st.coverT=0;setCover(0);syncUI();if(window.stvReset)window.stvReset();showTab(0);if(rqs.open)showSum();};
-</script>
+
 <script>
 function readout(){const m=S.models[st.m],sh=S.shapes[st.s],sv=S.accessories.find(x=>x.id==='stove');$('rName').textContent=m.name+' · '+sh.n+' · '+(st.fib?'Gelcoat':'Acrylic');
  const tv=f=>window.techVal?window.techVal(m,sh.id,f):m[f];
@@ -2187,26 +2182,8 @@ syncUI();readout();
  syncUI(); readout();
 })();
 </script>
-<script>
-/* Premium setup: larger tub, thermo wood, acrylic, 316 stove 2 mm with glass, full equipment. Edit the choices here. */
-document.getElementById('prem').onclick=()=>{
- if(window.eqStd)window.eqStd();
- st.m=1;st.s=0;st.w=1;st.wpc=0;st.plain=0;st.a=2;st.fib=0;st.p=0;st.t=0;st.sv={o:0,g:1,m:1,h:1};st.stepOpen=0;st.stepInd=0;st.stepH=6;st.chim={g:true,e:false};
- st.acc={stove:true,guard:true,ladder:true,hydro:true,air:true,led:true,cover:true,thermo:true,shelf:true,filter:true,wifi:true,headrest:true};
- press($('oModel'),st.m);press($('oShape'),st.s);syncForm();pressWood();pressMat();
- setJets(12);setAir(1);setLed(1);setCover(0);setShelf(1);setTh(0);setFilter(1);
- syncUI();if(window.stvReset)window.stvReset();showTab(0);readout();if(rqs.open)showSum();};
-</script>
-<script>
-/* Luxury setup: King L, walnut thermowood, graphite acrylic, 316 stove 2 mm with glass, every accessory at its top option. Edit the choices here. */
-document.getElementById('lux').onclick=()=>{
- if(window.eqStd)window.eqStd();
- st.m=1;st.s=0;st.w=5;st.wpc=0;st.plain=0;st.a=2;st.fib=0;st.p=0;st.t=0;st.sv={o:0,g:1,m:1,h:1};st.stepOpen=0;st.stepInd=0;st.stepH=6;st.chim={g:true,e:false};
- st.acc={stove:true,guard:true,ladder:true,hydro:true,air:true,led:true,cover:true,thermo:true,shelf:true,filter:true,wifi:true,headrest:true};
- press($('oModel'),st.m);press($('oShape'),st.s);syncForm();pressWood();pressMat();
- setJets(12);setAir(1);setLed(1);setCover(0);setShelf(1);setTh(0);setFilter(1);
- syncUI();if(window.stvReset)window.stvReset();showTab(0);readout();if(rqs.open)showSum();};
-</script>
+
+
 <script>
 /* Menu click -> camera turns to that item (angles in the tub frame: stove 0, shelf pi/2, steps pi, sound -pi/2, filter 2.35, thermometer see below) */
 (function(){
@@ -2236,18 +2213,7 @@ document.getElementById('lux').onclick=()=>{
  });
 })();
 </script>
-<script>
-/* Setup buttons: every option setter used to rebuild the whole 3D scene (about 10 rebuilds per click = frozen view). Rebuild once at the end instead. */
-['std','prem','lux'].forEach(function(id){
- var el=document.getElementById(id), h=el&&el.onclick; if(!h) return;
- el.onclick=function(ev){
-  var real=window.build; window.build=function(){};
-  try{ h.call(this,ev); } finally{ window.build=real; }
-  real();
-  if(typeof readout==='function') readout();
- };
-});
-</script>
+
 <script>
 /* Filter connection: pick its position on a clock (12 = heater), same as the steps */
 (function(){
@@ -2602,9 +2568,8 @@ window.sandUnder=function(g,A){
  LM.price=0; syncUI(); readout();
 })();
 </script>
-<style>.panel .vnote{margin:2px 2px 0;font-size:.72rem;line-height:1.35;color:#5d6a6e;text-align:center}</style>
-<script>(function(){ const pn=document.querySelector('.stage .panel'); if(!pn) return; const n=document.createElement('p'); n.className='vnote';
- n.textContent='This is a visualization only. The actual hot tub and accessories may differ in colour, shape and details.'; pn.appendChild(n); })();</script>
+
+
 <style>/* phone: pop-up menus two options per row (narrow buttons), labels / pictures / OK over the full width */
 @media(max-width:700px){
  .sub.lpop:not([hidden]){display:grid!important;grid-template-columns:1fr 1fr;gap:6px!important;align-items:start}
