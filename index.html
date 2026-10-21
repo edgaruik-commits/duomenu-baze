@@ -1793,8 +1793,10 @@ const VIEW_SCALE=1;   // 1 = tub fills the free area, higher = smaller tub, lowe
 let distT=6.4, fitR=0, fitE=0;
 const CHX=.15;   // visual length of the extra chimney section in the 3D view (m); the price / label still say +1 m
 const chE=()=>(st.chim&&st.chim.e)?CHX:0;   // 1 when the extra 1 m chimney section is chosen: camera zooms out / looks higher just enough to keep the whole chimney in view
+let lastRS='';
 function resize(){ const p=canvas.parentElement,w=canvas.clientWidth||p.clientWidth,h=canvas.clientHeight||p.clientHeight,pn=p.querySelector('.panel'), below=getComputedStyle(pn).position==='static';   // phone: panel sits below the 3D view
-  renderer.setSize(w,h,false); camera.aspect=w/h;
+  if(lastRS!==w+'x'+h){ lastRS=w+'x'+h; renderer.setSize(w,h,false); }   // database: the drawing buffer is re-created only when the canvas size really changed
+  camera.aspect=w/h;
   let fw=w, fh=h, ox=0, oy=0;                              // free area not covered by the options panel
   if(innerWidth>900){ const pw=pn.offsetWidth+30; fw=Math.max(200,w-pw); ox=pw/2-Math.round(w*.068); }   // desktop: panel on the right, tub moves left
   else if(below){ const top=70; fh=Math.max(200,h-top-56); oy=-(top-56)/2; }
@@ -3396,17 +3398,21 @@ render();
 /* desktop: the 3D view is as tall as the longer of the two menus, so nothing needs inner scrolling */
 (function(){
   const stage=document.querySelector('.stage'), panel=stage.querySelector('.panel'), ro=stage.querySelector('.readout');
-  let last=0;
+  /* speed: the height only grows while the page is open (switching menus no longer resizes the 3D view every time),
+     at most one check per frame, and only real size changes trigger a 3D resize */
+  let last=0, keep=0, raf=0, vw=innerWidth, vh=innerHeight;
   function fit(){
-    if(innerWidth<=900){ if(stage.style.minHeight){ stage.style.minHeight=''; window.dispatchEvent(new Event('resize')); } last=0; return; }
+    raf=0;
+    if(innerWidth<=900){ if(stage.style.minHeight){ stage.style.minHeight=''; window.dispatchEvent(new Event('resize')); } last=0; keep=0; return; }
     const base=Math.max(500,Math.min(740,innerHeight-215));
     const need=Math.max(panel.offsetHeight+20, ro.offsetHeight+16+34);
-    const h=Math.ceil(Math.max(base,need));
-    if(h!==last){ last=h; stage.style.minHeight=h+'px'; window.dispatchEvent(new Event('resize')); }
+    keep=Math.max(keep,Math.ceil(Math.max(base,need)));
+    if(keep!==last){ last=keep; stage.style.minHeight=keep+'px'; window.dispatchEvent(new Event('resize')); }
   }
-  if(window.ResizeObserver){ const r=new ResizeObserver(fit); r.observe(panel); r.observe(ro); }
-  new MutationObserver(fit).observe(stage,{childList:true,subtree:true,attributes:true,attributeFilter:['hidden','class','style']});
-  addEventListener('resize',fit); fit(); setTimeout(fit,300);
+  const later=()=>{ if(!raf) raf=requestAnimationFrame(fit); };
+  if(window.ResizeObserver){ const r=new ResizeObserver(later); r.observe(panel); r.observe(ro); }
+  addEventListener('resize',()=>{ if(innerWidth!==vw||innerHeight!==vh){ vw=innerWidth; vh=innerHeight; keep=0; later(); } });   // window really resized: measure again
+  fit(); setTimeout(later,300);
 })();
 </script>
 <script>
