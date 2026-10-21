@@ -731,8 +731,9 @@ body{background:#eef2f1}
 .topbar button.b:hover{background:#1c4350!important;border-color:var(--dbamb)!important;color:#fff!important}
 .topbar #prBtn{background:var(--dbamb)!important;border-color:var(--dbamb)!important;color:#10282f!important}
 .topbar #prBtn:hover{background:#f0a23a!important;color:#10282f!important}
-.topbar #newCfg,.topbar #mfBtn,.topbar #ncBtn{margin-left:12px!important;position:relative}
-.topbar #newCfg::before,.topbar #mfBtn::before,.topbar #ncBtn::before{content:"";position:absolute;left:-10px;top:4px;bottom:4px;width:1px;background:#3a5963}
+.topbar #ordMenu,.topbar #mfMenu,.topbar #cuMenu{margin-left:12px!important;position:relative}
+.topbar .tddm #newCfg{margin-left:0!important}
+.topbar #ordMenu::before,.topbar #mfMenu::before,.topbar #cuMenu::before{content:"";position:absolute;left:-10px;top:4px;bottom:4px;width:1px;background:#3a5963}
 /* 3D stage and side panel */
 .stage{border-radius:6px!important;border:1px solid var(--dbline);box-shadow:0 1px 3px rgba(16,40,47,.1)}
 .panel{border-radius:6px!important;border:1px solid var(--dbline);background:rgba(250,252,251,.95)!important}
@@ -825,7 +826,31 @@ dialog[id] .pdl .b:hover{background:#10282f!important;color:#f6d9a0!important}
 </style>
 </head>
 <body>
-<div class="topbar"><button class="b" id="prBtn" type="button">Basic price</button><button class="b o" id="tdBtn" type="button">Technical data</button><button class="b o" id="newCfg" type="button">New order</button><button class="b o" id="clList" type="button">Order list</button><button class="b o" id="impBtn" type="button">Import order</button><input type="file" id="impFile" accept=".json,application/json" hidden><button class="b o" id="mfBtn" type="button">New manufacturer</button><button class="b o" id="mlBtn" type="button">Manufacturer list</button><button class="b o" id="ncBtn" type="button">New customer</button><button class="b o" id="cnList" type="button">Customer list</button><a class="signout" id="soBtn" href="#">Sign out</a></div>
+<div class="topbar"><button class="b" id="prBtn" type="button">Basic price</button><button class="b o" id="tdBtn" type="button">Technical data</button><div class="tdd"><button class="b o" id="ordMenu" type="button" aria-haspopup="true" aria-expanded="false">Orders &#9662;</button><div class="tddm" id="ordMenuL" role="menu" hidden><button class="b o" id="newCfg" type="button" role="menuitem">New order</button><button class="b o" id="clList" type="button" role="menuitem">Order list</button><button class="b o" id="impBtn" type="button" role="menuitem">Import order</button></div></div><input type="file" id="impFile" accept=".json,application/json" hidden><div class="tdd"><button class="b o" id="mfMenu" type="button" aria-haspopup="true" aria-expanded="false">Manufacturer &#9662;</button><div class="tddm" role="menu" hidden><button class="b o" id="mfBtn" type="button" role="menuitem">New manufacturer</button><button class="b o" id="mlBtn" type="button" role="menuitem">Manufacturer list</button></div></div><div class="tdd"><button class="b o" id="cuMenu" type="button" aria-haspopup="true" aria-expanded="false">Customers &#9662;</button><div class="tddm" role="menu" hidden><button class="b o" id="ncBtn" type="button" role="menuitem">New customer</button><button class="b o" id="cnList" type="button" role="menuitem">Customer list</button></div></div><a class="signout" id="soBtn" href="#">Sign out</a></div>
+<style>/* top bar drop-downs: Orders (New order, Order list, Import order), Manufacturer (New manufacturer, Manufacturer list), Customers (New customer, Customer list) */
+.topbar .tdd{flex:none}
+.topbar .tddm{position:fixed;z-index:200;display:flex;flex-direction:column;gap:4px;padding:6px;min-width:170px;background:#10282f;border:1px solid #3a5963;border-top:3px solid var(--dbamb);border-radius:4px;box-shadow:0 8px 22px rgba(0,0,0,.35)}
+.topbar .tddm[hidden]{display:none!important}
+.topbar .tddm button.b{width:100%;text-align:left;margin:0!important}
+.topbar .tddm button.b::before{display:none!important}
+.topbar .tdd>button[aria-expanded=true]{background:#1c4350!important;border-color:var(--dbamb)!important}
+</style>
+<script>
+(function(){   /* top bar drop-downs (Orders, Manufacturer): one open at a time */
+  const all=[...document.querySelectorAll('.topbar .tdd')].map(d=>({b:d.querySelector(':scope>button'),m:d.querySelector('.tddm')}));
+  const pos=({b,m})=>{ const r=b.getBoundingClientRect(); m.style.left=Math.max(8,Math.min(r.left,innerWidth-m.offsetWidth-8))+'px'; m.style.top=(r.bottom+4)+'px'; };
+  const show=(x,v)=>{ x.m.hidden=!v; x.b.setAttribute('aria-expanded',String(v)); if(v) pos(x); };
+  const closeAll=ex=>all.forEach(x=>{ if(x!==ex) show(x,false); });
+  all.forEach(x=>{
+    x.b.addEventListener('click',e=>{ e.stopPropagation(); closeAll(x); show(x,x.m.hidden); });
+    x.m.addEventListener('click',e=>{ if(e.target.closest('button')) setTimeout(()=>show(x,false),0); });   // the item runs its own action, then the menu closes
+  });
+  document.addEventListener('click',e=>{ all.forEach(x=>{ if(!x.m.hidden&&!x.m.contains(e.target)&&!x.b.contains(e.target)) show(x,false); }); });
+  document.addEventListener('keydown',e=>{ if(e.key==='Escape') closeAll(); });
+  const rp=()=>all.forEach(x=>{ if(!x.m.hidden) pos(x); }); addEventListener('resize',rp); addEventListener('scroll',rp,true);
+})();
+</script>
+
 <script>document.getElementById("soBtn").onclick=function(e){e.preventDefault();try{Storage.prototype.removeItem.call(localStorage,"sb_auth_v1");}catch(x){}location.reload();};</script>
 
 
