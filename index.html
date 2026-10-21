@@ -741,8 +741,10 @@ body{background:#eef2f1}
 .panel b{font:600 .66rem var(--mono)!important;text-transform:uppercase;letter-spacing:.06em;color:#6a7d83!important}
 .panel b.sec{color:var(--dbink)!important}
 .opts button,.acc button,.stv button,.acc .sub button,.acc .chg,.panel .b{border-radius:4px!important}
-.opts button,.acc button,.stv button{border-width:1px!important;background:#fff!important}
-.opts button[aria-pressed=true],.acc button[aria-pressed=true],.stv button[aria-pressed=true]{background:var(--dbink)!important}
+.opts button,.acc button:not(.hrok):not(.spok):not(.clkok):not([style*="background"]),.stv button:not(.hrok):not(.spok):not(.clkok):not([style*="background"]){border-width:1px!important;background:#fff!important}
+.opts button[aria-pressed=true],.acc button[aria-pressed=true]:not(.hrok):not(.spok):not(.clkok):not([style*="background"]),.stv button[aria-pressed=true]:not(.hrok):not(.spok):not(.clkok):not([style*="background"]){background:var(--dbink)!important}
+.acc .hrok,.acc .spok,.acc .clkok,.stv .spok{background:#10282f!important;color:#fff!important;border:1.5px solid #10282f!important}   /* OK buttons and colour swatches keep the website look */
+html body .panel .sub button[aria-pressed=true]:not(.hrok):not(.spok):not(.clkok):not([style*="background"]),html body .panel #oStove button[aria-pressed=true]:not(.spok){background:#e9eeed!important;color:#10282f!important;border-color:var(--dbink)!important}   /* chosen option inside a menu / pop-up: light, readable */
 .acc .sub button[aria-pressed=true]{background:#e9eeed!important;border-color:var(--dbink)!important}
 .acc button small{font-family:var(--mono);font-size:.72rem}
 .vbar{border-radius:6px!important;background:#10282f!important}.vbar button{border-radius:4px!important}
