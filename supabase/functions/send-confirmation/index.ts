@@ -4,8 +4,9 @@
 //   * withdrawal notices    (site_requests.kind starts with 'Withdrawal notice')
 // It is called by a Database Webhook on INSERT into public.site_requests (see the setup steps).
 // Secrets (Edge Functions -> Secrets): RESEND_API_KEY, WEBHOOK_SECRET.
-// The e-mail holds no text typed by the visitor except the order number of a withdrawal,
-// so the form cannot be misused to send someone else a message through our domain.
+// The request confirmation holds no text typed by the visitor. The withdrawal acknowledgement repeats the
+// withdrawal statement (as the law requires), but only as short plain text: order number, dates and name,
+// never the free-text reason, so the form cannot be misused to send someone else a message through our domain.
 
 const RESEND_API_KEY = Deno.env.get("RESEND_API_KEY") ?? "";
 const WEBHOOK_SECRET = Deno.env.get("WEBHOOK_SECRET") ?? "";
@@ -14,6 +15,8 @@ const REPLY_TO = "info@forestkings.com";
 
 const esc = (s: string) => s.replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]!));
 const clean = (s: unknown, max: number) => String(s ?? "").replace(/[^A-Za-z0-9\-\/ .]/g, "").trim().slice(0, max);
+// a person's name: letters (any language), spaces, dots, hyphens and apostrophes only, at most 80 characters
+const name = (s: unknown) => String(s ?? "").replace(/[^\p{L}\p{M} .'\-]/gu, "").replace(/\s+/g, " ").trim().slice(0, 80);
 
 Deno.serve(async (req) => {
   if (!WEBHOOK_SECRET || req.headers.get("x-webhook-secret") !== WEBHOOK_SECRET) {
@@ -39,12 +42,27 @@ Deno.serve(async (req) => {
       "Kind regards,\nForest Kings Tub\ninfo@forestkings.com · forestkings.com",
     ];
   } else if (kind.startsWith("Withdrawal notice")) {
+    // Acknowledgement of receipt: the content of the withdrawal statement and the date and time it was sent
+    // (EU Consumer Rights Directive, withdrawal function). Typed fields are cut to short plain text.
     const order = clean(d.order_no, 40);
-    const date = clean(d.date_of_notice, 20);
+    const ordered = clean(d.ordered_on, 10);
+    const received = clean(d.received_on, 10);
+    const consumer = name(d.name);
+    const sentAt = new Date(record.created_at ?? Date.now()).toLocaleString("en-GB", {
+      timeZone: "Europe/Vilnius", day: "numeric", month: "long", year: "numeric", hour: "2-digit", minute: "2-digit",
+    });
     subject = "We received your withdrawal notice";
     lines = [
       "Hello,",
-      `we confirm that we received your notice of withdrawal${order ? ` for order ${order}` : ""}${date ? `, sent on ${date}` : ""}.`,
+      "we confirm that we received your notice of withdrawal. Its content:",
+      [
+        "“I/We hereby give notice that I/we withdraw from my/our contract of sale of the following goods.”",
+        `Order / offer number: ${order || "-"}`,
+        `Ordered on: ${ordered || "-"}`,
+        `Received on: ${received && received !== "-" ? received : "-"}`,
+        `Name of consumer(s): ${consumer || "-"}`,
+        `Sent on: ${sentAt} (Lithuanian time)`,
+      ].join("\n"),
       "We will contact you by e-mail about the next steps (return of the goods and refund).",
       "If you have any questions, simply reply to this e-mail.",
       "Kind regards,\nForest Kings Tub\ninfo@forestkings.com · forestkings.com",
