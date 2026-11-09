@@ -50,7 +50,8 @@ begin
   perform net.http_post(
     url     := 'https://api.telegram.org/bot' || cfg.token || '/sendMessage',
     body    := jsonb_build_object('chat_id', cfg.chat_id, 'text', msg),
-    headers := '{"Content-Type": "application/json"}'::jsonb
+    headers := '{"Content-Type": "application/json"}'::jsonb,
+    timeout_milliseconds := 20000   -- 5000 was too short: Telegram notifications failed with a timeout
   );
   return new;
 exception when others then
