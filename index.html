@@ -3,6 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
 <title>Hot tub</title>
 <script>
 /* ===== Supabase sync + prisijungimas ===== */
@@ -12,7 +13,7 @@
   var SKEY='sb_auth_v1';
   var REST=SB_URL+'/rest/v1/kv', AUTH=SB_URL+'/auth/v1/token';
   var ls=window.localStorage, rawSet=Storage.prototype.setItem, rawRem=Storage.prototype.removeItem;
-  var sess=null, ok=false, synced={};
+  var sess=null, ok=false, synced={}, syncedAt={};   /* syncedAt: server updated_at of the version this browser last loaded or saved */
   function now(){return Math.floor(Date.now()/1000);}
   try{sess=JSON.parse(ls.getItem(SKEY)||'null');}catch(e){sess=null;}
   /* another tab of this browser signed in / out (all tabs share one storage): this tab must not sync any more */
@@ -114,7 +115,7 @@
 
   try{
     var xhr=new XMLHttpRequest();
-    xhr.open('GET',REST+'?select=key,value',false);
+    xhr.open('GET',REST+'?select=key,value,updated_at',false);
     var h=hdr();for(var k in h)xhr.setRequestHeader(k,h[k]);
     xhr.send();
     if(xhr.status>=200&&xhr.status<300){
@@ -130,14 +131,74 @@
         }); }catch(e){console.warn('recovery check failed',e);}
       if(ROLE==='entry'){var kk=[],j;for(j=0;j<ls.length;j++)kk.push(ls.key(j));
         kk.forEach(function(x){if(x!==SKEY&&x.indexOf(INB)!==0&&x.indexOf('bak_')!==0)try{rawRem.call(ls,x);}catch(e){}});}
-      rows.forEach(function(r){rawSet.call(ls,r.key,r.value);synced[r.key]=r.value;});
+      rows.forEach(function(r){rawSet.call(ls,r.key,r.value);synced[r.key]=r.value;syncedAt[r.key]=r.updated_at;});
     }else if(xhr.status===401||xhr.status===403){clearSess();location.reload();return;}
   }catch(e){console.warn('Supabase nepasiekiamas',e);}
 
+  /* admin saves carry updated_at and read back the server's timestamp, so other users' saves can be told apart from our own */
   function post(arr,ka){
-    var body=JSON.stringify(arr);
-    return fetch(REST+'?on_conflict=key',{method:'POST',keepalive:!!ka&&body.length<60000,
-      headers:hdr({'Prefer':'resolution=merge-duplicates,return=minimal'}),body:body});
+    var adm=ROLE==='admin', ts=new Date().toISOString();
+    var body=JSON.stringify(adm?arr.map(function(x){return {key:x.key,value:x.value,updated_at:ts};}):arr);
+    return fetch(REST+'?on_conflict=key'+(adm?'&select=key,updated_at':''),{method:'POST',keepalive:!!ka&&body.length<60000,
+      headers:hdr({'Prefer':'resolution=merge-duplicates,return='+(adm?'representation':'minimal')}),body:body});
+  }
+  /* ---- merging when someone else saved the same key in the meantime ----
+     base = version this browser last loaded / saved, mine = this browser now, theirs = server now.
+     Lists of records with an id are merged record by record: what this browser changed wins, everything else comes from the server. */
+  function J(x){return JSON.stringify(x);}
+  function P(s){try{return JSON.parse(s);}catch(e){return undefined;}}
+  function idList(x){return Array.isArray(x)&&x.every(function(e){return e&&typeof e==='object'&&e.id!=null;});}
+  function plainObj(x){return x&&typeof x==='object'&&!Array.isArray(x);}
+  function byId(a){var o={};(a||[]).forEach(function(e){o[String(e.id)]=e;});return o;}
+  function mergeVal(b,m,t){
+    if(typeof m==='number'&&typeof t==='number')return Math.max(m,t);
+    if(idList(m)&&idList(t)&&(b===undefined||idList(b))){
+      var bp=byId(b), tp=byId(t), seen={}, out=[];
+      m.forEach(function(e){var id=String(e.id);seen[id]=1;
+        var mineSame=(id in bp)&&J(e)===J(bp[id]);
+        if(!mineSame)out.push(e);                 /* added or changed here */
+        else if(id in tp)out.push(tp[id]);        /* untouched here: server version */
+      });                                         /* untouched here and deleted on the server: dropped */
+      t.forEach(function(e){var id=String(e.id);if(seen[id])return;
+        if((id in bp)&&J(bp[id])===J(e))return;   /* deleted here, unchanged on the server: stays deleted */
+        out.push(e);});                           /* added on the server (or changed there after we deleted it) */
+      return out;
+    }
+    if(plainObj(m)&&plainObj(t)){
+      var bo=plainObj(b)?b:{}, res={}, k;
+      for(k in t)res[k]=t[k];
+      for(k in m)if(J(m[k])!==J(bo[k]))res[k]=m[k];
+      for(k in bo)if(!(k in m)&&J(bo[k])===J(t[k]))delete res[k];
+      return res;
+    }
+    return m;
+  }
+  function staleNotice(){
+    if(document.getElementById('sbstale')||!document.body)return;
+    var d=document.createElement('div');d.id='sbstale';
+    d.style.cssText='position:fixed;left:50%;top:10px;transform:translateX(-50%);z-index:99999;display:flex;gap:12px;align-items:center;font:14px system-ui,sans-serif;background:#10282f;color:#fff;padding:9px 10px 9px 16px;border-radius:8px;box-shadow:0 4px 18px rgba(0,0,0,.25)';
+    d.innerHTML='<span>Another user changed the data. Reload to see the latest version.</span>';
+    var b=document.createElement('button');b.type='button';b.textContent='Reload';
+    b.style.cssText='font:700 13px system-ui,sans-serif;padding:6px 14px;border:0;border-radius:6px;background:#d98a1c;color:#10282f;cursor:pointer';
+    b.onclick=function(){b.disabled=true;var p=window.__sbSync&&window.__sbSync(true);(p&&p.then?p:Promise.resolve()).then(function(){location.reload();},function(){location.reload();});};
+    d.appendChild(b);document.body.appendChild(d);
+  }
+  /* before saving: merge with what other users saved since this browser loaded the key */
+  function mergeWithServer(up){
+    if(ROLE!=='admin'||!up.length)return Promise.resolve();
+    var keys=up.map(function(x){return '"'+x.key.replace(/"/g,'')+'"';}).join(',');
+    return authed(function(){return fetch(REST+'?select=key,value,updated_at&key=in.('+encodeURIComponent(keys)+')',{headers:hdr(),cache:'no-store'});})
+      .then(function(r){return r.ok?r.json():[];}).then(function(rows){
+        rows.forEach(function(r){
+          var x=null;up.forEach(function(y){if(y.key===r.key)x=y;});
+          if(!x||r.value===synced[r.key]||r.value===x.value)return;
+          var m=P(x.value), t=P(r.value);
+          if(m===undefined||t===undefined)return;
+          var mv=J(mergeVal(P(synced[r.key]),m,t));
+          if(mv!==x.value){x.value=mv;rawSet.call(ls,r.key,mv);staleNotice();}
+          console.info('Merged with changes saved by another user:',r.key);
+        });
+      });
   }
   function del(k,ka){
     return fetch(REST+'?key=eq.'+encodeURIComponent(k),{method:'DELETE',keepalive:!!ka,headers:hdr()});
@@ -178,9 +239,11 @@
     if(!up.length&&!rm.length)return Promise.resolve(true);
     busy=true;
     var jobs=[];
-    if(up.length)jobs.push(authed(function(){return post(up,final);}).then(function(r){
+    /* page closing: send right away (no time for the merge round trip) */
+    if(up.length)jobs.push((final?Promise.resolve():mergeWithServer(up)).then(function(){return authed(function(){return post(up,final);});}).then(function(r){
       if(!r.ok)throw new Error(r.status);up.forEach(function(x){
-        synced[x.key]=x.value;});}));
+        synced[x.key]=x.value;});
+      if(ROLE==='admin'&&!final)return r.json().then(function(rows){(rows||[]).forEach(function(x){syncedAt[x.key]=x.updated_at;});},function(){});}));
     rm.forEach(function(key){jobs.push(authed(function(){return del(key,final);}).then(function(r){
       if(!r.ok)throw new Error(r.status);delete synced[key];}));});
     return Promise.all(jobs).then(function(){busy=false;skip=0;flag(true);return true;})
@@ -198,7 +261,35 @@
       .catch(function(){return 0;});
   };
   window.__sbSync=function(f){busy=false;skip=0;return sync(!!f);};
+  /* next offer number straight from the server, so two users never get the same one; null = not reachable (caller counts locally) */
+  window.__sbNextSeq=function(){
+    if(!ok||ROLE!=='admin'||!sess)return null;
+    try{
+      var g=new XMLHttpRequest();g.open('GET',REST+'?select=value&key=eq.offer_seq_v1',false);
+      var h=hdr();for(var k in h)g.setRequestHeader(k,h[k]);g.send();
+      if(g.status<200||g.status>=300)return null;
+      var a=JSON.parse(g.responseText), srv=a.length?parseInt(a[0].value,10)||0:0, loc=parseInt(ls.getItem('offer_seq_v1'),10)||0;
+      var n=Math.max(srv,loc)+1, v=String(n), ts=new Date().toISOString();
+      var p=new XMLHttpRequest();p.open('POST',REST+'?on_conflict=key',false);
+      h=hdr({'Prefer':'resolution=merge-duplicates,return=minimal'});for(k in h)p.setRequestHeader(k,h[k]);
+      p.send(JSON.stringify([{key:'offer_seq_v1',value:v,updated_at:ts}]));
+      if(p.status<200||p.status>=300)return null;
+      rawSet.call(ls,'offer_seq_v1',v);synced.offer_seq_v1=v;syncedAt.offer_seq_v1=ts;
+      return n;
+    }catch(e){return null;}
+  };
   setInterval(sync,1500);
+  /* every 20 s: has another user saved something since this page loaded? -> offer a reload */
+  if(ROLE==='admin')setInterval(function(){
+    if(!ok||stopped||document.visibilityState!=='visible'||document.getElementById('sbstale'))return;
+    authed(function(){return fetch(REST+'?select=key,updated_at',{headers:hdr(),cache:'no-store'});})
+      .then(function(r){return r.ok?r.json():[];}).then(function(rows){
+        if(rows.some(function(r){var k=r.key;
+          if(k.indexOf('inbox_')===0||k.indexOf('bak_')===0||!r.updated_at)return false;
+          if(!(k in syncedAt))return !(k in synced);
+          return Date.parse(r.updated_at)>Date.parse(syncedAt[k]||0);}))staleNotice();
+      }).catch(function(){});
+  },20000);
   window.addEventListener('pagehide',function(){sync(true);});
   document.addEventListener('visibilitychange',function(){if(document.visibilityState==='hidden')sync(true);});
 })();
@@ -1029,7 +1120,7 @@ window.hourBlocked=function(who,h){
  const d=(x,y)=>{ let q=Math.abs(x-y)%(2*Math.PI); return q>Math.PI?2*Math.PI-q:q; };
  return me.some(m=>others.some(o=>d(m.a,o.a)<m.w+o.w)); };
 </script>
-<script src="https://forestkings.com/assets/fk-data.js?v=1" onerror="alert('3D data could not be loaded (forestkings.com/assets/fk-data.js). Check the internet connection and reload.')"></script>
+<script src="https://forestkings.com/assets/fk-data.js?v=20261108"onerror="alert('3D data could not be loaded (forestkings.com/assets/fk-data.js). Check the internet connection and reload.')"></script>
 <script>
 /* ============ EDIT HERE: all content of the page ============ */
 /* Stove type options: [label, surcharge EUR]. Edit prices here. */
@@ -3116,7 +3207,7 @@ window.pdfHeader=function(doc,o){
 </script>
 <script>
 /* Download PDF: 3D screenshot + current configuration */
-function nextOfferNo(){ let n=0; try{n=parseInt(localStorage.getItem('offer_seq_v1'),10)||0;}catch(e){} n++; try{localStorage.setItem('offer_seq_v1',String(n));}catch(e){} return 'OF-'+new Date().getFullYear()+'-'+String(n).padStart(4,'0'); }
+function nextOfferNo(){ let n=window.__sbNextSeq?window.__sbNextSeq():null; if(n==null){ n=0; try{n=parseInt(localStorage.getItem('offer_seq_v1'),10)||0;}catch(e){} n++; try{localStorage.setItem('offer_seq_v1',String(n));}catch(e){} } return 'OF-'+new Date().getFullYear()+'-'+String(n).padStart(4,'0'); }
 window.makePdf=(producer,confirmation,transport,prodOrder)=>{ const tr=!!transport, hp=producer||tr;   /* transport = transport order for the carrier: delivery address, contact, pick-up point, no prices */   /* producer = true: production copy for the manufacturer, without prices */
   if(!window.jspdf){alert('PDF library not loaded (check internet connection).');return;}
   const clean=t=>String(t).replace(/[\u2018\u2019]/g,"'").replace(/\u20ac/g,' EUR').replace(/[\u00b7\u2013]/g,'-').replace(/\u00d7/g,'x').normalize('NFD').replace(/[\u0300-\u036f]/g,'');
@@ -5293,14 +5384,40 @@ html.r-entry #ordRows,html.r-entry #pdfBtn,html.r-entry #pdfBtn2,html.r-entry #p
     const H={apikey:SBK,Authorization:'Bearer '+t,'Content-Type':'application/json'};
     const r=await fetch(SBU+'?select=id,created_at,kind,data&imported=eq.false&kind=eq.'+encodeURIComponent('Hot tub request')+'&order=id.asc&limit=20',{headers:H,cache:'no-store'});
     if(!r.ok) return; const rows=await r.json(); let n=0;
+    /* web_done_v1 = {request id: 1} for every website request that reached the Order list (kept in kv like the other data) */
+    const DK='web_done_v1', ldDone=()=>{ try{ return JSON.parse(localStorage.getItem(DK)||'null'); }catch(e){ return null; } };
+    const markDone=id=>{ const d=ldDone()||{}; d[id]=1; try{ localStorage.setItem(DK,JSON.stringify(d)); }catch(e){} };
+    const place=row=>{ const o=row.data&&row.data.order; const res=o&&window.__impOne&&window.__impOne(o); if(!res) return false;
+     const a=ld(), rec=a.find(x=>x.id===res.id);
+     if(rec){ if(!rec.offerNo&&typeof nextOfferNo==='function') rec.offerNo=nextOfferNo(); rec.status='new'; rec.isNew=true; rec.src='web'; rec.webId=row.id; rec.date=row.created_at||rec.date; if(!rec.cfg){ const cf=webCfg(o); if(cf) rec.cfg=cf; } sv(a); }
+     markDone(row.id); return true; };
     for(const row of rows){
      const c=await fetch(SBU+'?id=eq.'+row.id+'&imported=eq.false',{method:'PATCH',headers:Object.assign({Prefer:'return=representation'},H),body:JSON.stringify({imported:true})});
      if(!c.ok) continue; const got=await c.json().catch(()=>[]); if(!got.length) continue;   /* already taken by another browser */
-     const o=row.data&&row.data.order; const res=o&&window.__impOne&&window.__impOne(o);
-     if(!res){ await fetch(SBU+'?id=eq.'+row.id,{method:'PATCH',headers:H,body:JSON.stringify({imported:false})}).catch(()=>{}); console.warn('Website request not imported',row); continue; }
-     const a=ld(), rec=a.find(x=>x.id===res.id);
-     if(rec){ if(!rec.offerNo&&typeof nextOfferNo==='function') rec.offerNo=nextOfferNo(); rec.status='new'; rec.isNew=true; rec.src='web'; rec.webId=row.id; rec.date=row.created_at||rec.date; if(!rec.cfg){ const cf=webCfg(o); if(cf) rec.cfg=cf; } sv(a); }
+     if(!place(row)){ await fetch(SBU+'?id=eq.'+row.id,{method:'PATCH',headers:H,body:JSON.stringify({imported:false})}).catch(()=>{}); console.warn('Website request not imported',row); continue; }
      n++;
+    }
+    /* recovery: a request claimed (imported=true) more than 5 min ago whose order is in no list - e.g. the browser closed right after claiming it.
+       Checked against the server's copy too, so an order another user already has is never added twice. */
+    const since=new Date(Date.now()-7*864e5).toISOString(), before=new Date(Date.now()-5*60e3).toISOString();
+    const rr=await fetch(SBU+'?select=id,created_at,kind,data&imported=eq.true&kind=eq.'+encodeURIComponent('Hot tub request')+'&created_at=gte.'+since+'&created_at=lt.'+before+'&order=id.asc',{headers:H,cache:'no-store'});
+    if(rr.ok){
+     const claimed=await rr.json(), localDone=ldDone();
+     if(!localDone){ const d={}; claimed.forEach(x=>{ d[x.id]=1; }); try{ localStorage.setItem(DK,JSON.stringify(d)); }catch(e){} }   /* first run: everything up to now counts as handled */
+     else{
+      const todo=claimed.filter(x=>!localDone[x.id]&&!ld().some(y=>String(y.webId)===String(x.id)));
+      if(todo.length){
+       const kv=await fetch(SBU.replace('/site_requests','/kv')+'?select=key,value&key=in.(clients_v1,'+DK+')',{headers:H,cache:'no-store'});
+       if(kv.ok){
+        const srv={}; (await kv.json()).forEach(x=>{ try{ srv[x.key]=JSON.parse(x.value); }catch(e){} });
+        const srvIds=new Set((Array.isArray(srv.clients_v1)?srv.clients_v1:[]).filter(y=>y&&y.webId!=null).map(y=>String(y.webId))), srvDone=srv[DK]||{};
+        for(const row of todo){
+         if(srvDone[row.id]||srvIds.has(String(row.id))){ markDone(row.id); continue; }
+         if(place(row)){ n++; console.info('Recovered website request',row.id); }
+        }
+       }
+      }
+     }
     }
     /* website orders imported before Model / Total were filled in: fill them once */
     let f=0; const miss=ld().filter(x=>x.src==='web'&&x.webId&&!x.cfg);
