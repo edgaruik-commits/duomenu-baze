@@ -2,11 +2,13 @@
 // Sends a short, neutral confirmation e-mail to the customer for two website forms:
 //   * hot tub requests      (site_requests.kind = 'Hot tub request')
 //   * withdrawal notices    (site_requests.kind starts with 'Withdrawal notice')
+// The e-mail is in German when the visitor used the German website (data.lang = 'de'), otherwise in English.
 // It is called by a Database Webhook on INSERT into public.site_requests (see the setup steps).
 // Secrets (Edge Functions -> Secrets): RESEND_API_KEY, WEBHOOK_SECRET.
 // The request confirmation holds no text typed by the visitor. The withdrawal acknowledgement repeats the
-// withdrawal statement (as the law requires), but only as short plain text: order number, dates and name,
-// never the free-text reason, so the form cannot be misused to send someone else a message through our domain.
+// withdrawal statement (as the law requires), but only as short plain text: order number, dates, name (and on the
+// German form the address), never the free-text reason, so the form cannot be misused to send someone else a
+// message through our domain.
 
 const RESEND_API_KEY = Deno.env.get("RESEND_API_KEY") ?? "";
 const WEBHOOK_SECRET = Deno.env.get("WEBHOOK_SECRET") ?? "";
@@ -17,6 +19,89 @@ const esc = (s: string) => s.replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&l
 const clean = (s: unknown, max: number) => String(s ?? "").replace(/[^A-Za-z0-9\-\/ .]/g, "").trim().slice(0, max);
 // a person's name: letters (any language), spaces, dots, hyphens and apostrophes only, at most 80 characters
 const name = (s: unknown) => String(s ?? "").replace(/[^\p{L}\p{M} .'\-]/gu, "").replace(/\s+/g, " ").trim().slice(0, 80);
+// a postal address: letters, digits, spaces and . , / ' - only, at most 120 characters ("-" = not given)
+const address = (s: unknown) => String(s ?? "").replace(/[^\p{L}\p{M}0-9 .,\/'\-]/gu, "").replace(/\s+/g, " ").trim().slice(0, 120);
+// 2026-11-01 -> 01.11.2026 (German e-mail only)
+const deDate = (s: string) => s.replace(/^(\d{4})-(\d{2})-(\d{2})$/, "$3.$2.$1");
+
+const SIGN = "Forest Kings Tub\ninfo@forestkings.com · forestkings.com";
+
+// subject + paragraphs of the e-mail, or null when this kind of request gets no confirmation
+export function buildMail(kind: string, d: any, createdAt: unknown): { subject: string; lines: string[] } | null {
+  const de = String(d.lang ?? d.order?.lang ?? "").toLowerCase() === "de";   // German website
+  if (kind === "Hot tub request") {
+    const ref = clean(d.order?.order_id, 40);
+    if (de) return {
+      subject: "Ihre Anfrage für ein Badefass ist eingegangen",
+      lines: [
+        "Guten Tag,",
+        `vielen Dank für Ihre Anfrage zu einem Badefass${ref ? ` (Referenz ${ref})` : ""}. Sie ist bei uns eingegangen. Innerhalb von 24 Stunden senden wir Ihnen per E-Mail den Endpreis, die Lieferkosten und den Liefertermin.`,
+        "Wenn Sie noch etwas ergänzen möchten, antworten Sie einfach auf diese E-Mail.",
+        "Mit freundlichen Grüßen\n" + SIGN,
+      ],
+    };
+    return {
+      subject: "We received your hot tub request",
+      lines: [
+        "Hello,",
+        `thank you for your hot tub request${ref ? ` (reference ${ref})` : ""}. We have received it and will reply by e-mail within 24 hours with the final price, delivery cost and date.`,
+        "If you would like to add anything, simply reply to this e-mail.",
+        "Kind regards,\n" + SIGN,
+      ],
+    };
+  }
+  if (kind.startsWith("Withdrawal notice")) {
+    // Acknowledgement of receipt: the content of the withdrawal statement and the date and time it was sent
+    // (EU Consumer Rights Directive, withdrawal function). Typed fields are cut to short plain text.
+    const order = clean(d.order_no, 40);
+    const ordered = clean(d.ordered_on, 10);
+    const received = clean(d.received_on, 10);
+    const consumer = name(d.name);
+    const when = new Date((createdAt as string) ?? Date.now());
+    const opts: Intl.DateTimeFormatOptions = { timeZone: "Europe/Vilnius", day: "numeric", month: "long", year: "numeric", hour: "2-digit", minute: "2-digit" };
+    if (de) {
+      const addr = address(d.address);
+      return {
+        subject: "Eingangsbestätigung Ihres Widerrufs",
+        lines: [
+          "Guten Tag,",
+          "hiermit bestätigen wir den Eingang Ihres Widerrufs. Er hat folgenden Inhalt:",
+          [
+            "„Hiermit widerrufe(n) ich/wir den von mir/uns abgeschlossenen Vertrag über den Kauf der folgenden Waren.“",
+            `Bestell- / Angebotsnummer: ${order || "-"}`,
+            `Bestellt am: ${ordered ? deDate(ordered) : "-"}`,
+            `Erhalten am: ${received && received !== "-" ? deDate(received) : "-"}`,
+            `Name des/der Verbraucher(s): ${consumer || "-"}`,
+            `Anschrift des/der Verbraucher(s): ${addr && addr !== "-" ? addr : "-"}`,
+            `Gesendet am: ${when.toLocaleString("de-DE", opts)} (litauische Zeit)`,
+          ].join("\n"),
+          "Wir melden uns per E-Mail bei Ihnen wegen der nächsten Schritte (Rücksendung der Ware und Erstattung).",
+          "Wenn Sie Fragen haben, antworten Sie einfach auf diese E-Mail.",
+          "Mit freundlichen Grüßen\n" + SIGN,
+        ],
+      };
+    }
+    return {
+      subject: "We received your withdrawal notice",
+      lines: [
+        "Hello,",
+        "we confirm that we received your notice of withdrawal. Its content:",
+        [
+          "“I/We hereby give notice that I/we withdraw from my/our contract of sale of the following goods.”",
+          `Order / offer number: ${order || "-"}`,
+          `Ordered on: ${ordered || "-"}`,
+          `Received on: ${received && received !== "-" ? received : "-"}`,
+          `Name of consumer(s): ${consumer || "-"}`,
+          `Sent on: ${when.toLocaleString("en-GB", opts)} (Lithuanian time)`,
+        ].join("\n"),
+        "We will contact you by e-mail about the next steps (return of the goods and refund).",
+        "If you have any questions, simply reply to this e-mail.",
+        "Kind regards,\n" + SIGN,
+      ],
+    };
+  }
+  return null;
+}
 
 Deno.serve(async (req) => {
   if (!WEBHOOK_SECRET || req.headers.get("x-webhook-secret") !== WEBHOOK_SECRET) {
@@ -30,46 +115,9 @@ Deno.serve(async (req) => {
   const to = String(d.email ?? "").trim();
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(to) || to.length > 200) return new Response("no valid e-mail");
 
-  let subject: string;
-  let lines: string[];
-  if (kind === "Hot tub request") {
-    const ref = clean(d.order?.order_id, 40);
-    subject = "We received your hot tub request";
-    lines = [
-      "Hello,",
-      `thank you for your hot tub request${ref ? ` (reference ${ref})` : ""}. We have received it and will reply by e-mail within 24 hours with the final price, delivery cost and date.`,
-      "If you would like to add anything, simply reply to this e-mail.",
-      "Kind regards,\nForest Kings Tub\ninfo@forestkings.com · forestkings.com",
-    ];
-  } else if (kind.startsWith("Withdrawal notice")) {
-    // Acknowledgement of receipt: the content of the withdrawal statement and the date and time it was sent
-    // (EU Consumer Rights Directive, withdrawal function). Typed fields are cut to short plain text.
-    const order = clean(d.order_no, 40);
-    const ordered = clean(d.ordered_on, 10);
-    const received = clean(d.received_on, 10);
-    const consumer = name(d.name);
-    const sentAt = new Date(record.created_at ?? Date.now()).toLocaleString("en-GB", {
-      timeZone: "Europe/Vilnius", day: "numeric", month: "long", year: "numeric", hour: "2-digit", minute: "2-digit",
-    });
-    subject = "We received your withdrawal notice";
-    lines = [
-      "Hello,",
-      "we confirm that we received your notice of withdrawal. Its content:",
-      [
-        "“I/We hereby give notice that I/we withdraw from my/our contract of sale of the following goods.”",
-        `Order / offer number: ${order || "-"}`,
-        `Ordered on: ${ordered || "-"}`,
-        `Received on: ${received && received !== "-" ? received : "-"}`,
-        `Name of consumer(s): ${consumer || "-"}`,
-        `Sent on: ${sentAt} (Lithuanian time)`,
-      ].join("\n"),
-      "We will contact you by e-mail about the next steps (return of the goods and refund).",
-      "If you have any questions, simply reply to this e-mail.",
-      "Kind regards,\nForest Kings Tub\ninfo@forestkings.com · forestkings.com",
-    ];
-  } else {
-    return new Response("ignored");
-  }
+  const mail = buildMail(kind, d, record.created_at);
+  if (!mail) return new Response("ignored");
+  const { subject, lines } = mail;
 
   const text = lines.join("\n\n");
   const html = lines.map((l) => `<p>${esc(l).replace(/\n/g, "<br>")}</p>`).join("");
